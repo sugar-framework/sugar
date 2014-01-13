@@ -12,15 +12,16 @@ defmodule Web.Router do
     ]
   end
 
-  defp match(conn, [{verb, path, module, action} | rest]) do
-    if conn.path_info === path && conn.method === verb do
-      {module, action, verb}
-    else
-      match conn.path_info, rest
-    end
+  defp match(Plug.Conn[method: method, path_info: path_info], [{verb, path, module, action} | _rest]) 
+    when path_info === path and method === verb do
+    {module, action, verb}
   end
 
-  defp match(_path_info, []) do
+  defp match(conn, [_route | rest]) when is_list(rest) do
+    match conn, rest
+  end
+
+  defp match(_conn, []) do
     false
   end
 end
