@@ -5,9 +5,9 @@ defmodule Web.Plug do
   @action :index
 
   def call(conn, []) do
-    conn = case conn.path_info do
-      ["hello"] -> apply(@module, @action, [conn])
-      _ -> conn |> resp 200, "go away!"
+    conn = case Web.Router.route conn do
+      {:match, module, action, _verb} -> apply(module, action, [conn])
+      :no_match -> conn |> resp 200, "go away!"
     end
 
     {:ok, conn |> send}
