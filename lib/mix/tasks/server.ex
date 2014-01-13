@@ -5,7 +5,7 @@ defmodule Mix.Tasks.Server do
   @recursive true
 
   @moduledoc """
-  Runs all registered Dynamos in their servers.
+  Runs Web and all registered children in their servers.
 
   ## Command line options
 

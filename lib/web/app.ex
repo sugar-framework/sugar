@@ -3,15 +3,8 @@ defmodule Web.App do
   require Lager
 
   def run(opts) do
-    port = case opts[:port] do
-      nil -> 4000
-      _ -> opts[:port]
-    end
-    Lager.info "Starting Web on port #{port}..."
+    Lager.info "Starting Web on port #{get_port(opts)}..."
 
-    opts = opts ++ [
-      dispatch: Web.Dispatcher.dispatch
-    ]
     Plug.Adapters.Cowboy.http Web.Plug, [], opts
   end
 
@@ -30,5 +23,12 @@ defmodule Web.App do
 
   def stop(_state) do
     :ok
+  end
+
+  defp get_port(opts) do
+    case opts[:port] do
+      nil -> 4000
+      _ -> opts[:port]
+    end
   end
 end
