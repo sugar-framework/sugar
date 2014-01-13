@@ -1,6 +1,6 @@
 defmodule Web.Router do
   def route(conn) do
-    case match conn.path_info, routes do
+    case match conn, routes do
       {module, action, verb} -> {:match, module, action, verb}
       _ -> :no_match
     end
@@ -8,15 +8,15 @@ defmodule Web.Router do
 
   def routes do
     [
-      {:get, ["hello"], Hello, :index}
+      {"GET", ["hello"], Hello, :index}
     ]
   end
 
-  defp match(path_info, [{verb, path, module, action} | rest]) do
-    if path_info == path do
+  defp match(conn, [{verb, path, module, action} | rest]) do
+    if conn.path_info === path && conn.method === verb do
       {module, action, verb}
     else
-      match path_info, rest
+      match conn.path_info, rest
     end
   end
 

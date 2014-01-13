@@ -1,9 +1,6 @@
 defmodule Web.Plug do
   import Plug.Connection
 
-  @module Hello
-  @action :index
-
   def call(conn, []) do
     conn = case Web.Router.route conn do
       {:match, module, action, _verb} -> apply(module, action, [conn])
