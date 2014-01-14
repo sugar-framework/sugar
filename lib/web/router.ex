@@ -108,7 +108,7 @@ defmodule Web.Router do
     action = route[:action]
     name = route[:name]
 
-    path = String.split String.strip(rte, '/'), "/"
+    path = String.split String.strip(rte, ?/), "/"
 
 
   end

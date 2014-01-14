@@ -4,12 +4,22 @@ defmodule Web.App do
 
   ## API
 
+  @doc """
+  Used in starting the server with `mix server`.
+
+  ## Arguments
+
+    - `opts` - Keyword List - options to pass to Plug/Cowboy
+  """
   def run(opts) do
     Lager.info "Starting Web on port #{get_port(opts)}..."
 
     Plug.Adapters.Cowboy.http Web.Plug, [], opts
   end
-
+  
+  @doc """
+  Starts the application, checking if it's already been started.
+  """
   def start do
     case :application.start(:web) do
       :ok -> :ok
@@ -50,7 +60,15 @@ defmodule Web.App do
   def get_port(opts) do
     case opts[:port] do
       nil -> 4000
-      _ -> opts[:port]
+      _ -> 
+        port = opts[:port]
+        if is_binary(opts[:port]) do
+          port = case Integer.parse opts[:port] do
+            :error -> 4000
+            {i, _r} -> i
+          end
+        end
+        abs(port)
     end
   end
 end
