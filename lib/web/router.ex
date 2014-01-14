@@ -84,14 +84,14 @@ defmodule Web.Router do
   """
   def parse_routes([route | rest]) do
     parsed = parse_routes rest
-    parse_route(route) ++ parsed
+    [parse_route(route)] ++ parsed
   end
   def parse_routes([]) do
     []
   end
 
   @doc """
-  `parse_routes/1` converts the routes to the required format for `match/2`
+  `parse_route/1` converts the routes to the required format for `match/2`
 
   ## Arguments
 
@@ -103,13 +103,13 @@ defmodule Web.Router do
   """
   def parse_route(route) do
     rte = route[:route]
-    verb = route[:verb]
+    verb = String.Chars.to_string route[:verb]
     controller = route[:controller]
     action = route[:action]
     name = route[:name]
 
     path = String.split String.strip(rte, ?/), "/"
 
-
+    {verb, path, controller, action}
   end
 end
