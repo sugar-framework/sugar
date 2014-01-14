@@ -1,9 +1,6 @@
 defmodule Web.Supervisor do
   @moduledoc """
   Web's base supervisor.
-
-  The local name, `:max_restarts` and `:max_seconds` can
-  be configured on `start_link`.
   """
   use Supervisor.Behaviour
 
@@ -15,6 +12,10 @@ defmodule Web.Supervisor do
     :supervisor.start_link(__MODULE__, [])
   end
 
+  @doc """
+  Callback for the supervisor to start the application's
+  registered childred.
+  """
   def init(opts) do
     children = [
       # Define workers and child supervisors to be supervised
