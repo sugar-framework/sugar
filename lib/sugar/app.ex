@@ -1,4 +1,4 @@
-defmodule Web.App do  
+defmodule Sugar.App do  
   use Application.Behaviour
   require Lager
 
@@ -12,18 +12,18 @@ defmodule Web.App do
     - `opts` - Keyword List - options to pass to Plug/Cowboy
   """
   def run(opts) do
-    Lager.info "Starting Web on port #{get_port(opts)}..."
+    Lager.info "Starting Sugar on port #{get_port(opts)}..."
 
-    Plug.Adapters.Cowboy.http Web.Plug, [], opts
+    Plug.Adapters.Cowboy.http Sugar.Plug, [], opts
   end
   
   @doc """
   Starts the application, checking if it's already been started.
   """
   def start do
-    case :application.start(:web) do
+    case :application.start(:sugar) do
       :ok -> :ok
-      {:error, {:already_started, :web}} -> :ok
+      {:error, {:already_started, :sugar}} -> :ok
     end
   end
 
@@ -33,7 +33,7 @@ defmodule Web.App do
   Callback for `start/2`. Starts the supervisor.
   """
   def start(_type, _args) do
-    Web.Supervisor.start_link
+    Sugar.Supervisor.start_link
   end
 
   @doc """

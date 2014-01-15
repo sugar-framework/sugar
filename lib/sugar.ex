@@ -1,0 +1,2 @@
+defmodule Sugar do
+end

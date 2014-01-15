@@ -1,6 +1,6 @@
-defmodule Web.AppTest do
+defmodule Sugar.AppTest do
   use ExUnit.Case, async: true
-  import Web.App
+  import Sugar.App
 
   test "get_port/1" do
     assert get_port([]) === 4000

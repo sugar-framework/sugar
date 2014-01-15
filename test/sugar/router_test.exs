@@ -1,7 +1,7 @@
-defmodule Web.RouterTest do
+defmodule Sugar.RouterTest do
   use ExUnit.Case, async: true
   use Plug.Test
-  import Web.Router
+  import Sugar.Router
 
   test "route/1" do
     conn = conn('GET', "/no-match/route")
@@ -34,7 +34,7 @@ defmodule Web.RouterTest do
   end
 
   defmodule Foo do
-    use Web.Controller
+    use Sugar.Controller
     def bar(conn) do
       conn
         |> put_resp_content_type("text/html")

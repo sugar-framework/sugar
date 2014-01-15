@@ -1,4 +1,4 @@
-defmodule Web.Plug do
+defmodule Sugar.Plug do
   import Plug.Connection
 
   @doc """
@@ -15,7 +15,7 @@ defmodule Web.Plug do
     - `{:ok, Plug.Conn[state: :sent]}`
   """
   def call(conn, []) do
-    conn = case Web.Router.route conn do
+    conn = case Sugar.Router.route conn do
       {:match, module, action} -> apply(module, action, [conn])
       :no_match -> conn |> resp 200, "go away!"
     end
@@ -25,7 +25,7 @@ defmodule Web.Plug do
 end
 
 defmodule Hello do
-  use Web.Controller
+  use Sugar.Controller
   def index(conn) do
     conn
       |> put_resp_content_type("text/html")

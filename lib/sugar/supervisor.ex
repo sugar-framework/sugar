@@ -1,12 +1,12 @@
-defmodule Web.Supervisor do
+defmodule Sugar.Supervisor do
   @moduledoc """
-  Web's base supervisor.
+  Sugar's base supervisor.
   """
   use Supervisor.Behaviour
 
   @doc """
   Starts the supervisor. It is automatically started
-  when the Web is started.
+  when the Sugar is started.
   """
   def start_link do
     :supervisor.start_link(__MODULE__, [])
@@ -19,7 +19,7 @@ defmodule Web.Supervisor do
   def init(opts) do
     children = [
       # Define workers and child supervisors to be supervised
-      # worker(Web.Worker, [])
+      # worker(Sugar.Worker, [])
     ]
 
     opts = Keyword.put opts, :strategy, :one_for_one

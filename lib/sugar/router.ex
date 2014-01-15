@@ -1,12 +1,12 @@
-defmodule Web.Router do
+defmodule Sugar.Router do
   @moduledoc """
-  `Web.Router` allows for the appropriate routing of the application.
+  `Sugar.Router` allows for the appropriate routing of the application.
   """
 
   ## API
 
   @doc """
-  `route/1` runs `Web.Router.match/2` against the current connection and
+  `route/1` runs `Sugar.Router.match/2` against the current connection and
   the available parsed routes for the application.
 
   ## Arguments

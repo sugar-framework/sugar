@@ -1,7 +1,7 @@
-defmodule Web.PlugTest do
+defmodule Sugar.PlugTest do
   use ExUnit.Case, async: true
   use Plug.Test
-  import Web.Plug
+  import Sugar.Plug
 
   test "call/2" do
     conn = conn('GET', "/")

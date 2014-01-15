@@ -5,7 +5,7 @@ defmodule Mix.Tasks.Server do
   @recursive true
 
   @moduledoc """
-  Runs Web and all registered children in their servers.
+  Runs Sugar and all registered children in their servers.
 
   ## Command line options
 
@@ -22,7 +22,7 @@ defmodule Mix.Tasks.Server do
       opts = Keyword.update!(opts, :port, &binary_to_integer(&1))
     end
 
-    Web.App.run opts
+    Sugar.App.run opts
 
     unless Code.ensure_loaded?(IEx) && IEx.started? do
       :timer.sleep(:infinity)
