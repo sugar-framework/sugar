@@ -1,3 +1,3 @@
-# Web
+# Sugar
 
-** TODO: Add description **
+Web framework for Elixir

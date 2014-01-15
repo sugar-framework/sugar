@@ -2,18 +2,18 @@ defmodule Web.Mixfile do
   use Mix.Project
 
   def project do
-    [ app: :web,
+    [ app: :sugar,
       elixir: "~> 0.12.0",
       version: "0.1.0-dev",
-      name: "Web",
-      #source_url: "https://github.com/slogsdon/elixir-web",
+      name: "Sugar",
+      source_url: "https://github.com/slogsdon/sugar",
       deps: deps(Mix.env) ]
   end
 
   def application do
     [
       applications: [:cowboy, :plug, :mimetypes, :exlager],
-      mod: { Web.App, [] }
+      mod: { Sugar.App, [] }
     ]
   end
 
