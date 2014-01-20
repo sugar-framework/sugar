@@ -5,7 +5,7 @@ defmodule Sugar.RouterTest do
 
   test "route/1" do
     conn = conn('GET', "/no-match/route")
-    assert route(conn) === :no_match
+    assert find_route(conn) === :no_match
   end
 
   test "match/2" do
