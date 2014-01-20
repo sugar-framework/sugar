@@ -15,7 +15,7 @@ defmodule Sugar.Plug do
     - `{:ok, Plug.Conn[state: :sent]}`
   """
   def call(conn, []) do
-    conn = case Sugar.Router.route conn do
+    conn = case Sugar.Router.find_route conn do
       {:match, module, action} -> apply(module, action, [conn])
       :no_match -> conn |> resp 200, "go away!"
     end
