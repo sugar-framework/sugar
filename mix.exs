@@ -3,7 +3,7 @@ defmodule Web.Mixfile do
 
   def project do
     [ app: :sugar,
-      elixir: "~> 0.12.0",
+      elixir: "~> 0.12.2",
       version: "0.1.0-dev",
       name: "Sugar",
       source_url: "https://github.com/slogsdon/sugar",

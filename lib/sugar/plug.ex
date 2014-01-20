@@ -20,15 +20,6 @@ defmodule Sugar.Plug do
       :no_match -> conn |> resp 200, "go away!"
     end
 
-    {:ok, conn |> send}
-  end
-end
-
-defmodule Hello do
-  use Sugar.Controller
-  def index(conn) do
-    conn
-      |> put_resp_content_type("text/html")
-      |> resp 200, "hello world"
+    {:ok, conn |> send_resp}
   end
 end
