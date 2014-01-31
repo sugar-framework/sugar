@@ -25,7 +25,7 @@ defmodule MySugar.Routes do
   # get, post, put, delete, and any will be supported
   get "/", controller: Application, action: :index
   get "/login", controller: Session, action: :show_login
-  post "/login", contorller: Session, action: :handle_login
+  post "/login", controller: Session, action: :handle_login
 
 end
 ```
