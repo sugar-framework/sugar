@@ -10,7 +10,7 @@ Web framework for Elixir
 
 ## Reason for Existence
 
-Why build this when [Dynamo](https://github.com/dynamo/dynamo) and [Weber](http://0xax.github.io/weber/) exist with growing communities? While both projects are great in their own right, Sugar aims to be another contender, sparking more development on all three projects (and/or others that may follow) and giving developers another option when deciding what framework fits their needs best. Sugar may even strive to shake things up just as [ChicagoBoss](http://www.chicagoboss.org/) has done.
+Why build this when [Dynamo](https://github.com/dynamo/dynamo), [Weber](http://0xax.github.io/weber/), and [Phoenix](https://github.com/phoenixframework/phoenix) exist with growing communities? While both projects are great in their own right, Sugar aims to be another contender, sparking more development on all three projects (and/or others that may follow) and giving developers another option when deciding what framework fits their needs best. Sugar may even strive to shake things up just as [ChicagoBoss](http://www.chicagoboss.org/) has done.
 
 ## Getting Started
 
