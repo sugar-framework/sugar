@@ -14,7 +14,7 @@ defmodule Sugar.App do
   def run(opts) do
     Lager.info "Starting Sugar on port #{get_port(opts)}..."
 
-    Plug.Adapters.Cowboy.http Sugar.Plug, [], opts
+    Plug.Adapters.Cowboy.http Router, [], opts
   end
   
   @doc """
