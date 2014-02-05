@@ -3,34 +3,8 @@ defmodule Sugar.RouterTest do
   use Plug.Test
   import Sugar.Router
 
-  test "route/1" do
-    conn = conn('GET', "/no-match/route")
-    assert find_route(conn) === :no_match
-  end
-
-  test "match/2" do
-    routes = [
-      {"GET", [""], Foo, :bar},
-      {"GET", ["foo"], Foo, :bar}
-    ]
-
-    conn = conn('GET', "/no-match/route")
-    refute match(conn, routes)
-
-    conn = conn('GET', "/foo")
-    assert match(conn, routes) === {Foo, :bar}
-  end
-
-  test "parse_routes/1" do
-    routes = [
-      [route: "/foo/bar", verb: :GET, controller: Foo, action: :bar]
-    ]
-    assert parse_routes(routes) === [{"GET", ["foo", "bar"], Foo, :bar}]
-  end
-
-  test "parse_route/1" do
-    route = [route: "/foo/bar", verb: :GET, controller: Foo, action: :bar]
-    assert parse_route(route) === {"GET", ["foo", "bar"], Foo, :bar}
+  test "the truth" do
+    assert true
   end
 
   defmodule Foo do

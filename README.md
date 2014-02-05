@@ -20,7 +20,7 @@ Soon to come. Once Sugar has the basics, this section will be updated to reflect
 
 Because Sugar builds upon [Plug](https://github.com/elixir-lang/plug), it leverages `Plug.Router` to do the heavy lifting in routing your application, adding an alternate DSL.
 
-### Tentative DSL for routing
+### DSL Example
 
 ```elixir
 defmodule MySugar.Routes do
