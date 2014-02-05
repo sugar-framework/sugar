@@ -3,6 +3,6 @@ defmodule Sugar.ControllerTest do
 
   test "__using__/1" do
     use Sugar.Controller
-    assert Keyword.has_key? __ENV__.functions, Plug.Connection
+    assert Keyword.has_key? __ENV__.functions, Sugar.Controller
   end
 end
