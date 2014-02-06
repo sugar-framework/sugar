@@ -45,6 +45,7 @@ The following milestones are tentative. Any changes will be reflected here as it
     - Ensure guards are passed to `Plug.Router`
 - Basic responses
 - Mimetypes in responses
+- Userland Configuration
 
 ### v0.2.0
 
@@ -63,6 +64,11 @@ The following milestones are tentative. Any changes will be reflected here as it
     - EEx
     - [ErlyDTL](https://github.com/erlydtl/erlydtl)
 - Development error page
+- Caching
+    - Compiled HTML
+    - Application Data
+    - Adapters
+        - ETS 
 
 ## Who's behind this?
 
