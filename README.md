@@ -33,6 +33,14 @@ defmodule MySugar.Routes do
 end
 ```
 
+## Who's behind this?
+
+Why, the [contributors](https://github.com/slogsdon/sugar/graphs/contributors), of course! Would you consider being one? Please send a pull request :)
+
+## How to start contributing
+
+The main product of this repository is the example terms in the file [CONTRIBUTING.md](https://github.com.slogsdon/sugar/blob/master/CONTRIBUTING>md). This project uses those guidelines as the basis for its own development process. Please refer to that file.
+
 ## License
 
 See [LICENSE](https://github.com/slogsdon/sugar/blob/master/LICENSE).
