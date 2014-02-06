@@ -27,7 +27,7 @@ defmodule Sugar.Router do
     quote do
       get unquote(route), do: unquote(
         quote do 
-          apply(unquote(controller), unquote(action), [var!(conn)])
+          apply(unquote(controller), unquote(action), [var!(conn), binding()])
         end
       )
     end
@@ -37,7 +37,7 @@ defmodule Sugar.Router do
     quote do
       post unquote(route), do: unquote(
         quote do 
-          apply(unquote(controller), unquote(action), [var!(conn)])
+          apply(unquote(controller), unquote(action), [var!(conn), binding()])
         end
       )
     end
@@ -47,7 +47,7 @@ defmodule Sugar.Router do
     quote do
       put unquote(route), do: unquote(
         quote do 
-          apply(unquote(controller), unquote(action), [var!(conn)])
+          apply(unquote(controller), unquote(action), [var!(conn), binding()])
         end
       )
     end
@@ -57,7 +57,7 @@ defmodule Sugar.Router do
     quote do
       patch unquote(route), do: unquote(
         quote do 
-          apply(unquote(controller), unquote(action), [var!(conn)])
+          apply(unquote(controller), unquote(action), [var!(conn), binding()])
         end
       )
     end
@@ -67,7 +67,7 @@ defmodule Sugar.Router do
     quote do
       delete unquote(route), do: unquote(
         quote do 
-          apply(unquote(controller), unquote(action), [var!(conn)])
+          apply(unquote(controller), unquote(action), [var!(conn), binding()])
         end
       )
     end
@@ -77,7 +77,7 @@ defmodule Sugar.Router do
     quote do
       options unquote(route), do: unquote(
         quote do 
-          apply(unquote(controller), unquote(action), [var!(conn)])
+          apply(unquote(controller), unquote(action), [var!(conn), binding()])
         end
       )
     end
@@ -87,7 +87,7 @@ defmodule Sugar.Router do
     quote do
       match unquote(route), do: unquote(
         quote do 
-          apply(unquote(controller), unquote(action), [var!(conn)])
+          apply(unquote(controller), unquote(action), [var!(conn), binding()])
         end
       )
     end
