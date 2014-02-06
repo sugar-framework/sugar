@@ -46,7 +46,7 @@ defmodule Sugar.App do
   ## Helpers
 
   @doc """
-  `get_route/1` grabs the application's running port number or `4000`
+  `get_port/1` grabs the application's running port number or `4000`
   when `opts` doesn't contain the `:port` keyword.
 
   ## Arguments
