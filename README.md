@@ -39,28 +39,30 @@ The following milestones are tentative. Any changes will be reflected here as it
 
 ### v0.1.0
 
-- [x] Integrate Plug
-- [ ] Routing
-    - [x] Basic routing
-    - [ ] Ensure guards are passed to `Plug.Router`
-- [ ] Basic responses
+- Integrate Plug
+- Routing
+    - Basic routing
+    - Ensure guards are passed to `Plug.Router`
+- Basic responses
+- Mimetypes in responses
 
 ### v0.2.0
 
-- [ ] Session adapters
-    - [ ] Cookie session adapter
-- [ ] Resource routing
-- [ ] Return helpers
-    - [ ] JSON
-    - [ ] Raw
-    - [ ] Default 404
+- Session adapters
+    - Cookie
+    - ETS
+- Resource routing
+- Return helpers
+    - JSON
+    - Raw
+    - Default 404
 
 ### v0.3.0
 
-- [ ] Templating
-    - [ ] EEx
-    - [ ] [ErlyDTL](https://github.com/erlydtl/erlydtl)
-- [ ] ETS session adapter
+- Templating
+    - EEx
+    - [ErlyDTL](https://github.com/erlydtl/erlydtl)
+- Development error page
 
 ## Who's behind this?
 
