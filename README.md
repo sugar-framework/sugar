@@ -33,13 +33,42 @@ defmodule MySugar.Routes do
 end
 ```
 
+## Roadmap
+
+The following milestones are tentative. Any changes will be reflected here as items are added/moved/removed depending on the needs of the project.
+
+### v0.1.0
+
+- [x] Integrate Plug
+- [ ] Routing
+    - [x] Basic routing
+    - [ ] Ensure guards are passed to `Plug.Router`
+- [ ] Basic responses
+
+### v0.2.0
+
+- [ ] Session adapters
+    - [ ] Cookie session adapter
+- [ ] Resource routing
+- [ ] Return helpers
+    - [ ] JSON
+    - [ ] Raw
+    - [ ] Default 404
+
+### v0.3.0
+
+- [ ] Templating
+    - [ ] EEx
+    - [ ] [ErlyDTL](https://github.com/erlydtl/erlydtl)
+- [ ] ETS session adapter
+
 ## Who's behind this?
 
 Why, the [contributors](https://github.com/slogsdon/sugar/graphs/contributors), of course! Would you consider being one? Please send a pull request :)
 
 ## How to start contributing
 
-The main product of this repository is the example terms in the file [CONTRIBUTING.md](https://github.com.slogsdon/sugar/blob/master/CONTRIBUTING>md). This project uses those guidelines as the basis for its own development process. Please refer to that file.
+The main product of this repository is the example terms in the file [CONTRIBUTING.md](https://github.com/slogsdon/sugar/blob/master/CONTRIBUTING>md). This project uses those guidelines as the basis for its own development process. Please refer to that file.
 
 ## License
 
