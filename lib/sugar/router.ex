@@ -29,8 +29,21 @@ defmodule Sugar.Router do
     quote do
       match _ do
         {:ok, conn} = Sugar.Controller.not_found var!(conn)
-        Lager.info "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
+        log conn
         {:ok, conn}
+      end
+
+      defp log(conn) do
+        if loaded? Config do
+          config = apply(Config, :config, [])
+          if config[:log] do
+            Lager.info "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
+          end
+        end
+      end
+
+      defp loaded?(module) do
+        is_tuple :code.is_loaded(module)
       end
     end
   end
@@ -38,12 +51,7 @@ defmodule Sugar.Router do
   defmacro get(route, controller, action) do
     quote do
       get unquote(route), do: unquote(
-        quote do 
-          binding = binding()
-          {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), Keyword.delete(binding, :conn)])
-          Lager.info "GET #{conn.status} /#{Enum.join conn.path_info, "/"}"
-          {:ok, conn}
-        end
+        build_match controller, action
       )
     end
   end
@@ -51,12 +59,7 @@ defmodule Sugar.Router do
   defmacro post(route, controller, action) do
     quote do
       post unquote(route), do: unquote(
-        quote do 
-          binding = binding()
-          {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), Keyword.delete(binding, :conn)])
-          Lager.info "POST #{conn.status} /#{Enum.join conn.path_info, "/"}"
-          {:ok, conn}
-        end
+        build_match controller, action
       )
     end
   end
@@ -64,12 +67,7 @@ defmodule Sugar.Router do
   defmacro put(route, controller, action) do
     quote do
       put unquote(route), do: unquote(
-        quote do 
-          binding = binding()
-          {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), Keyword.delete(binding, :conn)])
-          Lager.info "PUT #{conn.status} /#{Enum.join conn.path_info, "/"}"
-          {:ok, conn}
-        end
+        build_match controller, action
       )
     end
   end
@@ -77,12 +75,7 @@ defmodule Sugar.Router do
   defmacro patch(route, controller, action) do
     quote do
       patch unquote(route), do: unquote(
-        quote do 
-          binding = binding()
-          {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), Keyword.delete(binding, :conn)])
-          Lager.info "PATCH #{conn.status} /#{Enum.join conn.path_info, "/"}"
-          {:ok, conn}
-        end
+        build_match controller, action
       )
     end
   end
@@ -90,12 +83,7 @@ defmodule Sugar.Router do
   defmacro delete(route, controller, action) do
     quote do
       delete unquote(route), do: unquote(
-        quote do 
-          binding = binding()
-          {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), Keyword.delete(binding, :conn)])
-          Lager.info "DELETE #{conn.status} /#{Enum.join conn.path_info, "/"}"
-          {:ok, conn}
-        end
+        build_match controller, action
       )
     end
   end
@@ -103,12 +91,7 @@ defmodule Sugar.Router do
   defmacro options(route, controller, action) do
     quote do
       options unquote(route), do: unquote(
-        quote do 
-          binding = binding()
-          {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), Keyword.delete(binding, :conn)])
-          Lager.info "OPTIONS #{conn.status} /#{Enum.join conn.path_info, "/"}"
-          {:ok, conn}
-        end
+        build_match controller, action
       )
     end
   end
@@ -116,13 +99,17 @@ defmodule Sugar.Router do
   defmacro any(route, controller, action) do
     quote do
       match unquote(route), do: unquote(
-        quote do 
-          binding = binding()
-          {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), Keyword.delete(binding, :conn)])
-          Lager.info "ANY #{conn.status} /#{Enum.join conn.path_info, "/"}"
-          {:ok, conn}
-        end
+        build_match controller, action
       )
+    end
+  end
+
+  defp build_match(controller, action) do
+    quote do 
+      binding = binding()
+      {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), Keyword.delete(binding, :conn)])
+      log conn
+      {:ok, conn}
     end
   end
 end
