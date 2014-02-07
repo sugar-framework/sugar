@@ -22,10 +22,20 @@ defmodule Mix.Tasks.Server do
       opts = Keyword.update!(opts, :port, &binary_to_integer(&1))
     end
 
-    Sugar.App.run opts
+    Sugar.App.run add_config(opts)
 
     unless Code.ensure_loaded?(IEx) && IEx.started? do
       :timer.sleep(:infinity)
+    end
+  end
+
+  def add_config(options) do
+    config = Sugar.App.config
+
+    if Keyword.has_key? config, :server do
+      Keyword.merge config[:server], options
+    else
+      []
     end
   end
 end

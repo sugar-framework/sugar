@@ -61,14 +61,19 @@ defmodule Sugar.App do
     case opts[:port] do
       nil -> 4000
       _ -> 
-        port = opts[:port]
-        if is_binary(opts[:port]) do
-          port = case Integer.parse opts[:port] do
-            :error -> 4000
-            {i, _r} -> i
-          end
-        end
-        abs(port)
+        abs(opts[:port])
     end
+  end
+
+  def config do
+    config = Keyword.new
+    if loaded? Config do
+      config = apply(Config, :config, [])
+    end
+    config
+  end
+
+  defp loaded?(module) do
+    is_tuple :code.is_loaded(module)
   end
 end

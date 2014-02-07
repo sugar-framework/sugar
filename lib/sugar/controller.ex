@@ -1,4 +1,3 @@
-# awesome example by @josevalim: https://gist.github.com/josevalim/7432084
 defmodule Sugar.Controller do
   import Plug.Connection
 

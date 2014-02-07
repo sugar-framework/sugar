@@ -34,16 +34,9 @@ defmodule Sugar.Router do
       end
 
       defp log(conn) do
-        if loaded? Config do
-          config = apply(Config, :config, [])
-          if config[:log] do
-            Lager.info "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
-          end
+        if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
+          Lager.info "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
         end
-      end
-
-      defp loaded?(module) do
-        is_tuple :code.is_loaded(module)
       end
     end
   end
