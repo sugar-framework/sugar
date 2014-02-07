@@ -26,7 +26,7 @@ Valid options:
 
 - `log` - `true|false` - turns logging on or off
 - `server` - contains options to be sent to the underlying web server (currently, only [Cowboy](https://github.com/extend/cowboy))
-  - `ip` - the ip to bind the server to.
+    - `ip` - the ip to bind the server to.
               Must be a tuple in the format `{ x, y, z, w }`.
     - `port` - the port to run the server.
                 Defaults to 4000 (http) and 4040 (https).
@@ -60,7 +60,7 @@ Because Sugar builds upon Plug, it leverages `Plug.Router` to do the heavy lifti
 
 Routes are defined with the form:
 
-  method route [guard], controller, action
+    method route [guard], controller, action
 
 `method` is `get`, `post`, `put`, `patch`, `delete`, or `options`, each responsible for a single HTTP method. `method` can also be `any`, which will match on all HTTP methods. `controller` is any valid Elixir module name, and `action` is any valid function defined in the `controller` module.
 
