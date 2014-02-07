@@ -11,11 +11,16 @@ defmodule Sugar.Controller do
     end
   end
 
-  def render(conn, _template) do
-    {:ok, send_resp(conn, 200, "hello world")}
+  def render(conn, template) do
+    conn = conn |> put_resp_content_type(MIME.Types.type("html")) |> resp(200, template)
+    {:ok, conn |> send_resp}
   end
 
   def halt!(conn) do
     {:ok, send_resp(conn, 401, "")}
+  end
+
+  def not_found(conn) do
+    {:ok, send_resp(conn, 404, "Not Found")}
   end
 end
