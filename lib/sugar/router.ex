@@ -21,7 +21,6 @@ defmodule Sugar.Router do
       import unquote(__MODULE__)
       use Plug.Router
       @before_compile unquote(__MODULE__)
-      require Lager
     end
   end
 
@@ -29,14 +28,8 @@ defmodule Sugar.Router do
     quote do
       match _ do
         {:ok, conn} = Sugar.Controller.not_found var!(conn)
-        log conn
+        Sugar.App.log :debug, "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
         {:ok, conn}
-      end
-
-      defp log(conn) do
-        if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
-          Lager.info "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
-        end
       end
     end
   end
@@ -101,7 +94,7 @@ defmodule Sugar.Router do
     quote do 
       binding = binding()
       {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), Keyword.delete(binding, :conn)])
-      log conn
+      Sugar.App.log :debug, "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
       {:ok, conn}
     end
   end

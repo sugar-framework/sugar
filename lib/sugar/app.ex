@@ -73,6 +73,47 @@ defmodule Sugar.App do
     config
   end
 
+  def log(:debug, message) do
+    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
+      Lager.debug message
+    end
+  end
+  def log(:info, message) do
+    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
+      Lager.info message
+    end
+  end
+  def log(:notice, message) do
+    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
+      Lager.notice message
+    end
+  end
+  def log(:warning, message) do
+    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
+      Lager.warning message
+    end
+  end
+  def log(:error, message) do
+    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
+      Lager.error message
+    end
+  end
+  def log(:critical, message) do
+    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
+      Lager.critical message
+    end
+  end
+  def log(:alert, message) do
+    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
+      Lager.alert message
+    end
+  end
+  def log(:emergency, message) do
+    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
+      Lager.emergency message
+    end
+  end
+
   defp loaded?(module) do
     is_tuple :code.is_loaded(module)
   end
