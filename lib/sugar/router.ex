@@ -20,6 +20,18 @@ defmodule Sugar.Router do
     quote do
       import unquote(__MODULE__)
       use Plug.Router
+      @before_compile unquote(__MODULE__)
+      require Lager
+    end
+  end
+
+  defmacro __before_compile__(_env) do
+    quote do
+      match _ do
+        {:ok, conn} = Sugar.Controller.not_found var!(conn)
+        Lager.info "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
+        {:ok, conn}
+      end
     end
   end
 
@@ -27,7 +39,9 @@ defmodule Sugar.Router do
     quote do
       get unquote(route), do: unquote(
         quote do 
-          apply(unquote(controller), unquote(action), [var!(conn), binding()])
+          {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), binding()])
+          Lager.info "GET #{conn.status} /#{Enum.join conn.path_info, "/"}"
+          {:ok, conn}
         end
       )
     end
@@ -37,7 +51,9 @@ defmodule Sugar.Router do
     quote do
       post unquote(route), do: unquote(
         quote do 
-          apply(unquote(controller), unquote(action), [var!(conn), binding()])
+          {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), binding()])
+          Lager.info "POST #{conn.status} /#{Enum.join conn.path_info, "/"}"
+          {:ok, conn}
         end
       )
     end
@@ -47,7 +63,9 @@ defmodule Sugar.Router do
     quote do
       put unquote(route), do: unquote(
         quote do 
-          apply(unquote(controller), unquote(action), [var!(conn), binding()])
+          {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), binding()])
+          Lager.info "PUT #{conn.status} /#{Enum.join conn.path_info, "/"}"
+          {:ok, conn}
         end
       )
     end
@@ -57,7 +75,9 @@ defmodule Sugar.Router do
     quote do
       patch unquote(route), do: unquote(
         quote do 
-          apply(unquote(controller), unquote(action), [var!(conn), binding()])
+          {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), binding()])
+          Lager.info "PATCH #{conn.status} /#{Enum.join conn.path_info, "/"}"
+          {:ok, conn}
         end
       )
     end
@@ -67,7 +87,9 @@ defmodule Sugar.Router do
     quote do
       delete unquote(route), do: unquote(
         quote do 
-          apply(unquote(controller), unquote(action), [var!(conn), binding()])
+          {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), binding()])
+          Lager.info "DELETE #{conn.status} /#{Enum.join conn.path_info, "/"}"
+          {:ok, conn}
         end
       )
     end
@@ -77,7 +99,9 @@ defmodule Sugar.Router do
     quote do
       options unquote(route), do: unquote(
         quote do 
-          apply(unquote(controller), unquote(action), [var!(conn), binding()])
+          {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), binding()])
+          Lager.info "OPTIONS #{conn.status} /#{Enum.join conn.path_info, "/"}"
+          {:ok, conn}
         end
       )
     end
@@ -87,7 +111,9 @@ defmodule Sugar.Router do
     quote do
       match unquote(route), do: unquote(
         quote do 
-          apply(unquote(controller), unquote(action), [var!(conn), binding()])
+          {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), binding()])
+          Lager.info "ANY #{conn.status} /#{Enum.join conn.path_info, "/"}"
+          {:ok, conn}
         end
       )
     end

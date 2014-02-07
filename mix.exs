@@ -3,7 +3,7 @@ defmodule Web.Mixfile do
 
   def project do
     [ app: :sugar,
-      elixir: "~> 0.12.2",
+      elixir: "~> 0.12.3",
       version: "0.1.0-dev",
       name: "Sugar",
       source_url: "https://github.com/slogsdon/sugar",
@@ -12,14 +12,14 @@ defmodule Web.Mixfile do
 
   def application do
     [
-      applications: [:cowboy, :plug, :mimetypes, :exlager],
+      applications: [:cowboy, :plug, :exlager],
       mod: { Sugar.App, [] }
     ]
   end
 
   defp deps(:prod) do
     [
-      { :mimetypes, github: "spawngrid/mimetypes", override: true },
+      { :mime, github: "dynamo/mime" },
       { :cowboy, github: "extend/cowboy" },
       { :plug, github: "elixir-lang/plug" },
       { :exlager, github: "khia/exlager" }
