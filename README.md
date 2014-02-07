@@ -14,22 +14,95 @@ Why build this when [Dynamo](https://github.com/dynamo/dynamo), [Weber](http://0
 
 ## Getting Started
 
-Soon to come. Once Sugar has the basics, this section will be updated to reflect the steps needed to use Sugar in a project.
+In progress. Once Sugar has the basics, this section will be updated to reflect the steps needed to use Sugar in a project.
 
-## Routing
+### Configurations
+
+Currently, Sugars expects a `Config` module to be defined in your project that has a `config/0` function defined for configuring your application. A simple `Keyword` list is returned with the configuration values.
+
+Eventually, this will be replaced with a more elegant solution.
+
+Valid options:
+
+- `log` - `true|false` - turns logging on or off
+- `server` - contains options to be sent to the underlying web server (currently, only [Cowboy](https://github.com/extend/cowboy))
+  - `ip` - the ip to bind the server to.
+              Must be a tuple in the format `{ x, y, z, w }`.
+    - `port` - the port to run the server.
+                Defaults to 4000 (http) and 4040 (https).
+    - `acceptors` - the number of acceptors for the listener.
+                     Defaults to 100.
+    - `max_connections` - max number of connections supported.
+                           Defaults to :infinity.
+    - `dispatch` - manually configure Cowboy's dispatch.
+    - `ref` - the reference name to be used.
+               Defaults to `plug.HTTP` (http) and `plug.HTTPS` (https).
+               This is the value that needs to be given on shutdown.
+
+#### Example
+
+```elixir
+defmodule Config do
+  def config do
+    [
+      log: true,
+      server: [
+        port: 4000
+      ]
+    ]
+  end
+end
+```
+
+### Routers
 
 Because Sugar builds upon Plug, it leverages `Plug.Router` to do the heavy lifting in routing your application, adding an alternate DSL.
 
-### DSL Example
+Routes are defined with the form:
+
+  method route [guard], controller, action
+
+`method` is `get`, `post`, `put`, `patch`, `delete`, or `options`, each responsible for a single HTTP method. `method` can also be `any`, which will match on all HTTP methods. `controller` is any valid Elixir module name, and `action` is any valid function defined in the `controller` module.
+
+#### Example
 
 ```elixir
-defmodule MySugar.Routes do
+defmodule Router do
   use Sugar.Router
 
-  get "/", Application, :index
-  get "/login", Session, :show_login
-  post "/login", Session, :handle_login
+  get "/", Hello, :index
+  get "/pages/:id", Hello, :show
+  post "/pages", Hello, :create
+  put "/pages/:id" when id == 1, Hello, :show
+end
+```
 
+### Controllers
+
+All controller actions should have an arrity of 2, with the first argument being a `Plug.Conn` representing the current connection and the second argument being a `Keyword` list of any parameters captured in the route path.
+
+Sugar bundles these response helpers to assist in sending a response:
+
+- `render/2` - sends a normal response
+- `not_found/1` - sends a 404 (Not found) response
+
+#### Example
+
+```elixir
+defmodule Hello do
+  use Sugar.Controller
+
+  def index(conn, []) do
+    render conn, "showing index controller"
+  end
+
+  def show(conn, args) do
+    render conn, "showing page #{args[:id]}"
+  end
+  
+  def create(conn, []) do
+    render conn, "page created"
+  end
 end
 ```
 
@@ -37,7 +110,7 @@ end
 
 The following milestones are tentative. Any changes will be reflected here as items are added/moved/removed depending on the needs of the project.
 
-### v0.1.0
+### [v0.1.0](https://github.com/slogsdon/sugar/tree/v0.1.0) - complete
 
 - Integrate Plug
 - Routing
