@@ -21,6 +21,7 @@ defmodule Sugar.Router do
       import unquote(__MODULE__)
       import Plug.Connection
       use Plug.Router
+      use Sugar.Middleware
       @before_compile unquote(__MODULE__)
     end
   end
@@ -30,6 +31,15 @@ defmodule Sugar.Router do
       match _ do
         {:ok, conn} = Sugar.Controller.not_found var!(conn)
         Sugar.App.log :debug, "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
+        {:ok, conn}
+      end
+
+      defp call_controller_action(Plug.Conn[state: :unset] = conn, controller, action, binding) do
+        {status, conn} = apply(controller, action, [conn, Keyword.delete(binding, :conn)])
+        Sugar.App.log :debug, "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
+        {status, conn}
+      end
+      defp call_controller_action(conn, _, _, _) do
         {:ok, conn}
       end
     end
@@ -120,9 +130,12 @@ defmodule Sugar.Router do
   defp build_match(controller, action) do
     quote do 
       binding = binding()
-      {:ok, conn} = apply(unquote(controller), unquote(action), [var!(conn), Keyword.delete(binding, :conn)])
-      Sugar.App.log :debug, "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
-      {:ok, conn}
+
+      # only continue if we receive :ok from middleware
+      {:ok, conn} = apply_middleware var!(conn)
+
+      # pass off to controller action
+      call_controller_action conn, unquote(controller), unquote(action), binding
     end
   end
 end
