@@ -19,6 +19,7 @@ defmodule Sugar.Router do
   defmacro __using__(_) do
     quote do
       import unquote(__MODULE__)
+      import Plug.Connection
       use Plug.Router
       @before_compile unquote(__MODULE__)
     end
@@ -87,6 +88,32 @@ defmodule Sugar.Router do
       match unquote(route), do: unquote(
         build_match controller, action
       )
+    end
+  end
+
+  defmacro resource(route, controller) do
+    quote do
+      get     unquote(route),                unquote(controller), :index
+      get     unquote(route) <> "/new",      unquote(controller), :new
+      post    unquote(route),                unquote(controller), :create
+      get     unquote(route) <> "/:id",      unquote(controller), :show
+      get     unquote(route) <> "/:id/edit", unquote(controller), :edit
+      put     unquote(route) <> "/:id",      unquote(controller), :update
+      patch   unquote(route) <> "/:id",      unquote(controller), :patch
+      delete  unquote(route) <> "/:id",      unquote(controller), :delete
+
+      options unquote(route) do
+        {:ok, var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET,POST") |> send_resp}
+      end
+      options unquote(route <> "/new") do
+        {:ok, var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET") |> send_resp}
+      end
+      options unquote(route <> "/:_id") do
+        {:ok, var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET,PUT,PATCH,DELETE") |> send_resp}
+      end
+      options unquote(route <> "/:_id/edit") do
+        {:ok, var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET") |> send_resp}
+      end
     end
   end
 
