@@ -1,4 +1,4 @@
-# Sugar [![Build Status](https://travis-ci.org/slogsdon/sugar.png?branch=master)](https://travis-ci.org/slogsdon/sugar)
+# Sugar [![Build Status](https://travis-ci.org/sugar-framework/sugar.png?branch=master)](https://travis-ci.org/sugar-framework/sugar)
 
 Web framework for Elixir, built on top of [Plug](https://github.com/elixir-lang/plug)
 
@@ -110,7 +110,7 @@ end
 
 The following milestones are tentative. Any changes will be reflected here as items are added/moved/removed depending on the needs of the project.
 
-### [v0.1.0](https://github.com/slogsdon/sugar/tree/v0.1.0) - complete
+### [v0.1.0](https://github.com/sugar-framework/sugar/tree/v0.1.0) - complete
 
 - Integrate Plug
 - Routing
@@ -145,12 +145,12 @@ The following milestones are tentative. Any changes will be reflected here as it
 
 ## Who's behind this?
 
-Why, the [contributors](https://github.com/slogsdon/sugar/graphs/contributors), of course! Would you consider being one? Please send a pull request :)
+Why, the [contributors](https://github.com/sugar-framework/sugar/graphs/contributors), of course! Would you consider being one? Please send a pull request :)
 
 ## How to start contributing
 
-The main product of this repository is the example terms in the file [CONTRIBUTING.md](https://github.com/slogsdon/sugar/blob/master/CONTRIBUTING>md). This project uses those guidelines as the basis for its own development process. Please refer to that file.
+The main product of this repository is the example terms in the file [CONTRIBUTING.md](https://github.com/sugar-framework/sugar/blob/master/CONTRIBUTING>md). This project uses those guidelines as the basis for its own development process. Please refer to that file.
 
 ## License
 
-See [LICENSE](https://github.com/slogsdon/sugar/blob/master/LICENSE).
+See [LICENSE](https://github.com/sugar-framework/sugar/blob/master/LICENSE).

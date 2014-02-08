@@ -6,7 +6,7 @@ defmodule Web.Mixfile do
       elixir: "~> 0.12.3",
       version: "0.1.0",
       name: "Sugar",
-      source_url: "https://github.com/slogsdon/sugar",
+      source_url: "https://github.com/sugar-framework/sugar",
       deps: deps(Mix.env) ]
   end
 
