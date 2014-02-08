@@ -10,8 +10,17 @@ defmodule Sugar.Controller do
     end
   end
 
+  def json(conn, data) do
+    conn = conn
+      |> put_resp_content_type(MIME.Types.type("json"))
+      |> resp(200, JSEX.encode! data)
+    {:ok, conn |> send_resp}
+  end
+
   def render(conn, template) do
-    conn = conn |> put_resp_content_type(MIME.Types.type("html")) |> resp(200, template)
+    conn = conn 
+      |> put_resp_content_type(MIME.Types.type("html")) 
+      |> resp(200, template)
     {:ok, conn |> send_resp}
   end
 
