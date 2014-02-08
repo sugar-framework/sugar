@@ -9,12 +9,12 @@ defmodule Sugar.App do
 
   ## Arguments
 
-    - `opts` - Keyword List - options to pass to Plug/Cowboy
+    - `opts` - `Keyword` - options to pass to Plug/Cowboy
   """
   def run(opts) do
     Lager.info "Starting Sugar on port #{get_port(opts)}..."
 
-    Plug.Adapters.Cowboy.http Router, [], opts
+    Plug.Adapters.Cowboy.http Sugar.App.config[:router], [], opts
   end
   
   @doc """
@@ -46,16 +46,16 @@ defmodule Sugar.App do
   ## Helpers
 
   @doc """
-  `get_port/1` grabs the application's running port number or `4000`
-  when `opts` doesn't contain the `:port` keyword.
+  Grabs the application's running port number or `4000` when 
+  `opts` doesn't contain the `:port` keyword.
 
   ## Arguments
 
-    - `opts` - Keyword List - connection instance
+    - `opts` - `Keyword` - options
 
   ## Returns
 
-    - `port` - Integer
+    - `port` - `Integer`
   """
   def get_port(opts) do
     case opts[:port] do
@@ -65,6 +65,13 @@ defmodule Sugar.App do
     end
   end
 
+  @doc """
+  Loads userland configuration if available.
+
+  ## Returns
+
+  - `Keyword`
+  """
   def config do
     config = Keyword.new
     if loaded? Config do
@@ -73,6 +80,22 @@ defmodule Sugar.App do
     config
   end
 
+  @doc """
+  Wraps `Lager` log functions in conditionals to allow
+  userland configuration to logging off and on.
+
+  ## Arguments
+
+  - `level` - `Atom` - One of:
+      - `:debug`
+      - `:info`
+      - `:notice`
+      - `:warning`
+      - `:error`
+      - `:critical`
+      - `:alert`
+      - `:emergency`
+  """
   def log(:debug, message) do
     if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
       Lager.debug message
