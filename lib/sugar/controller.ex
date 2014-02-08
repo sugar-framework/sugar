@@ -17,6 +17,10 @@ defmodule Sugar.Controller do
     {:ok, conn |> send_resp}
   end
 
+  def raw(conn) do
+    {:ok, conn |> send_resp}
+  end
+
   def render(conn, template) do
     conn = conn 
       |> put_resp_content_type(MIME.Types.type("html")) 
