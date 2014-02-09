@@ -24,7 +24,8 @@ defmodule Web.Mixfile do
       { :plug, github: "elixir-lang/plug" },
       { :exlager, github: "khia/exlager" },
       { :jsex, github: "talentdeficit/jsex" },
-      { :erlydtl, github: "erlydtl/erlydtl" }
+      { :erlydtl, github: "erlydtl/erlydtl" },
+      { :calliope, github: "nurugger07/calliope"}
     ]
   end
 

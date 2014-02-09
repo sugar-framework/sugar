@@ -99,8 +99,8 @@ defmodule Sugar.Controller do
   `Tuple` - `{:ok, sent_response}`
   """
   def render(conn, template) do
-    :ok = Sugar.Templates.Engines.ErlyDTL.compile(template)
-    {:ok, body} = Sugar.Templates.Engines.ErlyDTL.render(template, conn.assigns)
+    :ok = Sugar.Templates.Engines.Calliope.compile(template)
+    {:ok, body} = Sugar.Templates.Engines.Calliope.render(template, conn.assigns)
 
     conn = conn 
       |> put_resp_content_type(MIME.Types.type("html")) 
