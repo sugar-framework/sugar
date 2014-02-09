@@ -93,12 +93,13 @@ defmodule Sugar.Controller do
 
   - `conn` - `Plug.Conn`
   - `template` - `String`
+  - `opts` - `Keyword`
 
   ## Returns
 
   `Tuple` - `{:ok, sent_response}`
   """
-  def render(conn, template) do
+  def render(conn, template, opts // []) do
     :ok = Sugar.Templates.Engines.Calliope.compile(template)
     {:ok, body} = Sugar.Templates.Engines.Calliope.render(template, conn.assigns)
 
@@ -114,13 +115,15 @@ defmodule Sugar.Controller do
   ## Arguments
 
   - `conn` - `Plug.Conn`
+  - `opts` - `Keyword`
 
   ## Returns
 
   `Tuple` - `{:ok, sent_response}`
   """
-  def halt!(conn) do
-    {:ok, send_resp(conn, 401, "")}
+  def halt!(conn, opts // []) do
+    opts = [status: 401, message: ""] |> Keyword.merge opts
+    {:ok, conn |> send_resp(opts[:status], opts[:message])}
   end
 
   @doc """
@@ -134,7 +137,47 @@ defmodule Sugar.Controller do
 
   `Tuple` - `{:ok, sent_response}`
   """
-  def not_found(conn) do
-    {:ok, send_resp(conn, 404, "Not Found")}
+  def not_found(conn, message // "Not Found") do
+    {:ok, conn |> send_resp(404, message)}
+  end
+
+  @doc """
+  Forwards the response to another controller action.
+
+  ## Arguments
+
+  - `conn` - `Plug.Conn`
+  - `controller` - `Atom`
+  - `action` - `Atom`
+  - `args` - `Keyword`
+
+  ## Returns
+
+  `Tuple` - `{:ok, conn}`
+  """
+  def forward(conn, controller, action, args // []) do
+    conn = apply controller, action, [conn, args]
+    {:ok, conn }
+  end
+
+  @doc """
+  Redirects the response.
+
+  ## Arguments
+
+  - `conn` - `Plug.Conn`
+  - `location` - `String`
+  - `opts` - `Keyword`
+
+  ## Returns
+
+  `Tuple` - `{:ok, sent_response}`
+  """
+  def redirect(conn, location, opts // []) do
+    opts = [status: 302] |> Keyword.merge opts
+    conn = conn 
+      |> put_resp_content_type(MIME.Types.type("html")) 
+      |> resp(200, body)
+    {:ok, conn |> send_resp}
   end
 end
