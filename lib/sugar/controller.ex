@@ -100,11 +100,13 @@ defmodule Sugar.Controller do
   `Tuple` - `{:ok, sent_response}`
   """
   def render(conn, template, opts // []) do
+    opts = [status: 200] |> Keyword.merge opts
+
     :ok = Sugar.Templates.Engines.Calliope.compile(template)
     {:ok, body} = Sugar.Templates.Engines.Calliope.render(template, conn.assigns)
 
     conn = conn 
-      |> put_resp_content_type(MIME.Types.type("html")) 
+      |> put_resp_content_type(opts[:content_type] || MIME.Types.type("html")) 
       |> resp(200, body)
     {:ok, conn |> send_resp}
   end
