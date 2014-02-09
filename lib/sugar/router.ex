@@ -52,7 +52,7 @@ defmodule Sugar.Router do
       end
 
       defp call_controller_action(Plug.Conn[state: :unset] = conn, controller, action, binding) do
-        {status, conn} = apply(controller, action, [conn, Keyword.delete(binding, :conn)])
+        {status, conn} = apply controller, action, [conn, Keyword.delete(binding, :conn)]
         Sugar.App.log :debug, "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
         {status, conn}
       end

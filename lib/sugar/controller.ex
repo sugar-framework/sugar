@@ -176,8 +176,8 @@ defmodule Sugar.Controller do
   def redirect(conn, location, opts // []) do
     opts = [status: 302] |> Keyword.merge opts
     conn = conn 
-      |> put_resp_content_type(MIME.Types.type("html")) 
-      |> resp(200, body)
+      |> put_resp_header("Location", location) 
+      |> resp(opts[:status], "")
     {:ok, conn |> send_resp}
   end
 end
