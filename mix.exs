@@ -23,7 +23,8 @@ defmodule Web.Mixfile do
       { :cowboy, github: "extend/cowboy" },
       { :plug, github: "elixir-lang/plug" },
       { :exlager, github: "khia/exlager" },
-      { :jsex, github: "talentdeficit/jsex" }
+      { :jsex, github: "talentdeficit/jsex" },
+      { :erlydtl, github: "erlydtl/erlydtl" }
     ]
   end
 
