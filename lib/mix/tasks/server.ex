@@ -17,7 +17,7 @@ defmodule Mix.Tasks.Server do
     opts = OptionParser.parse(args, aliases: [h: :host, p: :port]) |> elem(0)
     Mix.Task.run "app.start", args
 
-    if opts[:port] do
+    if Keyword.has_key? opts, :port do
       opts = Keyword.update!(opts, :port, &binary_to_integer(&1))
     end
 
