@@ -5,16 +5,16 @@ defmodule Sugar.Templates.Engine do
   """
   use Behaviour
 
-  @type name :: binary | atom
+  @type template :: Sugar.Template.t
   @type vars :: list | Keyword.t
 
   @doc """
-  Compiles a `template` as the given `name`.
+  Compiles a `template`.
   """
-  defcallback compile(name) :: :ok
+  defcallback compile(record) :: :ok
 
   @doc """
-  Renders a compiled template based on the given `name`.
+  Renders a compiled template based on the given `template` record.
   """
-  defcallback render(name, vars) :: {:ok, iodata}
+  defcallback render(record, vars) :: {:ok, iodata}
 end

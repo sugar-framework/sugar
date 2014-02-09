@@ -4,16 +4,16 @@ defmodule Sugar.Templates.Engines.ErlyDTL do
   ErlyDTL template engine
   """
 
+  @extensions ["dtl"]
+
   ## Callbacks
 
-  def compile(name) do
-    path = Path.expand('lib/views/#{name}.dtl')
-    :erlydtl.compile(String.to_char_list!(path), binary_to_atom("Sugar.Templates.User." <> name), [out_dir: "./ebin"])
-    :ok
+  def compile(template) do
+    :erlydtl.compile(String.to_char_list!(template.filename), binary_to_atom(template.key), [out_dir: "./ebin"])
   end
 
-  def render(name, vars) do
-    {:ok, tpl} = apply(binary_to_atom("Sugar.Templates.User." <> name), :render, [vars])
+  def render(template, vars) do
+    {:ok, tpl} = apply(binary_to_atom(template.key), :render, [vars])
     {:ok, String.from_char_list!(tpl)}
   end
 end
