@@ -25,7 +25,8 @@ defmodule Web.Mixfile do
       { :exlager, github: "khia/exlager" },
       { :jsex, github: "talentdeficit/jsex" },
       { :erlydtl, github: "erlydtl/erlydtl" },
-      { :calliope, github: "nurugger07/calliope"}
+      { :calliope, github: "nurugger07/calliope" },
+      { :templates, github: "sugar-framework/templates" }
     ]
   end
 
