@@ -14,9 +14,10 @@ defmodule Sugar.App do
   def run(opts) do
     Lager.info "Starting Sugar on port #{get_port(opts)}..."
 
-    router = case Keyword.has_key?(Sugar.App.config, :router) do
-      false -> Router
-      true  -> Sugar.App.config[:router]
+    if Keyword.has_key?(Sugar.App.config, :router) do
+      router = Sugar.App.config[:router]
+    else
+      router = Router
     end
 
     Plug.Adapters.Cowboy.http router, [], opts
