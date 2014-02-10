@@ -14,7 +14,32 @@ Why build this when [Dynamo](https://github.com/dynamo/dynamo), [Weber](http://0
 
 ## Getting Started
 
-In progress. Once Sugar has the basics, this section will be updated to reflect the steps needed to use Sugar in a project.
+```
+# Clone this repo
+git clone https://github.com/sugar-framework/simple.git
+cd simple
+
+# Get project dependencies
+mix deps.get
+
+# Start the web server
+mix server # or `iex -S mix server` if you want access to iex
+```
+
+Want to use the latest and greatest in Sugar develop? 
+
+```
+# Clone this repo
+git clone https://github.com/sugar-framework/simple.git
+cd simple
+git checkout develop
+
+# Get project dependencies
+mix deps.get
+
+# Start the web server
+mix server # or `iex -S mix server` if you want access to iex
+```
 
 ### Configurations
 
