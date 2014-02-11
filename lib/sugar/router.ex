@@ -35,8 +35,10 @@ defmodule Sugar.Router do
       import unquote(__MODULE__)
       import Plug.Connection
       use Plug.Router
-      use Sugar.Middleware
       @before_compile unquote(__MODULE__)
+
+      plug :match
+      plug :dispatch
     end
   end
 
@@ -46,18 +48,18 @@ defmodule Sugar.Router do
   defmacro __before_compile__(_env) do
     quote do
       match _ do
-        {:ok, conn} = Sugar.Controller.not_found var!(conn)
+        conn = Sugar.Controller.not_found var!(conn)
         Sugar.App.log :debug, "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
-        {:ok, conn}
+        conn
       end
 
       defp call_controller_action(Plug.Conn[state: :unset] = conn, controller, action, binding) do
-        {status, conn} = apply controller, action, [conn, Keyword.delete(binding, :conn)]
+        conn = apply controller, action, [conn, Keyword.delete(binding, :conn)]
         Sugar.App.log :debug, "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
-        {status, conn}
+        conn
       end
       defp call_controller_action(conn, _, _, _) do
-        {:ok, conn}
+        conn
       end
     end
   end
@@ -225,16 +227,16 @@ defmodule Sugar.Router do
       delete  unquote(route) <> "/:id",      unquote(controller), :delete
 
       options unquote(route) do
-        {:ok, var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET,POST") |> send_resp}
+        var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET,POST") |> send_resp
       end
       options unquote(route <> "/new") do
-        {:ok, var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET") |> send_resp}
+        var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET") |> send_resp
       end
       options unquote(route <> "/:_id") do
-        {:ok, var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET,PUT,PATCH,DELETE") |> send_resp}
+        var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET,PUT,PATCH,DELETE") |> send_resp
       end
       options unquote(route <> "/:_id/edit") do
-        {:ok, var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET") |> send_resp}
+        var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET") |> send_resp
       end
     end
   end
