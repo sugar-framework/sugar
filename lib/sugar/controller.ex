@@ -66,7 +66,7 @@ defmodule Sugar.Controller do
     conn = conn
       |> put_resp_content_type(MIME.Types.type("json"))
       |> resp(200, JSEX.encode! data)
-    {:ok, conn |> send_resp}
+    conn |> send_resp
   end
 
   @doc """
@@ -83,7 +83,7 @@ defmodule Sugar.Controller do
   `Tuple` - `{:ok, sent_response}`
   """
   def raw(conn) do
-    {:ok, conn |> send_resp}
+    conn |> send_resp
   end
 
   @doc """
@@ -105,7 +105,7 @@ defmodule Sugar.Controller do
     conn = conn 
       |> put_resp_content_type(opts[:content_type] || MIME.Types.type("html")) 
       |> resp(opts[:status], body)
-    {:ok, conn |> send_resp}
+    conn |> send_resp
   end
 
   @doc """
@@ -122,7 +122,7 @@ defmodule Sugar.Controller do
   """
   def halt!(conn, opts // []) do
     opts = [status: 401, message: ""] |> Keyword.merge opts
-    {:ok, conn |> send_resp(opts[:status], opts[:message])}
+    conn |> send_resp(opts[:status], opts[:message])
   end
 
   @doc """
@@ -137,7 +137,7 @@ defmodule Sugar.Controller do
   `Tuple` - `{:ok, sent_response}`
   """
   def not_found(conn, message // "Not Found") do
-    {:ok, conn |> send_resp(404, message)}
+    conn |> send_resp(404, message)
   end
 
   @doc """
@@ -155,8 +155,7 @@ defmodule Sugar.Controller do
   `Tuple` - `{:ok, conn}`
   """
   def forward(conn, controller, action, args // []) do
-    conn = apply controller, action, [conn, args]
-    {:ok, conn }
+    apply controller, action, [conn, args]
   end
 
   @doc """
@@ -177,6 +176,6 @@ defmodule Sugar.Controller do
     conn = conn 
       |> put_resp_header("Location", location) 
       |> resp(opts[:status], "")
-    {:ok, conn |> send_resp}
+    conn |> send_resp
   end
 end
