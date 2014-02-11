@@ -36,6 +36,9 @@ defmodule Sugar.Router do
       import Plug.Connection
       use Plug.Router
       @before_compile unquote(__MODULE__)
+
+      plug :match
+      plug :dispatch
     end
   end
 
@@ -44,8 +47,9 @@ defmodule Sugar.Router do
   """
   defmacro __before_compile__(_env) do
     quote do
-      match _ do
-        Sugar.Controller.not_found var!(conn)
+      Plug.Router.match _ do
+        conn = var!(conn)
+        Sugar.Controller.not_found conn
       end
 
       defp call_controller_action(Plug.Conn[state: :unset] = conn, controller, action, binding) do
@@ -220,16 +224,20 @@ defmodule Sugar.Router do
       delete  unquote(route) <> "/:id",      unquote(controller), :delete
 
       options unquote(route) do
-        var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET,POST") |> send_resp
+        conn = var!(conn)
+        conn |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET,POST") |> send_resp
       end
       options unquote(route <> "/new") do
-        var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET") |> send_resp
+        conn = var!(conn)
+        conn |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET") |> send_resp
       end
       options unquote(route <> "/:_id") do
-        var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET,PUT,PATCH,DELETE") |> send_resp
+        conn = var!(conn)
+        conn |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET,PUT,PATCH,DELETE") |> send_resp
       end
       options unquote(route <> "/:_id/edit") do
-        var!(conn) |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET") |> send_resp
+        conn = var!(conn)
+        conn |> resp(200, "") |> put_resp_header("Allow", "HEAD,GET") |> send_resp
       end
     end
   end
@@ -237,9 +245,10 @@ defmodule Sugar.Router do
   defp build_match(controller, action) do
     quote do 
       binding = binding()
+      conn = var!(conn)
 
       # only continue if we receive :ok from middleware
-      {:ok, conn} = apply_middleware var!(conn)
+      # {:ok, conn} = apply_middleware 
 
       # pass off to controller action
       call_controller_action conn, unquote(controller), unquote(action), binding
