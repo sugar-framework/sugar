@@ -36,9 +36,6 @@ defmodule Sugar.Router do
       import Plug.Connection
       use Plug.Router
       @before_compile unquote(__MODULE__)
-
-      plug :match
-      plug :dispatch
     end
   end
 
@@ -48,15 +45,11 @@ defmodule Sugar.Router do
   defmacro __before_compile__(_env) do
     quote do
       match _ do
-        conn = Sugar.Controller.not_found var!(conn)
-        Sugar.App.log :debug, "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
-        conn
+        Sugar.Controller.not_found var!(conn)
       end
 
       defp call_controller_action(Plug.Conn[state: :unset] = conn, controller, action, binding) do
-        conn = apply controller, action, [conn, Keyword.delete(binding, :conn)]
-        Sugar.App.log :debug, "#{conn.method} #{conn.status} /#{Enum.join conn.path_info, "/"}"
-        conn
+        apply controller, action, [conn, Keyword.delete(binding, :conn)]
       end
       defp call_controller_action(conn, _, _, _) do
         conn
