@@ -63,10 +63,9 @@ defmodule Sugar.Controller do
   `Tuple` - `{:ok, sent_response}`
   """
   def json(conn, data) do
-    conn = conn
+    conn
       |> put_resp_content_type(MIME.Types.type("json"))
-      |> resp(200, JSEX.encode! data)
-    conn |> send_resp
+      |> send_resp_if_not_sent(200, JSEX.encode! data)
   end
 
   @doc """
@@ -102,10 +101,9 @@ defmodule Sugar.Controller do
   def render(conn, template, opts \\ []) do
     opts = [status: 200] |> Keyword.merge opts
 
-    conn = conn 
+    conn 
       |> put_resp_content_type(opts[:content_type] || MIME.Types.type("html")) 
-      |> resp(opts[:status], template)
-    conn |> send_resp
+      |> send_resp_if_not_sent(opts[:status], template)
   end
 
   @doc """
@@ -122,7 +120,8 @@ defmodule Sugar.Controller do
   """
   def halt!(conn, opts \\ []) do
     opts = [status: 401, message: ""] |> Keyword.merge opts
-    conn |> send_resp(opts[:status], opts[:message])
+    conn 
+      |> send_resp_if_not_sent(opts[:status], opts[:message])
   end
 
   @doc """
@@ -137,7 +136,8 @@ defmodule Sugar.Controller do
   `Tuple` - `{:ok, sent_response}`
   """
   def not_found(conn, message \\ "Not Found") do
-    conn |> send_resp(404, message)
+    conn 
+      |> send_resp_if_not_sent(404, message)
   end
 
   @doc """
@@ -173,9 +173,16 @@ defmodule Sugar.Controller do
   """
   def redirect(conn, location, opts \\ []) do
     opts = [status: 302] |> Keyword.merge opts
-    conn = conn 
+    conn 
       |> put_resp_header("Location", location) 
-      |> resp(opts[:status], "")
-    conn |> send_resp
+      |> send_resp_if_not_sent(opts[:status], "")
   end
+
+  defp send_resp_if_not_sent(Plug.Conn[state: :sent] = conn, _, _) do
+    conn
+  end
+  defp send_resp_if_not_sent(conn, status, body) do
+    conn |> send_resp(status, body)
+  end
+
 end

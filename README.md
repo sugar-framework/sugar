@@ -1,4 +1,4 @@
-# Sugar [![Build Status](https://travis-ci.org/sugar-framework/sugar.png?branch=master)](https://travis-ci.org/sugar-framework/sugar)
+# Sugar [![Build Status](https://travis-ci.org/sugar-framework/sugar.png?branch=develop)](https://travis-ci.org/sugar-framework/sugar)
 
 Web framework for Elixir, built on top of [Plug](https://github.com/elixir-lang/plug)
 

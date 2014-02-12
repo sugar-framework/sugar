@@ -21,7 +21,7 @@ defmodule Web.Mixfile do
     [
       { :mime, github: "dynamo/mime" },
       { :cowboy, github: "extend/cowboy" },
-      { :plug, github: "elixir-lang/plug" },
+      { :plug,  github: "elixir-lang/plug" },
       { :exlager, github: "khia/exlager" },
       { :jsex, github: "talentdeficit/jsex" },
       { :templates, github: "sugar-framework/templates" }
