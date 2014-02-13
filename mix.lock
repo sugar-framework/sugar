@@ -13,5 +13,6 @@
   "mime": {:git, "git://github.com/dynamo/mime.git", "7e56a3dd5692afcd39c9797ae2898c5841967098", []},
   "mimetypes": {:git, "git://github.com/spawngrid/mimetypes.git", "47d37a977a7d633199822bf6b08353007483d00f", [ref: "master"]},
   "plug": {:git, "git://github.com/elixir-lang/plug.git", "be264547dc45d1fce756794ae39df01ed2f53677", []},
+  "plugs": {:git, "git://github.com/sugar-framework/plugs.git", "6e19875482b880f0b963ae588b83f391efea2129", []},
   "ranch": {:git, "git://github.com/extend/ranch.git", "5df1f222f94e08abdcab7084f5e13027143cc222", [ref: "0.9.0"]},
-  "templates": {:git, "git://github.com/sugar-framework/templates.git", "6ebc67bf4efba078aabf561fd64e6d7b81426f2e", []} ]
+  "templates": {:git, "git://github.com/slogsdon/templates.git", "6ebc67bf4efba078aabf561fd64e6d7b81426f2e", []} ]
