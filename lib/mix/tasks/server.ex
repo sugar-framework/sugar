@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Server do
   use Mix.Task
 
-  @shortdoc "Run all Dynamos in a web server"
+  @shortdoc "Runs Sugar and children"
   @recursive true
 
   @moduledoc """
@@ -13,12 +13,11 @@ defmodule Mix.Tasks.Server do
     * `-p`, `--port` - the port to listen to
 
   """
-
   def run(args) do
     opts = OptionParser.parse(args, aliases: [h: :host, p: :port]) |> elem(0)
     Mix.Task.run "app.start", args
 
-    if opts[:port] do
+    if Keyword.has_key? opts, :port do
       opts = Keyword.update!(opts, :port, &binary_to_integer(&1))
     end
 
@@ -29,7 +28,7 @@ defmodule Mix.Tasks.Server do
     end
   end
 
-  def add_config(options) do
+  defp add_config(options) do
     config = Sugar.App.config
 
     if Keyword.has_key? config, :server do

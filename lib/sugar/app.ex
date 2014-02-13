@@ -9,12 +9,18 @@ defmodule Sugar.App do
 
   ## Arguments
 
-    - `opts` - Keyword List - options to pass to Plug/Cowboy
+    - `opts` - `Keyword` - options to pass to Plug/Cowboy
   """
   def run(opts) do
     Lager.info "Starting Sugar on port #{get_port(opts)}..."
 
-    Plug.Adapters.Cowboy.http Router, [], opts
+    if Keyword.has_key?(Sugar.App.config, :router) do
+      router = Sugar.App.config[:router]
+    else
+      router = Router
+    end
+
+    Plug.Adapters.Cowboy.http router, [], opts
   end
   
   @doc """
@@ -46,16 +52,16 @@ defmodule Sugar.App do
   ## Helpers
 
   @doc """
-  `get_port/1` grabs the application's running port number or `4000`
-  when `opts` doesn't contain the `:port` keyword.
+  Grabs the application's running port number or `4000` when 
+  `opts` doesn't contain the `:port` keyword.
 
   ## Arguments
 
-    - `opts` - Keyword List - connection instance
+    - `opts` - `Keyword` - options
 
   ## Returns
 
-    - `port` - Integer
+    - `port` - `Integer`
   """
   def get_port(opts) do
     case opts[:port] do
@@ -65,53 +71,19 @@ defmodule Sugar.App do
     end
   end
 
+  @doc """
+  Loads userland configuration if available.
+
+  ## Returns
+
+  - `Keyword`
+  """
   def config do
     config = Keyword.new
     if loaded? Config do
       config = apply(Config, :config, [])
     end
     config
-  end
-
-  def log(:debug, message) do
-    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
-      Lager.debug message
-    end
-  end
-  def log(:info, message) do
-    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
-      Lager.info message
-    end
-  end
-  def log(:notice, message) do
-    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
-      Lager.notice message
-    end
-  end
-  def log(:warning, message) do
-    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
-      Lager.warning message
-    end
-  end
-  def log(:error, message) do
-    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
-      Lager.error message
-    end
-  end
-  def log(:critical, message) do
-    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
-      Lager.critical message
-    end
-  end
-  def log(:alert, message) do
-    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
-      Lager.alert message
-    end
-  end
-  def log(:emergency, message) do
-    if Keyword.has_key?(Sugar.App.config, :log) && Sugar.App.config[:log] do
-      Lager.emergency message
-    end
   end
 
   defp loaded?(module) do

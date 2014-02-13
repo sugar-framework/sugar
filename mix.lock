@@ -1,5 +1,8 @@
-[ "cowboy": {:git, "git://github.com/extend/cowboy.git", "b09f3a570d702be7a55c36e5f5b4b63b26198637", []},
+[ "calliope": {:git, "git://github.com/nurugger07/calliope.git", "217513ba56817369fd2edb7b01b856454b3695ef", []},
+  "cowboy": {:git, "git://github.com/extend/cowboy.git", "b09f3a570d702be7a55c36e5f5b4b63b26198637", []},
   "cowlib": {:git, "git://github.com/extend/cowlib.git", "63298e8e160031a70efff86a1acde7e7db1fcda6", [ref: "0.4.0"]},
+  "erlydtl": {:git, "git://github.com/erlydtl/erlydtl.git", "dd186c63cb0485281fb28ce7bd133e4301fc6018", []},
+  "ex_doc": {:git, "git://github.com/elixir-lang/ex_doc.git", "e6386d3f81a9d46bbd9b6f3e4f7c5f1273f465f1", []},
   "exlager": {:git, "git://github.com/khia/exlager.git", "779a75350c6bf6a30b779f6d63e2d50a94c4d9a1", []},
   "goldrush": {:git, "git://github.com/DeadZen/goldrush.git", "71e63212f12c25827e0c1b4198d37d5d018a7fec", [tag: "0.1.6"]},
   "hackney": {:git, "git://github.com/benoitc/hackney.git", "7f2a0b5996313d930277786e7ff5d538e9346547", [tag: "0.10.1"]},
@@ -9,5 +12,6 @@
   "lager": {:git, "https://github.com/basho/lager.git", "73a120788d1bdd5f82c4bbcb4875afa84638a75c", []},
   "mime": {:git, "git://github.com/dynamo/mime.git", "7e56a3dd5692afcd39c9797ae2898c5841967098", []},
   "mimetypes": {:git, "git://github.com/spawngrid/mimetypes.git", "47d37a977a7d633199822bf6b08353007483d00f", [ref: "master"]},
-  "plug": {:git, "git://github.com/elixir-lang/plug.git", "c86ee91fd8316da6f4ef2a7ab9f471b93a80857b", []},
-  "ranch": {:git, "git://github.com/extend/ranch.git", "5df1f222f94e08abdcab7084f5e13027143cc222", [ref: "0.9.0"]} ]
+  "plug": {:git, "git://github.com/elixir-lang/plug.git", "be264547dc45d1fce756794ae39df01ed2f53677", []},
+  "ranch": {:git, "git://github.com/extend/ranch.git", "5df1f222f94e08abdcab7084f5e13027143cc222", [ref: "0.9.0"]},
+  "templates": {:git, "git://github.com/sugar-framework/templates.git", "6ebc67bf4efba078aabf561fd64e6d7b81426f2e", []} ]

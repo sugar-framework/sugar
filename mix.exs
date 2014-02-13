@@ -3,8 +3,8 @@ defmodule Web.Mixfile do
 
   def project do
     [ app: :sugar,
-      elixir: "~> 0.12.3",
-      version: "0.1.0",
+      elixir: "~> 0.12.4-dev",
+      version: "0.2.0",
       name: "Sugar",
       source_url: "https://github.com/sugar-framework/sugar",
       deps: deps(Mix.env) ]
@@ -12,7 +12,7 @@ defmodule Web.Mixfile do
 
   def application do
     [
-      applications: [:cowboy, :plug, :exlager],
+      applications: [:cowboy, :plug],
       mod: { Sugar.App, [] }
     ]
   end
@@ -21,9 +21,10 @@ defmodule Web.Mixfile do
     [
       { :mime, github: "dynamo/mime" },
       { :cowboy, github: "extend/cowboy" },
-      { :plug, github: "elixir-lang/plug" },
-      { :exlager, github: "khia/exlager" },
-      { :jsex, github: "talentdeficit/jsex" }
+      { :plug,  github: "elixir-lang/plug" },
+      { :plugs, path: "../plugs" },
+      { :jsex, github: "talentdeficit/jsex" },
+      { :templates, github: "slogsdon/templates" }
     ]
   end
 
