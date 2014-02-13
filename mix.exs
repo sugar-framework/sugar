@@ -22,7 +22,7 @@ defmodule Web.Mixfile do
       { :mime, github: "dynamo/mime" },
       { :cowboy, github: "extend/cowboy" },
       { :plug,  github: "elixir-lang/plug" },
-      { :plugs, path: "../plugs" },
+      { :plugs, path: "sugar-framework/plugs" },
       { :jsex, github: "talentdeficit/jsex" },
       { :templates, github: "slogsdon/templates" }
     ]
