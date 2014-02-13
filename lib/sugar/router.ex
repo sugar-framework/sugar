@@ -37,6 +37,7 @@ defmodule Sugar.Router do
       use Plug.Router
       @before_compile unquote(__MODULE__)
 
+      plug Plugs.HotCodeReload
       plug Plugs.StaticFiles, url: "/static", path: "priv/static"
       plug :match
       plug :dispatch
