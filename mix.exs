@@ -12,7 +12,7 @@ defmodule Web.Mixfile do
 
   def application do
     [
-      applications: [:cowboy, :plug, :exlager],
+      applications: [:cowboy, :plug],
       mod: { Sugar.App, [] }
     ]
   end
@@ -22,8 +22,7 @@ defmodule Web.Mixfile do
       { :mime, github: "dynamo/mime" },
       { :cowboy, github: "extend/cowboy" },
       { :plug,  github: "elixir-lang/plug" },
-      { :plugs, github: "sugar-framework/plugs" },
-      { :exlager, github: "khia/exlager" },
+      { :plugs, path: "../plugs" },
       { :jsex, github: "talentdeficit/jsex" },
       { :templates, github: "slogsdon/templates" }
     ]
