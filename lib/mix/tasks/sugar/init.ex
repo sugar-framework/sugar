@@ -21,15 +21,24 @@ defmodule Mix.Tasks.Sugar.Init do
       module: name
     ]
 
+    # Support files
+    Mix.Tasks.Sugar.Gen.Config.run_detached assigns
+    Mix.Tasks.Sugar.Gen.Router.run_detached assigns
+
+    # Controllers
     create_directory "lib/#{underscore name}/controllers"
+    Mix.Tasks.Sugar.Gen.Controller.run_detached(assigns ++ [name: "main"])
+    
+    # Models
     create_directory "lib/#{underscore name}/models"
+    
+    # Views
     create_directory "lib/#{underscore name}/views"
+    Mix.Tasks.Sugar.Gen.View.run_detached(assigns ++ [name: "main/index"])
+    
+    # Priviliged
     create_directory "priv"
     create_directory "priv/static"
 
-    Mix.Tasks.Sugar.Gen.Config.run_detached assigns
-    Mix.Tasks.Sugar.Gen.Router.run_detached assigns
-    Mix.Tasks.Sugar.Gen.Controller.run_detached(assigns ++ [name: "main"])
-    Mix.Tasks.Sugar.Gen.View.run_detached(assigns ++ [name: "main/index"])
   end
 end
