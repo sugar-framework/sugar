@@ -32,7 +32,7 @@ defmodule Mix.Tasks.Sugar.Gen.View do
       name: name
     ]
 
-    create_file "lib/#{underscore module}/views/#{underscore module}/#{underscore name}.html.eex", view_template(assigns)
+    create_file "lib/#{underscore module}/views/#{underscore name}.html.eex", view_template(assigns)
   end
 
   embed_template :view, ~S"""
