@@ -14,7 +14,7 @@ defmodule Sugar.App do
   def run(opts) do
     Lager.info "Starting Sugar on port #{get_port(opts)}..."
 
-    if Keyword.has_key?(Sugar.App.config, :router) do
+    if Keyword.has_key? Sugar.App.config, :router do
       router = Sugar.App.config[:router]
     else
       router = Router
@@ -46,6 +46,7 @@ defmodule Sugar.App do
   Callback for `stop/1`.
   """
   def stop(_state) do
+    :ets.delete(:_plugs_session)
     :ok
   end
 
