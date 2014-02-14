@@ -1,6 +1,6 @@
 # Sugar [![Build Status](https://travis-ci.org/sugar-framework/sugar.png?branch=develop)](https://travis-ci.org/sugar-framework/sugar)
 
-Web framework for Elixir, built on top of [Plug](https://github.com/elixir-lang/plug)
+Modular web framework for Elixir
 
 ## Goals
 
@@ -81,7 +81,7 @@ end
 
 ### Routers
 
-Because Sugar builds upon Plug, it leverages `Plug.Router` to do the heavy lifting in routing your application, adding an alternate DSL.
+Because Sugar builds upon [Plug](https://github.com/elixir-lang/plug), it leverages `Plug.Router` to do the heavy lifting in routing your application, adding an alternate DSL.
 
 Routes are defined with the form:
 
