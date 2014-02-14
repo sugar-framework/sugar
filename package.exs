@@ -1,8 +1,9 @@
 Expm.Package.new(
   name: "sugar", 
-  description: "Web framework for Elixir, built on top of Plug",
+  description: "Modular web framework for Elixir",
   homepage: "http://sugar-framework.github.io/",
-  version: "0.2.0", 
+  version: "0.3.0-dev", 
+  dependencies: ["plugs", "templates"],
   keywords: ["web", "framework", "plug"], 
   licenses: [[name: "MIT"]],
   maintainers: [[name: "Shane Logsdon", 
