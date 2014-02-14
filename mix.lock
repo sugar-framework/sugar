@@ -1,6 +1,6 @@
 [ "calliope": {:git, "git://github.com/nurugger07/calliope.git", "217513ba56817369fd2edb7b01b856454b3695ef", []},
-  "cowboy": {:git, "git://github.com/extend/cowboy.git", "b09f3a570d702be7a55c36e5f5b4b63b26198637", []},
-  "cowlib": {:git, "git://github.com/extend/cowlib.git", "63298e8e160031a70efff86a1acde7e7db1fcda6", [ref: "0.4.0"]},
+  "cowboy": {:git, "git://github.com/extend/cowboy.git", "903594bb8709db4fa98697ecf8adbdccabf64a83", []},
+  "cowlib": {:git, "git://github.com/extend/cowlib.git", "2e0fc55f71bfeb543fd2218abed85890ff1e3e82", [ref: "0.5.0"]},
   "erlydtl": {:git, "git://github.com/erlydtl/erlydtl.git", "dd186c63cb0485281fb28ce7bd133e4301fc6018", []},
   "ex_doc": {:git, "git://github.com/elixir-lang/ex_doc.git", "e6386d3f81a9d46bbd9b6f3e4f7c5f1273f465f1", []},
   "exlager": {:git, "git://github.com/khia/exlager.git", "779a75350c6bf6a30b779f6d63e2d50a94c4d9a1", []},
@@ -9,10 +9,10 @@
   "hackney_lib": {:git, "https://github.com/benoitc/hackney_lib.git", "eecdb481f1d38bfb194896bffdf9bdcdd967ae96", [tag: "0.2.2"]},
   "jsex": {:git, "git://github.com/talentdeficit/jsex.git", "3db1d520e00fb28c3eee4e5b30645d5878037c38", []},
   "jsx": {:git, "git://github.com/talentdeficit/jsx.git", "e50af6e109cb03bd26acf715cbc77de746507d1d", [tag: "v1.4.3"]},
-  "lager": {:git, "https://github.com/basho/lager.git", "73a120788d1bdd5f82c4bbcb4875afa84638a75c", []},
+  "lager": {:git, "https://github.com/basho/lager.git", "b6b6cebcb27ccff8acc59ae775acebc2f52e4926", []},
   "mime": {:git, "git://github.com/dynamo/mime.git", "7e56a3dd5692afcd39c9797ae2898c5841967098", []},
   "mimetypes": {:git, "git://github.com/spawngrid/mimetypes.git", "47d37a977a7d633199822bf6b08353007483d00f", [ref: "master"]},
   "plug": {:git, "git://github.com/elixir-lang/plug.git", "be264547dc45d1fce756794ae39df01ed2f53677", []},
-  "plugs": {:git, "git://github.com/sugar-framework/plugs.git", "6e19875482b880f0b963ae588b83f391efea2129", []},
+  "plugs": {:git, "git://github.com/sugar-framework/plugs.git", "9159823000f5a908ee692356e0b1e1ad463e5e7f", []},
   "ranch": {:git, "git://github.com/extend/ranch.git", "5df1f222f94e08abdcab7084f5e13027143cc222", [ref: "0.9.0"]},
-  "templates": {:git, "git://github.com/slogsdon/templates.git", "6ebc67bf4efba078aabf561fd64e6d7b81426f2e", []} ]
+  "templates": {:git, "git://github.com/slogsdon/templates.git", "7caeafa1c9f7738d0009857265d7520a7a656297", []} ]
