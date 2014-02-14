@@ -39,6 +39,8 @@ defmodule Sugar.Router do
 
       plug Plugs.HotCodeReload
       plug Plugs.StaticFiles, url: "/static", path: "priv/static"
+      plug Plugs.Session, name: "_sugar_session", adapter: Plugs.Session.Adapters.Ets
+
       plug :match
       plug :dispatch
     end
