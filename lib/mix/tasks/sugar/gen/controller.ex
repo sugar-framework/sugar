@@ -40,7 +40,7 @@ defmodule Mix.Tasks.Sugar.Gen.Controller do
     use Sugar.Controller
 
     def index(conn, []) do
-      text conn, "Hello world"
+      raw conn |> resp(200, "Hello world")
     end
   end
   """

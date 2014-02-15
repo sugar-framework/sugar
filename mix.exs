@@ -7,6 +7,7 @@ defmodule Web.Mixfile do
       version: "0.3.0-dev",
       name: "Sugar",
       source_url: "https://github.com/sugar-framework/sugar",
+      homepage_url: "http://sugar-framework.github.io/",
       deps: deps(Mix.env) ]
   end
 

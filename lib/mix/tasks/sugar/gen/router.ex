@@ -36,7 +36,7 @@ defmodule Mix.Tasks.Sugar.Gen.Router do
     # plug Plugs.Logger
 
     # Define your routes here
-    get "/", Main, :index
+    get "/", <%= @module %>.Controllers.Main, :index
   end
   """
 end
