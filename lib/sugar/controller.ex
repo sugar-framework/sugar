@@ -47,6 +47,7 @@ defmodule Sugar.Controller do
   defmacro __using__(_) do
     quote do
       import unquote(__MODULE__)
+      import unquote(Plug.Connection)
     end
   end
 
