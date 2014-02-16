@@ -32,7 +32,9 @@ defmodule Mix.Tasks.Sugar.Gen.Router do
   defmodule Router do
     use Sugar.Router
 
-    # Uncomment the following line for request logging
+    # Uncomment the following line for request logging,
+    # and add 'applications: [:exlager],' to the application
+    # Keyword list in your mix.exs
     # plug Plugs.Logger
 
     # Define your routes here
