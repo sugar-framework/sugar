@@ -20,6 +20,10 @@ defmodule Mix.Tasks.Sugar.Init do
       app: Mix.project[:app], 
       module: name
     ]
+    
+    # Priviliged
+    create_directory "priv"
+    create_directory "priv/static"
 
     # Support files
     Mix.Tasks.Sugar.Gen.Config.run_detached assigns
@@ -30,15 +34,13 @@ defmodule Mix.Tasks.Sugar.Init do
     Mix.Tasks.Sugar.Gen.Controller.run_detached(assigns ++ [name: "main"])
     
     # Models
+    Mix.Tasks.Ecto.Gen.Repo.run ["#{name}.Repos.Main"]
+    create_directory "priv/main"
     create_directory "lib/#{underscore name}/models"
     
     # Views
     create_directory "lib/#{underscore name}/views"
     Mix.Tasks.Sugar.Gen.View.run_detached(assigns ++ [name: "main/index"])
-    
-    # Priviliged
-    create_directory "priv"
-    create_directory "priv/static"
 
   end
 end

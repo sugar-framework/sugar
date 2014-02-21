@@ -25,7 +25,9 @@ defmodule Web.Mixfile do
       { :plug,  github: "elixir-lang/plug" },
       { :plugs, github: "sugar-framework/plugs" },
       { :jsex, github: "talentdeficit/jsex" },
-      { :templates, github: "slogsdon/templates" }
+      { :templates, github: "sugar-framework/templates" },
+      { :postgrex, github: "ericmj/postgrex" },
+      { :ecto, github: "elixir-lang/ecto" }
     ]
   end
 

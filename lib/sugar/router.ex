@@ -38,6 +38,7 @@ defmodule Sugar.Router do
       @before_compile unquote(__MODULE__)
 
       plug Plugs.HotCodeReload
+      plug Plug.Parsers, parsers: [:urlencoded, :multipart]
       plug Plugs.StaticFiles, url: "/static", path: "priv/static"
       plug Plugs.Session, name: "_sugar_session", adapter: Plugs.Session.Adapters.Ets
 
