@@ -37,6 +37,7 @@ defmodule Mix.Tasks.Sugar.Init do
     Mix.Tasks.Ecto.Gen.Repo.run ["#{name}.Repos.Main"]
     create_directory "priv/main"
     create_directory "lib/#{underscore name}/models"
+    create_directory "lib/#{underscore name}/queries"
     
     # Views
     create_directory "lib/#{underscore name}/views"
