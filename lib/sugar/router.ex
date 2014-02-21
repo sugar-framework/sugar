@@ -30,18 +30,22 @@ defmodule Sugar.Router do
   @doc """
   Macro used to add necessary items to a router.
   """
-  defmacro __using__(_) do
+  defmacro __using__(opts) do
     quote do
       import unquote(__MODULE__)
       import Plug.Connection
       use Plug.Router
       @before_compile unquote(__MODULE__)
 
-      plug Plugs.HotCodeReload
       plug Plug.Parsers, parsers: [:urlencoded, :multipart]
-      plug Plugs.StaticFiles, url: "/static", path: "priv/static"
-      plug Plugs.Session, name: "_sugar_session", adapter: Plugs.Session.Adapters.Ets
 
+      opts = unquote(opts)
+      if opts[:plugs] do
+        Enum.map opts[:plugs], fn({plug_module, plug_opts}) ->
+          plug plug_module, plug_opts
+        end
+      end
+      
       plug :match
       plug :dispatch
     end
