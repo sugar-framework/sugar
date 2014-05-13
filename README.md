@@ -26,7 +26,7 @@ mix deps.get
 mix server # or `iex -S mix server` if you want access to iex
 ```
 
-Want to use the latest and greatest in Sugar develop? 
+Want to use the latest and greatest in Sugar develop?
 
 ```
 # Clone this repo
@@ -124,7 +124,7 @@ defmodule Hello do
   def show(conn, args) do
     render conn, "showing page #{args[:id]}"
   end
-  
+
   def create(conn, []) do
     render conn, "page created"
   end
@@ -145,11 +145,8 @@ The following milestones are tentative. Any changes will be reflected here as it
 - Mimetypes in responses
 - Userland Configuration
 
-### v0.2.0
+### [v0.2.0](https://github.com/sugar-framework/sugar/tree/v0.2.0) - complete
 
-- Session adapters
-    - Cookie
-    - ETS
 - Resource routing
 - Return helpers
     - JSON
@@ -166,7 +163,7 @@ The following milestones are tentative. Any changes will be reflected here as it
     - Compiled HTML
     - Application Data
     - Adapters
-        - ETS 
+        - ETS
 
 ## Who's behind this?
 
