@@ -3,45 +3,48 @@ defmodule Web.Mixfile do
 
   def project do
     [ app: :sugar,
-      elixir: "~> 0.12.4-dev",
+      elixir: "~> 0.13.2",
       version: "0.3.0-dev",
       name: "Sugar",
-      source_url: "https://github.com/sugar-framework/sugar",
-      homepage_url: "http://sugar-framework.github.io/",
-      deps: deps(Mix.env) ]
+      deps: deps(Mix.env),
+      package: package,
+      description: description,
+      docs: [readme: true, main: "README"] ]
   end
 
   def application do
-    [
-      applications: [:cowboy, :plug],
-      mod: { Sugar.App, [] }
-    ]
+    [ applications: [:cowboy, :plug],
+      mod: { Sugar.App, [] } ]
   end
 
   defp deps(:prod) do
-    [
-      { :mime, github: "dynamo/mime" },
-      { :cowboy, github: "extend/cowboy" },
-      { :plug,  github: "elixir-lang/plug" },
-      { :plugs, github: "sugar-framework/plugs" },
-      { :jsex, github: "talentdeficit/jsex" },
-      { :templates, github: "sugar-framework/templates" },
-      { :postgrex, github: "ericmj/postgrex" },
-      { :ecto, github: "elixir-lang/ecto" }
-    ]
+    [ { :cowboy, "~> 0.9", github: "extend/cowboy" },
+      { :plug, "0.4.3" },
+      { :jsex, "2.0.0" },
+      { :ecto, "0.1.0" },
+      { :postgrex, "0.5.0" } ]
   end
 
   defp deps(:docs) do
     deps(:prod) ++
-      [ 
-        { :ex_doc, github: "elixir-lang/ex_doc" } 
-      ]
+      [ { :ex_doc, github: "elixir-lang/ex_doc" } ]
   end
 
   defp deps(_) do
     deps(:prod) ++
-      [ 
-        { :hackney, github: "benoitc/hackney", tag: "0.10.1" } 
-      ]
+      [ { :hackney, github: "benoitc/hackney" } ]
+  end
+
+  defp description do
+    """
+    Modular web framework
+    """
+  end
+
+  defp package do
+    %{contributors: ["Shane Logsdon"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/sugar-framework/sugar",
+               "Docs" => "http://sugar-framework.github.io/docs/"}}
   end
 end

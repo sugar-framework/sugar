@@ -1,6 +1,5 @@
-defmodule Sugar.App do  
+defmodule Sugar.App do
   use Application.Behaviour
-  require Lager
 
   ## API
 
@@ -12,7 +11,7 @@ defmodule Sugar.App do
     - `opts` - `Keyword` - options to pass to Plug/Cowboy
   """
   def run(opts) do
-    Lager.info "Starting Sugar on port #{get_port(opts)}..."
+    IO.puts "Starting Sugar on port #{get_port(opts)}..."
 
     if Keyword.has_key? Sugar.App.config, :router do
       router = Sugar.App.config[:router]
@@ -22,7 +21,7 @@ defmodule Sugar.App do
 
     Plug.Adapters.Cowboy.http router, [], opts
   end
-  
+
   @doc """
   Starts the application, checking if it's already been started.
   """
@@ -53,7 +52,7 @@ defmodule Sugar.App do
   ## Helpers
 
   @doc """
-  Grabs the application's running port number or `4000` when 
+  Grabs the application's running port number or `4000` when
   `opts` doesn't contain the `:port` keyword.
 
   ## Arguments
@@ -67,7 +66,7 @@ defmodule Sugar.App do
   def get_port(opts) do
     case opts[:port] do
       nil -> 4000
-      _ -> 
+      _ ->
         abs(opts[:port])
     end
   end
