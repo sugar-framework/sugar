@@ -1,12 +1,12 @@
 defmodule Sugar.Controller do
-  import Plug.Connection
+  import Plug.Conn
   @moduledoc """
-  All controller actions should have an arrity of 2, with the 
-  first argument being a `Plug.Conn` representing the current 
-  connection and the second argument being a `Keyword` list 
+  All controller actions should have an arrity of 2, with the
+  first argument being a `Plug.Conn` representing the current
+  connection and the second argument being a `Keyword` list
   of any parameters captured in the route path.
 
-  Sugar bundles these response helpers to assist in sending a 
+  Sugar bundles these response helpers to assist in sending a
   response:
 
   - `render/2` - `conn`, `template` - sends a normal response.
@@ -30,7 +30,7 @@ defmodule Sugar.Controller do
         def show(conn, args) do
           render conn, "showing page \#{args[:id]}"
         end
-        
+
         def create(conn, []) do
           render conn, "page created"
         end
@@ -47,7 +47,7 @@ defmodule Sugar.Controller do
   defmacro __using__(_) do
     quote do
       import unquote(__MODULE__)
-      import unquote(Plug.Connection)
+      import unquote(Plug.Conn)
     end
   end
 
@@ -65,13 +65,13 @@ defmodule Sugar.Controller do
   """
   def json(conn, data) do
     conn
-      |> put_resp_content_type(MIME.Types.type("json"))
+      |> put_resp_content_type("application/json; charset=utf-8")
       |> send_resp_if_not_sent(200, JSEX.encode! data)
   end
 
   @doc """
-  Sends response as-is. It is expected that status codes, 
-  headers, body, etc have been set by the controller 
+  Sends response as-is. It is expected that status codes,
+  headers, body, etc have been set by the controller
   action.
 
   ## Arguments
@@ -102,8 +102,8 @@ defmodule Sugar.Controller do
   def render(conn, template, opts \\ []) do
     opts = [status: 200] |> Keyword.merge opts
 
-    conn 
-      |> put_resp_content_type(opts[:content_type] || MIME.Types.type("html")) 
+    conn
+      |> put_resp_content_type(opts[:content_type] || "text/html; charset=utf-8")
       |> send_resp_if_not_sent(opts[:status], template)
   end
 
@@ -121,7 +121,7 @@ defmodule Sugar.Controller do
   """
   def halt!(conn, opts \\ []) do
     opts = [status: 401, message: ""] |> Keyword.merge opts
-    conn 
+    conn
       |> send_resp_if_not_sent(opts[:status], opts[:message])
   end
 
@@ -137,7 +137,7 @@ defmodule Sugar.Controller do
   `Tuple` - `{:ok, sent_response}`
   """
   def not_found(conn, message \\ "Not Found") do
-    conn 
+    conn
       |> send_resp_if_not_sent(404, message)
   end
 
@@ -174,12 +174,12 @@ defmodule Sugar.Controller do
   """
   def redirect(conn, location, opts \\ []) do
     opts = [status: 302] |> Keyword.merge opts
-    conn 
-      |> put_resp_header("Location", location) 
+    conn
+      |> put_resp_header("Location", location)
       |> send_resp_if_not_sent(opts[:status], "")
   end
 
-  defp send_resp_if_not_sent(Plug.Conn[state: :sent] = conn, _, _) do
+  defp send_resp_if_not_sent(%Plug.Conn{state: :sent} = conn, _, _) do
     conn
   end
   defp send_resp_if_not_sent(conn, status, body) do

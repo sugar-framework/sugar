@@ -1,16 +1,16 @@
 defmodule Sugar.Router do
   @moduledoc """
-  `Sugar.Router` defines an alternate format for `Plug.Router` 
+  `Sugar.Router` defines an alternate format for `Plug.Router`
   routing. Supports all HTTP methods that `Plug.Router` supports.
 
   Routes are defined with the form:
 
       method route [guard], controller, action
 
-  `method` is `get`, `post`, `put`, `patch`, `delete`, or `options`, 
-  each responsible for a single HTTP method. `method` can also be 
-  `any`, which will match on all HTTP methods. `controller` is any 
-  valid Elixir module name, and `action` is any valid function 
+  `method` is `get`, `post`, `put`, `patch`, `delete`, or `options`,
+  each responsible for a single HTTP method. `method` can also be
+  `any`, which will match on all HTTP methods. `controller` is any
+  valid Elixir module name, and `action` is any valid function
   defined in the `controller` module.
 
   ## Example
@@ -26,14 +26,14 @@ defmodule Sugar.Router do
   """
 
   ## Macros
-  
+
   @doc """
   Macro used to add necessary items to a router.
   """
   defmacro __using__(opts) do
     quote do
       import unquote(__MODULE__)
-      import Plug.Connection
+      import Plug.Conn
       use Plug.Router
       @before_compile unquote(__MODULE__)
 
@@ -45,7 +45,7 @@ defmodule Sugar.Router do
           plug plug_module, plug_opts
         end
       end
-      
+
       plug :match
       plug :dispatch
     end
@@ -61,7 +61,7 @@ defmodule Sugar.Router do
         Sugar.Controller.not_found conn
       end
 
-      defp call_controller_action(Plug.Conn[state: :unset] = conn, controller, action, binding) do
+      defp call_controller_action(%Plug.Conn{state: :unset} = conn, controller, action, binding) do
         apply controller, action, [conn, Keyword.delete(binding, :conn)]
       end
       defp call_controller_action(conn, _, _, _) do
@@ -252,12 +252,12 @@ defmodule Sugar.Router do
   end
 
   defp build_match(controller, action) do
-    quote do 
+    quote do
       binding = binding()
       conn = var!(conn)
 
       # only continue if we receive :ok from middleware
-      # {:ok, conn} = apply_middleware 
+      # {:ok, conn} = apply_middleware
 
       # pass off to controller action
       call_controller_action conn, unquote(controller), unquote(action), binding
