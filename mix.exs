@@ -9,7 +9,8 @@ defmodule Web.Mixfile do
       deps: deps(Mix.env),
       package: package,
       description: description,
-      docs: [readme: true, main: "README"] ]
+      docs: [readme: true, main: "README"],
+      test_coverage: [tool: ExCoveralls] ]
   end
 
   def application do
@@ -22,7 +23,8 @@ defmodule Web.Mixfile do
       { :plug, "0.4.3" },
       { :jsex, "2.0.0" },
       { :ecto, "0.1.0" },
-      { :postgrex, "0.5.0" } ]
+      { :postgrex, "0.5.0" },
+      { :plugs, "~> 0.0.2-dev", github: "sugar-framework/plugs" } ]
   end
 
   defp deps(:docs) do
@@ -32,7 +34,8 @@ defmodule Web.Mixfile do
 
   defp deps(_) do
     deps(:prod) ++
-      [ { :hackney, github: "benoitc/hackney" } ]
+      [ { :hackney, github: "benoitc/hackney" },
+        { :excoveralls, "0.2.0" } ]
   end
 
   defp description do
