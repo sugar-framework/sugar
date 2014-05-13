@@ -1,4 +1,5 @@
-language: erlangotp_release:
+language: erlang
+otp_release:
   - 17.0
 before_install:
   - git clone https://github.com/elixir-lang/elixir
