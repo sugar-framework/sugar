@@ -23,7 +23,8 @@ defmodule Mix.Tasks.Server do
 
     Sugar.App.run add_config(opts)
 
-    unless Code.ensure_loaded?(IEx) && IEx.started? do
+    # TODO: is there a better way than `Code.ensure_loaded?(Mix.Tasks.ServerTest)`?
+    unless (Code.ensure_loaded?(IEx) && IEx.started?) || Code.ensure_loaded?(Mix.Tasks.ServerTest) do
       :timer.sleep(:infinity)
     end
   end
@@ -34,7 +35,7 @@ defmodule Mix.Tasks.Server do
     if Keyword.has_key? config, :server do
       Keyword.merge config[:server], options
     else
-      []
+      options
     end
   end
 end
