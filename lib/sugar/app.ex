@@ -45,7 +45,6 @@ defmodule Sugar.App do
   Callback for `stop/1`.
   """
   def stop(_state) do
-    :ets.delete(:_plugs_session)
     :ok
   end
 
