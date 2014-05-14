@@ -131,30 +131,10 @@ defmodule Hello do
 end
 ```
 
-## Roadmap
+## Todo Items
 
-The following milestones are tentative. Any changes will be reflected here as items are added/moved/removed depending on the needs of the project.
-
-### [v0.1.0](https://github.com/sugar-framework/sugar/tree/v0.1.0) - complete
-
-- Integrate Plug
-- Routing
-    - Basic routing
-    - Ensure guards are passed to `Plug.Router`
-- Basic responses
-- Mimetypes in responses
-- Userland Configuration
-
-### [v0.2.0](https://github.com/sugar-framework/sugar/tree/v0.2.0) - complete
-
-- Resource routing
-- Return helpers
-    - JSON
-    - Raw
-    - Default 404
-
-### v0.3.0
-
+- request before/after hooks
+- basic authentication
 - Templating
     - EEx
     - [ErlyDTL](https://github.com/erlydtl/erlydtl)
@@ -171,7 +151,7 @@ Why, the [contributors](https://github.com/sugar-framework/sugar/graphs/contribu
 
 ## How to start contributing
 
-The main product of this repository is the example terms in the file [CONTRIBUTING.md](https://github.com/sugar-framework/sugar/blob/master/CONTRIBUTING>md). This project uses those guidelines as the basis for its own development process. Please refer to that file.
+The main product of this repository is the example terms in the file [CONTRIBUTING.md](https://github.com/sugar-framework/sugar/blob/master/CONTRIBUTING.md). This project uses those guidelines as the basis for its own development process. Please refer to that file.
 
 ## License
 
