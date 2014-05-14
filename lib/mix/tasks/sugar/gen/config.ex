@@ -7,6 +7,12 @@ defmodule Mix.Tasks.Sugar.Gen.Config do
   @recursive true
 
   @moduledoc """
+  Creates Sugar config files.
+
+  ## Command line options
+
+    * `--path` - override the project path. Defaults to `lib/[app name]`
+
   """
   def run(args) do
     opts = OptionParser.parse(args)
@@ -31,14 +37,14 @@ defmodule Mix.Tasks.Sugar.Gen.Config do
 
   embed_template :config, ~S"""
   defmodule Config do
-  def config do
-    [
-      log: false,
-      server: [
-        port: 4000
+    def config do
+      [
+        log: false,
+        server: [
+          port: 4000
+        ]
       ]
-    ]
+    end
   end
-end
   """
 end

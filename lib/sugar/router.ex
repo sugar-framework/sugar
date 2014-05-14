@@ -256,9 +256,6 @@ defmodule Sugar.Router do
       binding = binding()
       conn = var!(conn)
 
-      # only continue if we receive :ok from middleware
-      # {:ok, conn} = apply_middleware
-
       # pass off to controller action
       call_controller_action conn, unquote(controller), unquote(action), binding
     end

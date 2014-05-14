@@ -7,6 +7,12 @@ defmodule Mix.Tasks.Sugar.Gen.Model do
   @recursive true
 
   @moduledoc """
+  Creates Sugar model files.
+
+  ## Command line options
+
+    * `--path` - override the project path. Defaults to `lib/[app name]`
+
   """
   def run(args) do
     opts = OptionParser.parse(args)

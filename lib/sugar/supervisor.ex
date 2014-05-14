@@ -17,15 +17,9 @@ defmodule Sugar.Supervisor do
   registered childred.
   """
   def init(opts) do
-    children = [
-      # Define workers and child supervisors to be supervised
-      # worker(Sugar.Worker, [])
-    ]
-
+    children = []
     opts = Keyword.put opts, :strategy, :one_for_one
 
-    # See http://elixir-lang.org/docs/stable/Supervisor.Behaviour.html
-    # for other strategies and supported options
     supervise(children, opts)
   end
 end

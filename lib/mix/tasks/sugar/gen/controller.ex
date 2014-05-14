@@ -7,6 +7,12 @@ defmodule Mix.Tasks.Sugar.Gen.Controller do
   @recursive true
 
   @moduledoc """
+  Creates Sugar controller files.
+
+  ## Command line options
+
+    * `--path` - override the project path. Defaults to `lib/[app name]`
+
   """
   def run(args) do
     opts = OptionParser.parse(args)

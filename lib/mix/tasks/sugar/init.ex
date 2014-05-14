@@ -7,6 +7,14 @@ defmodule Mix.Tasks.Sugar.Init do
   @recursive true
 
   @moduledoc """
+  Creates Sugar support files for new projects after adding Sugar as a
+  project dependency.
+
+  ## Command line options
+
+    * `--path` - override the project path. Defaults to `lib/[app name]`
+    * `--priv_path` - override the priv path. Defaults to `priv`
+
   """
   def run(args) do
     opts = OptionParser.parse(args)
