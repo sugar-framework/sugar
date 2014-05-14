@@ -65,7 +65,7 @@ defmodule Sugar.Controller do
   """
   def json(conn, data) do
     conn
-      |> put_resp_content_type("application/json; charset=utf-8")
+      |> put_resp_content_type_if_not_sent("application/json")
       |> send_resp_if_not_sent(200, JSEX.encode! data)
   end
 
@@ -103,7 +103,7 @@ defmodule Sugar.Controller do
     opts = [status: 200] |> Keyword.merge opts
 
     conn
-      |> put_resp_content_type(opts[:content_type] || "text/html; charset=utf-8")
+      |> put_resp_content_type_if_not_sent(opts[:content_type] || "text/html")
       |> send_resp_if_not_sent(opts[:status], template)
   end
 
@@ -175,8 +175,22 @@ defmodule Sugar.Controller do
   def redirect(conn, location, opts \\ []) do
     opts = [status: 302] |> Keyword.merge opts
     conn
-      |> put_resp_header("Location", location)
+      |> put_resp_header_if_not_sent("Location", location)
       |> send_resp_if_not_sent(opts[:status], "")
+  end
+
+  defp put_resp_header_if_not_sent(%Plug.Conn{state: :sent} = conn, _, _) do
+    conn
+  end
+  defp put_resp_header_if_not_sent(conn, key, value) do
+    conn |> put_resp_header(key, value)
+  end
+
+  defp put_resp_content_type_if_not_sent(%Plug.Conn{state: :sent} = conn, _) do
+    conn
+  end
+  defp put_resp_content_type_if_not_sent(conn, resp_content_type) do
+    conn |> put_resp_content_type(resp_content_type)
   end
 
   defp send_resp_if_not_sent(%Plug.Conn{state: :sent} = conn, _, _) do
