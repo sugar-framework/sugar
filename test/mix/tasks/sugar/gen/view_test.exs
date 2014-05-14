@@ -8,19 +8,17 @@ defmodule Mix.Tasks.Sugar.Gen.ViewTest do
       path: "test/fixtures"
     ]
     Mix.Tasks.Sugar.Gen.View.run_detached(assigns ++ [name: "main"])
-    expected_path = "test/fixtures/views/main.html.eex"
 
-    assert File.exists?(expected_path) === true
-    File.rm! expected_path
+    assert File.exists?("test/fixtures/views/main.html.eex") === true
+    File.rm_rf! "test/fixtures/views"
   end
 
   test "run/1 with proper name" do
     args = ["main", "--path=test/fixtures"]
     Mix.Tasks.Sugar.Gen.View.run(args)
-    expected_path = "test/fixtures/views/main.html.eex"
 
-    assert File.exists?(expected_path) === true
-    File.rm! expected_path
+    assert File.exists?("test/fixtures/views/main.html.eex") === true
+    File.rm_rf! "test/fixtures/views"
   end
 
   test "run/1 with no name" do

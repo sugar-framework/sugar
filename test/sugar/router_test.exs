@@ -51,14 +51,16 @@ defmodule Sugar.RouterTest do
     assert conn.status === 200
   end
 
-  test "any/3" do
-    conn = conn(:get, "/any")
+  test "any/3 any" do
+    conn = conn(:any, "/any")
     conn = Sugar.RouterTest.Router.call(conn, [])
 
     assert conn.state === :sent
     assert conn.status === 200
+  end
 
-    conn = conn(:any, "/any")
+  test "any/3 get" do
+    conn = conn(:get, "/any")
     conn = Sugar.RouterTest.Router.call(conn, [])
 
     assert conn.state === :sent

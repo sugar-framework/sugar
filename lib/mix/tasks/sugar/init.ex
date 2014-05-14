@@ -13,35 +13,38 @@ defmodule Mix.Tasks.Sugar.Init do
     do_init elem(opts, 0)
   end
 
-  defp do_init(_opts) do
+  defp do_init(opts) do
     name = camelize atom_to_binary(Mix.project[:app])
 
     assigns = [
-      app: Mix.project[:app], 
-      module: name
-    ]
-    
+      app: Mix.project[:app],
+      module: name,
+      path: "lib/#{underscore name}",
+      priv_path: "priv"
+    ] |> Keyword.merge opts
+
     # Priviliged
-    create_directory "priv"
-    create_directory "priv/static"
+    create_directory "#{assigns[:priv_path]}"
+    create_directory "#{assigns[:priv_path]}/static"
 
     # Support files
     Mix.Tasks.Sugar.Gen.Config.run_detached assigns
     Mix.Tasks.Sugar.Gen.Router.run_detached assigns
 
     # Controllers
-    create_directory "lib/#{underscore name}/controllers"
+    create_directory "#{assigns[:path]}/controllers"
     Mix.Tasks.Sugar.Gen.Controller.run_detached(assigns ++ [name: "main"])
-    
-    # Models
-    Mix.Tasks.Ecto.Gen.Repo.run ["#{name}.Repos.Main"]
-    create_directory "priv/main"
-    create_directory "lib/#{underscore name}/models"
-    create_directory "lib/#{underscore name}/queries"
-    
-    # Views
-    create_directory "lib/#{underscore name}/views"
-    Mix.Tasks.Sugar.Gen.View.run_detached(assigns ++ [name: "main/index"])
 
+    # Models
+    unless assigns[:no_repo] do
+      Mix.Tasks.Ecto.Gen.Repo.run ["#{underscore assigns[:module]}.Repos.Main"]
+    end
+    create_directory "#{assigns[:priv_path]}/main"
+    create_directory "#{assigns[:path]}/models"
+    create_directory "#{assigns[:path]}/queries"
+
+    # Views
+    create_directory "#{assigns[:path]}/views"
+    Mix.Tasks.Sugar.Gen.View.run_detached(assigns ++ [name: "main/index"])
   end
 end

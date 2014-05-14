@@ -22,19 +22,20 @@ defmodule Mix.Tasks.Sugar.Gen.Model do
     do_create_files assigns[:name], assigns
   end
 
-  defp do_create_files(name, _opts) do
+  defp do_create_files(name, opts) do
     module = camelize atom_to_binary(Mix.project[:app])
 
     assigns = [
-      app: Mix.project[:app], 
+      app: Mix.project[:app],
       module: module,
       name: camelize(name),
-      table_name: name
-    ]
+      table_name: name,
+      path: "lib/#{underscore module}"
+    ] |> Keyword.merge opts
 
-    Mix.Tasks.Ecto.Gen.Migration.run ["#{module}.Repos.Main", "create_#{name}"]
-    create_file "lib/#{underscore module}/models/#{underscore name}.ex", model_template(assigns)
-    create_file "lib/#{underscore module}/queries/#{underscore name}.ex", query_template(assigns)
+    Mix.Tasks.Ecto.Gen.Migration.run ["#{assigns[:module]}.Repos.Main", "create_#{name}"]
+    create_file "#{assigns[:path]}/models/#{underscore name}.ex", model_template(assigns)
+    create_file "#{assigns[:path]}/queries/#{underscore name}.ex", query_template(assigns)
   end
 
   embed_template :model, ~S"""

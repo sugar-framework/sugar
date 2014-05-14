@@ -8,19 +8,17 @@ defmodule Mix.Tasks.Sugar.Gen.ControllerTest do
       path: "test/fixtures"
     ]
     Mix.Tasks.Sugar.Gen.Controller.run_detached(assigns ++ [name: "main"])
-    expected_path = "test/fixtures/controllers/main.ex"
 
-    assert File.exists?(expected_path) === true
-    File.rm! expected_path
+    assert File.exists?("test/fixtures/controllers/main.ex") === true
+    File.rm_rf! "test/fixtures/controllers"
   end
 
   test "run/1 with proper name" do
     args = ["main", "--path=test/fixtures"]
     Mix.Tasks.Sugar.Gen.Controller.run(args)
-    expected_path = "test/fixtures/controllers/main.ex"
 
-    assert File.exists?(expected_path) === true
-    File.rm! expected_path
+    assert File.exists?("test/fixtures/controllers/main.ex") === true
+    File.rm_rf! "test/fixtures/controllers"
   end
 
   test "run/1 with no name" do
