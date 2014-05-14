@@ -17,15 +17,16 @@ defmodule Mix.Tasks.Sugar.Gen.Config do
     do_create_file assigns
   end
 
-  defp do_create_file(_opts) do
+  defp do_create_file(opts) do
     module = camelize atom_to_binary(Mix.project[:app])
 
     assigns = [
-      app: Mix.project[:app], 
+      app: Mix.project[:app],
       module: module,
-    ]
+      path: "lib/#{underscore module}"
+    ] |> Keyword.merge opts
 
-    create_file "lib/#{underscore module}/config.ex", config_template(assigns)
+    create_file "#{assigns[:path]}/config.ex", config_template(assigns)
   end
 
   embed_template :config, ~S"""

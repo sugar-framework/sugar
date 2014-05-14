@@ -22,17 +22,18 @@ defmodule Mix.Tasks.Sugar.Gen.Controller do
     do_create_file assigns[:name], assigns
   end
 
-  defp do_create_file(name, _opts) do
+  defp do_create_file(name, opts) do
     module = camelize atom_to_binary(Mix.project[:app])
     name = camelize name
 
     assigns = [
-      app: Mix.project[:app], 
+      app: Mix.project[:app],
       module: module,
-      name: name
-    ]
+      name: name,
+      path: "lib/#{underscore module}"
+    ] |> Keyword.merge opts
 
-    create_file "lib/#{underscore module}/controllers/#{underscore name}.ex", controller_template(assigns)
+    create_file "#{assigns[:path]}/controllers/#{underscore name}.ex", controller_template(assigns)
   end
 
   embed_template :controller, ~S"""
