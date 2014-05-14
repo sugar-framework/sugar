@@ -17,23 +17,24 @@ defmodule Mix.Tasks.Sugar.Scaffold do
     end
   end
 
-  defp do_scaffold(name, _opts) do
+  defp do_scaffold(name, opts) do
     module = camelize atom_to_binary(Mix.project[:app])
 
     assigns = [
-      app: Mix.project[:app], 
-      module: module,
-      name: name
-    ]
+      app: Mix.project[:app],
+      module: name,
+      path: "lib/#{underscore name}",
+      priv_path: "priv"
+    ] |> Keyword.merge opts
 
-    Mix.Tasks.Sugar.Gen.Controller.run_detached assigns
-    Mix.Tasks.Sugar.Gen.Model.run_detached assigns
-    Mix.Tasks.Sugar.Gen.View.run_detached [name: name <> "/index"]
+    Mix.Tasks.Sugar.Gen.Controller.run_detached([name: name] ++ assigns)
+    Mix.Tasks.Sugar.Gen.Model.run_detached([name: name] ++ assigns)
+    Mix.Tasks.Sugar.Gen.View.run_detached([name: name <> "/index"] ++ assigns)
   end
 
   defp check_name!(name) do
     unless name =~ ~r/^[a-z][\w_]+$/ do
-      raise Mix.Error, message: "model name must start with a letter and have only lowercase letters, numbers and underscore"
+      raise Mix.Error, message: "resource name must start with a letter and have only lowercase letters, numbers and underscore"
     end
   end
 end
