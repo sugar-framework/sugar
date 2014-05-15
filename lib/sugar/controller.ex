@@ -48,7 +48,7 @@ defmodule Sugar.Controller do
     quote do
       import unquote(__MODULE__)
       import unquote(Plug.Conn)
-      use unquote(Sugar.Router.Hooks)
+      use unquote(Sugar.Controller.Hooks)
     end
   end
 

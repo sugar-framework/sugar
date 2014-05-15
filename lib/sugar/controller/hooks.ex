@@ -1,4 +1,4 @@
-defmodule Sugar.Router.Hooks do
+defmodule Sugar.Controller.Hooks do
   @doc """
   Macro used to add necessary items to a router.
   """
@@ -46,8 +46,18 @@ defmodule Sugar.Router.Hooks do
       @hooks @hooks++[{:before, {@all_hooks_key, unquote(function)}}]
     end
   end
-  defmacro before_hook(function, _opts) when is_atom(function) do
+  defmacro before_hook(function, opts) when is_atom(function) do
     quote do
+      opts = unquote(opts)
+      function = unquote(function)
+      cond do
+        opts[:only] ->
+          @hooks Enum.reduce(opts[:only], @hooks, fn (method, acc) ->
+            acc++[{:before, {method, function}}]
+          end)
+        true ->
+          @hooks
+      end
     end
   end
 
@@ -56,8 +66,18 @@ defmodule Sugar.Router.Hooks do
       @hooks @hooks++[{:after, {@all_hooks_key, unquote(function)}}]
     end
   end
-  defmacro after_hook(function, _opts) when is_atom(function) do
+  defmacro after_hook(function, opts) when is_atom(function) do
     quote do
+      opts = unquote(opts)
+      function = unquote(function)
+      cond do
+        opts[:only] ->
+          @hooks Enum.reduce(opts[:only], @hooks, fn (method, acc) ->
+            acc++[{:after, {method, function}}]
+          end)
+        true ->
+          @hooks
+      end
     end
   end
 end
