@@ -5,7 +5,7 @@ defmodule Sugar.RouterTest do
 
   test "get/3" do
     conn = conn(:get, "/get")
-    conn = Sugar.RouterTest.Router.call(conn, [])
+      |> Sugar.RouterTest.Router.call([])
 
     assert conn.state === :sent
     assert conn.status === 200
@@ -13,7 +13,7 @@ defmodule Sugar.RouterTest do
 
   test "post/3" do
     conn = conn(:post, "/post")
-    conn = Sugar.RouterTest.Router.call(conn, [])
+      |> Sugar.RouterTest.Router.call([])
 
     assert conn.state === :sent
     assert conn.status === 200
@@ -21,7 +21,7 @@ defmodule Sugar.RouterTest do
 
   test "put/3" do
     conn = conn(:put, "/put")
-    conn = Sugar.RouterTest.Router.call(conn, [])
+      |> Sugar.RouterTest.Router.call([])
 
     assert conn.state === :sent
     assert conn.status === 200
@@ -29,7 +29,7 @@ defmodule Sugar.RouterTest do
 
   test "patch/3" do
     conn = conn(:patch, "/patch")
-    conn = Sugar.RouterTest.Router.call(conn, [])
+      |> Sugar.RouterTest.Router.call([])
 
     assert conn.state === :sent
     assert conn.status === 200
@@ -37,7 +37,7 @@ defmodule Sugar.RouterTest do
 
   test "delete/3" do
     conn = conn(:delete, "/delete")
-    conn = Sugar.RouterTest.Router.call(conn, [])
+      |> Sugar.RouterTest.Router.call([])
 
     assert conn.state === :sent
     assert conn.status === 200
@@ -45,7 +45,7 @@ defmodule Sugar.RouterTest do
 
   test "options/3" do
     conn = conn(:options, "/options")
-    conn = Sugar.RouterTest.Router.call(conn, [])
+      |> Sugar.RouterTest.Router.call([])
 
     assert conn.state === :sent
     assert conn.status === 200
@@ -53,7 +53,7 @@ defmodule Sugar.RouterTest do
 
   test "any/3 any" do
     conn = conn(:any, "/any")
-    conn = Sugar.RouterTest.Router.call(conn, [])
+      |> Sugar.RouterTest.Router.call([])
 
     assert conn.state === :sent
     assert conn.status === 200
@@ -61,7 +61,7 @@ defmodule Sugar.RouterTest do
 
   test "any/3 get" do
     conn = conn(:get, "/any")
-    conn = Sugar.RouterTest.Router.call(conn, [])
+      |> Sugar.RouterTest.Router.call([])
 
     assert conn.state === :sent
     assert conn.status === 200

@@ -136,8 +136,7 @@ end
 
 ## Todo Items
 
-- request before/after hooks
-- basic authentication
+- basic authentication (?)
 - Templating
     - EEx
     - [ErlyDTL](https://github.com/erlydtl/erlydtl)
