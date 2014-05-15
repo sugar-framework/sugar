@@ -1,4 +1,4 @@
-## v0.3.0-dev
+## [v0.3.0](https://github.com/sugar-framework/sugar/tree/v0.3.0)
 
 - [Enhancement] Upgrade to Elixir v0.13.2
 - [Dependency] Adding [sugar-framework/plugs](https://github.com/sugar-framework/plugs) back in
