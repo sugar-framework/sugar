@@ -19,9 +19,10 @@ defmodule Sugar.Router.FiltersTest do
   defmodule Router do
     use Sugar.Router
     alias Sugar.Router.FiltersTest.Controller
-
-    before_filter Sugar.Router.FiltersTest.Filters, :set_json
-    after_filter Sugar.Router.FiltersTest.Filters, :clear_assigns
+    alias Sugar.Router.FiltersTest.Filters
+    
+    before_filter Filters, :set_json
+    after_filter Filters, :clear_assigns
 
     get "/", Controller, :index
     get "/show", Controller, :show

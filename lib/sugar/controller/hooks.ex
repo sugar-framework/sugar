@@ -1,6 +1,34 @@
 defmodule Sugar.Controller.Hooks do
+  @moduledoc """
+  Allows for before and after hooks to a controller. Each hook has the
+  opportunity to modify and/or read the request's `conn` in each stage.
+
+  #### Example
+
+      defmodule MyController do
+        use Sugar.Controller
+
+        before_hook :set_headers
+        after_hook :send
+
+        def index(conn, _args) do
+          conn |> resp(200, "[]")
+        end
+
+        ## Hooks
+
+        def set_headers(conn) do
+          conn |> put_resp_header("content-type", "application/json; charset=utf-8")
+        end
+
+        def send(conn) do
+          conn |> send_resp
+        end
+      end
+  """
+
   @doc """
-  Macro used to add necessary items to a router.
+  Macro used to add necessary items to a controller.
   """
   defmacro __using__(_opts) do
     quote do
@@ -21,26 +49,37 @@ defmodule Sugar.Controller.Hooks do
         conn = apply(unquote(module), action, [conn, args])
         call_after_hooks(unquote(hooks), unquote(module), action, conn)
       end
+
+      defp call_before_hooks(hooks, module, action, conn) do
+        call_hooks(:before, hooks, module, action, conn)
+      end
+
+      defp call_after_hooks(hooks, module, action, conn) do
+        call_hooks(:after, hooks, module, action, conn)
+      end
+
+      defp call_hooks(type, hooks, module, action, conn) do
+        hooks
+          |> Stream.filter(fn ({t, _}) -> t === type end)
+          |> Stream.filter(fn ({_, {act, _}}) -> act === action || act === :__all_hooks__ end)
+          |> Enum.reduce(conn, fn({_, {_, fun}}, conn) ->
+            apply module, fun, [conn]
+          end)
+      end
     end
   end
 
-  def call_before_hooks(hooks, module, action, conn) do
-    call_hooks(:before, hooks, module, action, conn)
-  end
+  @doc """
+  Adds a before hook to a controller.
 
-  def call_after_hooks(hooks, module, action, conn) do
-    call_hooks(:after, hooks, module, action, conn)
-  end
+  ## Arguments
 
-  defp call_hooks(type, hooks, module, action, conn) do
-    hooks
-      |> Enum.filter(fn ({t, _}) -> t === type end)
-      |> Enum.filter(fn ({_, {act, _}}) -> act === action || act === :__all_hooks__ end)
-      |> Enum.reduce(conn, fn({_, {_, fun}}, conn) ->
-        apply module, fun, [conn]
-      end)
-  end
-
+  - `function` - `atom` - name of the function to be called within the hook
+  - `opts` - `Keyword` - optional - used to target specific actions. Possible
+    options include:
+      - `only` - `List` - a list of atoms representing the actions on which the
+        hook should be applied
+  """
   defmacro before_hook(function) when is_atom(function) do
     quote do
       @hooks @hooks++[{:before, {@all_hooks_key, unquote(function)}}]
@@ -61,6 +100,17 @@ defmodule Sugar.Controller.Hooks do
     end
   end
 
+  @doc """
+  Adds an after hook to a controller.
+
+  ## Arguments
+
+  - `function` - `atom` - name of the function to be called within the hook
+  - `opts` - `Keyword` - optional - used to target specific actions. Possible
+    options include:
+      - `only` - `List` - a list of atoms representing the actions on which the
+        hook should be applied
+  """
   defmacro after_hook(function) when is_atom(function) do
     quote do
       @hooks @hooks++[{:after, {@all_hooks_key, unquote(function)}}]
