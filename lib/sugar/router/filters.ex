@@ -1,6 +1,4 @@
 defmodule Sugar.Router.Filters do
-  ## Macros
-
   @doc """
   Macro used to add necessary items to a router.
   """
@@ -8,22 +6,37 @@ defmodule Sugar.Router.Filters do
     quote do
       import unquote(__MODULE__)
       @filters []
-      @before_compile unquote(__MODULE__)
+      @all_filters_key :__all_filters__
+      @before_compile unquote(Sugar.Router)
     end
   end
 
-  @doc """
-  Defines a default route to catch all unmatched routes.
-  """
-  defmacro __before_compile__(env) do
-    module = env.module
-    filters = Enum.reverse(Module.get_attribute(module, :filters))
-    _escaped = Macro.escape(filters)
+  def call_before_filters(filters, action, conn) do
+    call_filters(:before, filters, action, conn)
   end
 
-  defmacro filter(spec) do
+  def call_after_filters(filters, action, conn) do
+    call_filters(:after, filters, action, conn)
+  end
+
+  defp call_filters(type, filters, action, conn) do
+    filters
+      |> Enum.filter(fn ({t, _}) -> t === type end)
+      |> Enum.filter(fn ({_, {act, _}}) -> act === action || act === :__all_filters__ end)
+      |> Enum.reduce(conn, fn({_, {_, {module, fun}}}, conn) ->
+        apply module, fun, [conn]
+      end)
+  end
+
+  defmacro before_filter(module, function) do
     quote do
-      @filters [unquote(spec)|@filters]
+      @filters @filters++[{:before, {@all_filters_key, {unquote(module), unquote(function)}}}]
+    end
+  end
+
+  defmacro after_filter(module, function) do
+    quote do
+      @filters @filters++[{:after, {@all_filters_key, {unquote(module), unquote(function)}}}]
     end
   end
 end

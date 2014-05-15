@@ -59,7 +59,7 @@ defmodule Sugar.Controller.HooksTest do
     before_hook :set_assign, only: [:show]
 
     after_hook :send, only: [:show]
-    after_hook :clear_assign
+    after_hook :set_private
 
     def index(conn, _args) do
       conn |> resp(200, "[]")
@@ -83,7 +83,7 @@ defmodule Sugar.Controller.HooksTest do
       conn |> send_resp
     end
 
-    def clear_assign(conn) do
+    def set_private(conn) do
       conn |> assign_private(:id, 2)
     end
   end

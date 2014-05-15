@@ -35,6 +35,7 @@ defmodule Sugar.Router do
       import unquote(__MODULE__)
       import Plug.Conn
       use Plug.Router
+      use Sugar.Router.Filters
       @before_compile unquote(__MODULE__)
 
       plug Plug.Parsers, parsers: [:urlencoded, :multipart]
@@ -54,15 +55,23 @@ defmodule Sugar.Router do
   @doc """
   Defines a default route to catch all unmatched routes.
   """
-  defmacro __before_compile__(_env) do
+  defmacro __before_compile__(env) do
+    module = env.module
+    # From Sugar.Router.Filters
+    filters = Module.get_attribute(module, :filters)
+
     quote do
+      # Our default match so Plug doesn't fall on its face
+      # when accessing an undefined route
       Plug.Router.match _ do
         conn = var!(conn)
         Sugar.Controller.not_found conn
       end
 
       defp call_controller_action(%Plug.Conn{state: :unset} = conn, controller, action, binding) do
-        apply controller, :call_action, [action, conn, Keyword.delete(binding, :conn)]
+        conn = call_before_filters(unquote(filters), action, conn)
+        conn = apply controller, :call_action, [action, conn, Keyword.delete(binding, :conn)]
+        call_after_filters(unquote(filters), action, conn)
       end
       defp call_controller_action(conn, _, _, _) do
         conn
