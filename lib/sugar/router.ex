@@ -62,7 +62,7 @@ defmodule Sugar.Router do
       end
 
       defp call_controller_action(%Plug.Conn{state: :unset} = conn, controller, action, binding) do
-        apply controller, action, [conn, Keyword.delete(binding, :conn)]
+        apply controller, :call_action, [action, conn, Keyword.delete(binding, :conn)]
       end
       defp call_controller_action(conn, _, _, _) do
         conn

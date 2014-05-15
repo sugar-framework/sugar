@@ -26,8 +26,6 @@ defmodule Mix.Tasks.Sugar.Scaffold do
   end
 
   defp do_scaffold(name, opts) do
-    module = camelize atom_to_binary(Mix.project[:app])
-
     assigns = [
       app: Mix.project[:app],
       module: name,
