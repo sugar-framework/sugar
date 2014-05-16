@@ -1,4 +1,4 @@
-## [v0.3.0](https://github.com/sugar-framework/sugar/tree/v0.3.0)
+### [v0.3.0](https://github.com/sugar-framework/sugar/tree/v0.3.0) - 15 May 2014
 
 - [Enhancement] Upgrade to Elixir v0.13.2
 - [Dependency] Adding [sugar-framework/plugs](https://github.com/sugar-framework/plugs) back in
@@ -7,7 +7,7 @@
 - [Enhancement] Added Controller hooks for before/after actions
 - [Enhancement] Added Router filters for before/after calling matched route
 
-### [v0.2.0](https://github.com/sugar-framework/sugar/tree/v0.2.0)
+### [v0.2.0](https://github.com/sugar-framework/sugar/tree/v0.2.0) - 13 Feb 2014
 
 - [Enhancement] Resource routing
 - [Enhancement] Return helpers
@@ -15,7 +15,7 @@
     - Raw
     - Default 404
 
-### [v0.1.0](https://github.com/sugar-framework/sugar/tree/v0.1.0)
+### [v0.1.0](https://github.com/sugar-framework/sugar/tree/v0.1.0) - 07 Feb 2014
 
 - [Enhancement] Integrate Plug
 - [Enhancement] Routing
