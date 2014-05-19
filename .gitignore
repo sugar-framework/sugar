@@ -4,4 +4,3 @@ docs/
 log/
 erl_crash.dump
 *.ez
-mix.lock
