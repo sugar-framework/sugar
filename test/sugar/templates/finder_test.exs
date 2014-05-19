@@ -3,14 +3,18 @@ defmodule Sugar.Templates.FinderTest do
 
   test "all/1" do
     templates = Sugar.Templates.Finder.all("test/fixtures/view_finder")
-    expected = [ %Templates.Template{
+    expected = %Templates.Template{
                     engine: Templates.Engines.EEx,
                     key: "index.html.eex",
-                    source: "",
-                    updated_at: {{2014, 5, 18}, {21, 21, 25}}
-                  } ]
+                    source: ""
+                  }
 
-    assert templates === expected
+    assert Enum.count(templates) === 1
+    template = templates |> hd
+
+    assert template.key === expected.key
+    assert template.engine === expected.engine
+    assert template.source === expected.source
   end
 
   test "one/2" do
@@ -18,10 +22,11 @@ defmodule Sugar.Templates.FinderTest do
     expected = %Templates.Template{
                   engine: Templates.Engines.EEx,
                   key: "index.html.eex",
-                  source: "",
-                  updated_at: {{2014, 5, 18}, {21, 21, 25}}
+                  source: ""
                 }
 
-    assert template === expected
+    assert template.key === expected.key
+    assert template.engine === expected.engine
+    assert template.source === expected.source
   end
 end
