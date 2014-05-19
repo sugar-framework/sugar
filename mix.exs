@@ -25,7 +25,7 @@ defmodule Web.Mixfile do
       { :ecto, "0.1.0" },
       { :postgrex, "0.5.0" },
       { :plugs, "~> 0.0.2-dev", github: "sugar-framework/plugs" },
-      { :templates, path: "../templates" } ]
+      { :templates, github: "sugar-framework/templates" } ]
   end
 
   defp deps(:docs) do

@@ -11,6 +11,7 @@ defmodule Mix.Tasks.Sugar.Gen.View do
 
   ## Command line options
 
+    * `--type=(dtl|eex|haml)` - set type of view to generate. Defaults to `eex`
     * `--path` - override the project path. Defaults to `lib/[app name]`
 
   """
@@ -39,11 +40,16 @@ defmodule Mix.Tasks.Sugar.Gen.View do
       path: "lib/#{underscore module}"
     ] |> Keyword.merge opts
 
-    create_file "#{assigns[:path]}/views/#{underscore name}.html.eex", view_template(assigns)
+    case opts[:type] do
+      "dtl" -> create_file "#{assigns[:path]}/views/#{underscore name}.html.dtl", dtl_template(assigns)
+      "haml" -> create_file "#{assigns[:path]}/views/#{underscore name}.html.haml", haml_template(assigns)
+      _ -> create_file "#{assigns[:path]}/views/#{underscore name}.html.eex", eex_template(assigns)
+    end
   end
 
-  embed_template :view, ~S"""
-  <html>
+  embed_template :eex, ~S"""
+  <!doctype html>
+  <html lang="en-US">
   <head>
     <title><%= @name %> - <%= @module %></title>
   </head>
@@ -51,6 +57,28 @@ defmodule Mix.Tasks.Sugar.Gen.View do
     Hello World
   </body>
   </html>
+  """
+
+  embed_template :dtl, ~S"""
+  <!doctype html>
+  <html lang="en-US">
+  <head>
+    <title>{{ name }} - {{ module }}</title>
+  </head>
+  <body>
+    Hello World
+  </body>
+  </html>
+  """
+
+  embed_template :haml, ~S"""
+  !!! 5
+  %html{lang: "en-US"}
+    %head
+      %title
+        = name <> module
+    %body
+      Hello World
   """
 
   defp check_name!(name) do
