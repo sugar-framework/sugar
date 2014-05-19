@@ -4,7 +4,7 @@ defmodule Web.Mixfile do
   def project do
     [ app: :sugar,
       elixir: "~> 0.13.2",
-      version: "0.3.0",
+      version: "0.4.0-dev",
       name: "Sugar",
       deps: deps(Mix.env),
       package: package,

@@ -99,9 +99,9 @@ defmodule Sugar.Router do
 
   ## Arguments
 
-  - `route` - `String|List`
-  - `controller` - `Atom`
-  - `action` - `Atom`
+  * `route` - `String|List`
+  * `controller` - `Atom`
+  * `action` - `Atom`
   """
   defmacro get(route, controller, action) do
     quote do
@@ -116,9 +116,9 @@ defmodule Sugar.Router do
 
   ## Arguments
 
-  - `route` - `String|List`
-  - `controller` - `Atom`
-  - `action` - `Atom`
+  * `route` - `String|List`
+  * `controller` - `Atom`
+  * `action` - `Atom`
   """
   defmacro post(route, controller, action) do
     quote do
@@ -133,9 +133,9 @@ defmodule Sugar.Router do
 
   ## Arguments
 
-  - `route` - `String|List`
-  - `controller` - `Atom`
-  - `action` - `Atom`
+  * `route` - `String|List`
+  * `controller` - `Atom`
+  * `action` - `Atom`
   """
   defmacro put(route, controller, action) do
     quote do
@@ -150,9 +150,9 @@ defmodule Sugar.Router do
 
   ## Arguments
 
-  - `route` - `String|List`
-  - `controller` - `Atom`
-  - `action` - `Atom`
+  * `route` - `String|List`
+  * `controller` - `Atom`
+  * `action` - `Atom`
   """
   defmacro patch(route, controller, action) do
     quote do
@@ -167,9 +167,9 @@ defmodule Sugar.Router do
 
   ## Arguments
 
-  - `route` - `String|List`
-  - `controller` - `Atom`
-  - `action` - `Atom`
+  * `route` - `String|List`
+  * `controller` - `Atom`
+  * `action` - `Atom`
   """
   defmacro delete(route, controller, action) do
     quote do
@@ -184,9 +184,9 @@ defmodule Sugar.Router do
 
   ## Arguments
 
-  - `route` - `String|List`
-  - `controller` - `Atom`
-  - `action` - `Atom`
+  * `route` - `String|List`
+  * `controller` - `Atom`
+  * `action` - `Atom`
   """
   defmacro options(route, controller, action) do
     quote do
@@ -201,9 +201,9 @@ defmodule Sugar.Router do
 
   ## Arguments
 
-  - `route` - `String|List`
-  - `controller` - `Atom`
-  - `action` - `Atom`
+  * `route` - `String|List`
+  * `controller` - `Atom`
+  * `action` - `Atom`
   """
   defmacro any(route, controller, action) do
     quote do

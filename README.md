@@ -29,21 +29,6 @@ mix deps.get
 mix server # or `iex -S mix server` if you want access to iex
 ```
 
-Want to use the latest and greatest in Sugar develop?
-
-```
-# Clone this repo
-git clone https://github.com/sugar-framework/simple.git
-cd simple
-git checkout develop
-
-# Get project dependencies
-mix deps.get
-
-# Start the web server
-mix server # or `iex -S mix server` if you want access to iex
-```
-
 ### Configurations
 
 Currently, Sugars expects a `Config` module to be defined in your project that has a `config/0` function defined for configuring your application. A simple `Keyword` list is returned with the configuration values.
@@ -121,15 +106,15 @@ defmodule Hello do
   use Sugar.Controller
 
   def index(conn, []) do
-    render conn, "showing index controller"
+    render conn, "index.html.eex", []
   end
 
   def show(conn, args) do
-    render conn, "showing page #{args[:id]}"
+    render conn, "show.html.eex", args
   end
 
   def create(conn, []) do
-    render conn, "page created"
+    render conn, "create.html.eex", []
   end
 end
 ```

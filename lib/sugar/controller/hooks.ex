@@ -74,10 +74,10 @@ defmodule Sugar.Controller.Hooks do
 
   ## Arguments
 
-  - `function` - `atom` - name of the function to be called within the hook
-  - `opts` - `Keyword` - optional - used to target specific actions. Possible
+  * `function` - `atom` - name of the function to be called within the hook
+  * `opts` - `Keyword` - optional - used to target specific actions. Possible
     options include:
-      - `only` - `List` - a list of atoms representing the actions on which the
+      * `only` - `List` - a list of atoms representing the actions on which the
         hook should be applied
   """
   defmacro before_hook(function) when is_atom(function) do
@@ -105,10 +105,10 @@ defmodule Sugar.Controller.Hooks do
 
   ## Arguments
 
-  - `function` - `atom` - name of the function to be called within the hook
-  - `opts` - `Keyword` - optional - used to target specific actions. Possible
+  * `function` - `atom` - name of the function to be called within the hook
+  * `opts` - `Keyword` - optional - used to target specific actions. Possible
     options include:
-      - `only` - `List` - a list of atoms representing the actions on which the
+      * `only` - `List` - a list of atoms representing the actions on which the
         hook should be applied
   """
   defmacro after_hook(function) when is_atom(function) do

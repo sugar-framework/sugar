@@ -9,12 +9,12 @@ defmodule Sugar.Controller do
   Sugar bundles these response helpers to assist in sending a
   response:
 
-  - `render/2` - `conn`, `template` - sends a normal response.
-  - `halt!/1` - `conn` - ends the response.
-  - `not_found/1` - `conn` - sends a 404 (Not found) response.
-  - `json/2` - `conn`, `data` - sends a normal response with
+  * `render/2` - `conn`, `template` - sends a normal response.
+  * `halt!/1` - `conn` - ends the response.
+  * `not_found/1` - `conn` - sends a 404 (Not found) response.
+  * `json/2` - `conn`, `data` - sends a normal response with
     `data` encoded as JSON.
-  - `raw/1` - `conn` - sends response as-is. It is expected
+  * `raw/1` - `conn` - sends response as-is. It is expected
     that status codes, headers, body, etc have been set by
     the controller action.
 
@@ -57,8 +57,8 @@ defmodule Sugar.Controller do
 
   ## Arguments
 
-  - `conn` - `Plug.Conn`
-  - `data` - `Keyword|List`
+  * `conn` - `Plug.Conn`
+  * `data` - `Keyword|List`
 
   ## Returns
 
@@ -77,7 +77,7 @@ defmodule Sugar.Controller do
 
   ## Arguments
 
-  - `conn` - `Plug.Conn`
+  * `conn` - `Plug.Conn`
 
   ## Returns
 
@@ -92,15 +92,16 @@ defmodule Sugar.Controller do
 
   ## Arguments
 
-  - `conn` - `Plug.Conn`
-  - `template` - `String`
-  - `opts` - `Keyword`
+  * `conn` - `Plug.Conn`
+  * `template_key` - `String`
+  * `assigns` - `Keyword`
+  * `opts` - `Keyword`
 
   ## Returns
 
   `Tuple` - `{:ok, sent_response}`
   """
-  def render(conn, template_key, assigns, opts \\ []) do
+  def render(conn, template_key, assigns \\ [], opts \\ []) do
     opts = [status: 200] |> Keyword.merge opts
     html = Sugar.Templates.Finder.one("lib/views", template_key)
        |> Templates.render(assigns)
@@ -115,8 +116,8 @@ defmodule Sugar.Controller do
 
   ## Arguments
 
-  - `conn` - `Plug.Conn`
-  - `opts` - `Keyword`
+  * `conn` - `Plug.Conn`
+  * `opts` - `Keyword`
 
   ## Returns
 
@@ -133,7 +134,7 @@ defmodule Sugar.Controller do
 
   ## Arguments
 
-  - `conn` - `Plug.Conn`
+  * `conn` - `Plug.Conn`
 
   ## Returns
 
@@ -149,10 +150,10 @@ defmodule Sugar.Controller do
 
   ## Arguments
 
-  - `conn` - `Plug.Conn`
-  - `controller` - `Atom`
-  - `action` - `Atom`
-  - `args` - `Keyword`
+  * `conn` - `Plug.Conn`
+  * `controller` - `Atom`
+  * `action` - `Atom`
+  * `args` - `Keyword`
 
   ## Returns
 
@@ -167,9 +168,9 @@ defmodule Sugar.Controller do
 
   ## Arguments
 
-  - `conn` - `Plug.Conn`
-  - `location` - `String`
-  - `opts` - `Keyword`
+  * `conn` - `Plug.Conn`
+  * `location` - `String`
+  * `opts` - `Keyword`
 
   ## Returns
 

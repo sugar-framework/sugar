@@ -65,8 +65,8 @@ defmodule Sugar.Router.Filters do
 
   ## Arguments
 
-  - `module` - `atom` - name of the module that contains the filter function
-  - `function` - `atom` - name of the function to be called within the hook
+  * `module` - `atom` - name of the module that contains the filter function
+  * `function` - `atom` - name of the function to be called within the hook
   """
   defmacro before_filter(module, function) do
     quote do
@@ -79,8 +79,8 @@ defmodule Sugar.Router.Filters do
 
   ## Arguments
 
-  - `module` - `atom` - name of the module that contains the filter function
-  - `function` - `atom` - name of the function to be called within the hook
+  * `module` - `atom` - name of the module that contains the filter function
+  * `function` - `atom` - name of the function to be called within the hook
   """
   defmacro after_filter(module, function) do
     quote do

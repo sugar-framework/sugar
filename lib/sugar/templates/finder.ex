@@ -1,4 +1,20 @@
 defmodule Sugar.Templates.Finder do
+  @moduledoc """
+  Allows for finding of templates within an applications to pass off to
+  Templates for compiling/rendering.
+  """
+
+  @doc """
+  Finds all templates within `root`
+
+  ## Arguments
+
+  * `root` - `String` - path to search for templates
+
+  ## Returns
+
+  List of `Templates.Template`
+  """
   def all(root) do
     Path.wildcard("#{root}/**/*.*")
       |> Enum.map(fn (path) ->
@@ -7,6 +23,18 @@ defmodule Sugar.Templates.Finder do
       end)
   end
 
+  @doc """
+  Finds a template within `root` and with a given `key`
+
+  ## Arguments
+
+  * `root` - `String` - path to search for template
+  * `key` - `String` - key (aka local path) of template desired
+
+  ## Returns
+
+  List of `Templates.Template`
+  """
   def one(root, key) do
     path = Path.join(root, key)
 

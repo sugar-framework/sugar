@@ -12,8 +12,8 @@ defmodule Mix.Tasks.Sugar.Init do
 
   ## Command line options
 
-    * `--path` - override the project path. Defaults to `lib/[app name]`
-    * `--priv_path` - override the priv path. Defaults to `priv`
+  * `--path` - override the project path. Defaults to `lib/[app name]`
+  * `--priv_path` - override the priv path. Defaults to `priv`
 
   """
   def run(args) do

@@ -9,8 +9,8 @@ defmodule Mix.Tasks.Server do
 
   ## Command line options
 
-    * `-h`, `--host` - bind to the given ip
-    * `-p`, `--port` - the port to listen to
+  * `-h`, `--host` - bind to the given ip
+  * `-p`, `--port` - the port to listen to
 
   """
   def run(args) do

@@ -11,7 +11,7 @@ defmodule Mix.Tasks.Sugar.Gen.Router do
 
   ## Command line options
 
-    * `--path` - override the project path. Defaults to `lib/[app name]`
+  * `--path` - override the project path. Defaults to `lib/[app name]`
 
   """
   def run(args) do

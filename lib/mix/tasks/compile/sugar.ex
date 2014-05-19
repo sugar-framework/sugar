@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Compile.Sugar do
   use Mix.Task
 
-  # @hidden true
+  @hidden true
   @shortdoc "Compile Sugar source files"
   @recursive true
   @manifest ".compile.sugar"

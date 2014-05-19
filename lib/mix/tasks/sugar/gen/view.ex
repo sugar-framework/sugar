@@ -11,8 +11,8 @@ defmodule Mix.Tasks.Sugar.Gen.View do
 
   ## Command line options
 
-    * `--type=(dtl|eex|haml)` - set type of view to generate. Defaults to `eex`
-    * `--path` - override the project path. Defaults to `lib/[app name]`
+  * `--type=(dtl|eex|haml)` - set type of view to generate. Defaults to `eex`
+  * `--path` - override the project path. Defaults to `lib/[app name]`
 
   """
   def run(args) do

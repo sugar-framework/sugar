@@ -8,7 +8,7 @@ defmodule Sugar.App do
 
   ## Arguments
 
-    - `opts` - `Keyword` - options to pass to Plug/Cowboy
+  * `opts` - `Keyword` - options to pass to Plug/Cowboy
   """
   def run(opts) do
     IO.puts "Starting Sugar on port #{get_port(opts)}..."
@@ -59,11 +59,11 @@ defmodule Sugar.App do
 
   ## Arguments
 
-    - `opts` - `Keyword` - options
+  * `opts` - `Keyword` - options
 
   ## Returns
 
-    - `port` - `Integer`
+  `Integer`
   """
   def get_port(opts) do
     case opts[:port] do
@@ -78,7 +78,7 @@ defmodule Sugar.App do
 
   ## Returns
 
-  - `Keyword`
+  `Keyword`
   """
   def config do
     config = Keyword.new
