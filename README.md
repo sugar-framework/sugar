@@ -137,9 +137,6 @@ end
 ## Todo Items
 
 - basic authentication (?)
-- Templating
-    - EEx
-    - [ErlyDTL](https://github.com/erlydtl/erlydtl)
 - Development error page
 - Caching
     - Compiled HTML
