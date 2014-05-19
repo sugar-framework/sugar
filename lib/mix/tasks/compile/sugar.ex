@@ -50,7 +50,7 @@ defmodule Mix.Tasks.Compile.Sugar do
       File.mkdir_p!(compile_path)
       Code.prepend_path compile_path
 
-      Templates.Supervisor.start_link
+      :application.ensure_started(:templates)
       templates
         |> Templates.compile
 

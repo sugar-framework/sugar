@@ -37,8 +37,7 @@ defmodule Sugar.Templates.Finder do
   defp get_ext(path) do
     case Path.extname(path) do
       "." <> ext -> ext
-      "" -> nil
-      ext -> ext
+      _ -> nil
     end
   end
 end
