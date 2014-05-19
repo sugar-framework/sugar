@@ -25,7 +25,16 @@ defmodule Sugar.ControllerTest do
     assert conn.state === :sent
   end
 
-  test "render/4 without opts" do
+  test "render/4 without assigns and opts" do
+    conn = conn(:get, "/")
+      |> Map.put(:state, :set)
+      |> render("index.html.eex")
+
+    assert conn.state === :sent
+    assert get_resp_header(conn, "content-type") === ["text/html; charset=utf-8"]
+  end
+
+  test "render/4 with assigns and without opts" do
     conn = conn(:get, "/")
       |> Map.put(:state, :set)
       |> render("index.html.eex", [])
