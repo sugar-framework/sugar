@@ -1,4 +1,4 @@
-defmodule Web.Mixfile do
+defmodule Sugar.Mixfile do
   use Mix.Project
 
   def project do
