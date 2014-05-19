@@ -20,10 +20,10 @@ defmodule Sugar.Mixfile do
 
   defp deps(:prod) do
     [ { :cowboy, "~> 0.9", github: "extend/cowboy" },
-      { :plug, "0.4.3" },
-      { :jsex, "2.0.0" },
-      { :ecto, "0.1.0" },
-      { :postgrex, "0.5.0" },
+      { :plug, "~> 0.4.3" },
+      { :jsex, "~> 2.0.0" },
+      { :ecto, "~> 0.1.0" },
+      { :postgrex, "~> 0.5.0" },
       { :plugs, "~> 0.0.2-dev", github: "sugar-framework/plugs" },
       { :templates, github: "sugar-framework/templates" } ]
   end
