@@ -16,8 +16,22 @@ defmodule Sugar.Router do
   ## Example
 
       defmodule Router do
-        use Sugar.Router
+        use Sugar.Router, plugs: [
+          { Plugs.HotCodeReload, [] },
+          { Plug.Static, at: "/static", from: :my_app },
 
+          # Uncomment the following line for session store
+          # { Plug.Session, store: :ets, key: "sid", secure: true, table: :session },
+
+          # Uncomment the following line for request logging,
+          # and add 'applications: [:exlager],' to the application
+          # Keyword list in your mix.exs
+          # { Plugs.Logger, [] }
+        ]
+
+        before_filter Filters, :set_headers
+
+        # Define your routes here
         get "/", Hello, :index
         get "/pages/:id", Hello, :show
         post "/pages", Hello, :create
@@ -38,6 +52,7 @@ defmodule Sugar.Router do
       use Sugar.Router.Filters
       @before_compile unquote(__MODULE__)
 
+      # plug Sugar.Exceptions
       plug Plug.Parsers, parsers: [:urlencoded, :multipart]
 
       opts = unquote(opts)

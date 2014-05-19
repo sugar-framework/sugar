@@ -75,25 +75,53 @@ defmodule Sugar.RouterTest do
     use Sugar.Controller
 
     def get(conn, _args) do
-      render conn, ""
+      conn
+        |> Map.put(:resp_body, "")
+        |> Map.put(:status, 200)
+        |> Map.put(:state, :set)
+        |> raw
     end
     def post(conn, _args) do
-      render conn, ""
+      conn
+        |> Map.put(:resp_body, "")
+        |> Map.put(:status, 200)
+        |> Map.put(:state, :set)
+        |> raw
     end
     def put(conn, _args) do
-      render conn, ""
+      conn
+        |> Map.put(:resp_body, "")
+        |> Map.put(:status, 200)
+        |> Map.put(:state, :set)
+        |> raw
     end
     def patch(conn, _args) do
-      render conn, ""
+      conn
+        |> Map.put(:resp_body, "")
+        |> Map.put(:status, 200)
+        |> Map.put(:state, :set)
+        |> raw
     end
     def delete(conn, _args) do
-      render conn, ""
+      conn
+        |> Map.put(:resp_body, "")
+        |> Map.put(:status, 200)
+        |> Map.put(:state, :set)
+        |> raw
     end
     def options(conn, _args) do
-      render conn, ""
+      conn
+        |> Map.put(:resp_body, "")
+        |> Map.put(:status, 200)
+        |> Map.put(:state, :set)
+        |> raw
     end
     def any(conn, _args) do
-      render conn, ""
+      conn
+        |> Map.put(:resp_body, "")
+        |> Map.put(:status, 200)
+        |> Map.put(:state, :set)
+        |> raw
     end
   end
 

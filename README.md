@@ -157,4 +157,6 @@ The main product of this repository is the example terms in the file [CONTRIBUTI
 
 ## License
 
-See [LICENSE](https://github.com/sugar-framework/sugar/blob/master/LICENSE).
+Sugar is released under the MIT License.
+
+See [LICENSE](https://github.com/sugar-framework/sugar/blob/master/LICENSE) for details.

@@ -14,7 +14,7 @@ defmodule Web.Mixfile do
   end
 
   def application do
-    [ applications: [:cowboy, :plug],
+    [ applications: [:cowboy, :plug, :templates],
       mod: { Sugar.App, [] } ]
   end
 
@@ -24,7 +24,8 @@ defmodule Web.Mixfile do
       { :jsex, "2.0.0" },
       { :ecto, "0.1.0" },
       { :postgrex, "0.5.0" },
-      { :plugs, "~> 0.0.2-dev", github: "sugar-framework/plugs" } ]
+      { :plugs, "~> 0.0.2-dev", github: "sugar-framework/plugs" },
+      { :templates, path: "../templates" } ]
   end
 
   defp deps(:docs) do

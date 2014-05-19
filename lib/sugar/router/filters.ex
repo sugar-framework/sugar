@@ -5,24 +5,26 @@ defmodule Sugar.Router.Filters do
 
   #### Example
 
-      defmodule MyController do
-        use Sugar.Controller
+      defmodule Router do
+        use Sugar.Router
+        alias Filters
 
-        before_hook :set_headers
-        after_hook :send
+        before_filter Filters, :set_json
+        after_filter Filters, :clear_assigns
 
-        def index(conn, _args) do
-          conn |> resp(200, "[]")
-        end
+        # routes
+        # ...
+      end
 
-        ## Hooks
+      defmodule Filters do
+        import Plug.Conn
 
-        def set_headers(conn) do
+        def set_json(conn) do
           conn |> put_resp_header("content-type", "application/json; charset=utf-8")
         end
 
-        def send(conn) do
-          conn |> send_resp
+        def clear_assigns(conn) do
+          %{ conn | assigns: %{} }
         end
       end
   """

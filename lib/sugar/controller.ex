@@ -100,12 +100,14 @@ defmodule Sugar.Controller do
 
   `Tuple` - `{:ok, sent_response}`
   """
-  def render(conn, template, opts \\ []) do
+  def render(conn, template_key, assigns, opts \\ []) do
     opts = [status: 200] |> Keyword.merge opts
+    html = Sugar.Templates.Finder.one("lib/views", template_key)
+       |> Templates.render(assigns)
 
     conn
       |> put_resp_content_type_if_not_sent(opts[:content_type] || "text/html")
-      |> send_resp_if_not_sent(opts[:status], template)
+      |> send_resp_if_not_sent(opts[:status], html)
   end
 
   @doc """
@@ -200,5 +202,4 @@ defmodule Sugar.Controller do
   defp send_resp_if_not_sent(conn, status, body) do
     conn |> send_resp(status, body)
   end
-
 end
