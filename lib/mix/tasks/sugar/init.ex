@@ -45,7 +45,7 @@ defmodule Mix.Tasks.Sugar.Init do
 
     # Models
     unless assigns[:no_repo] do
-      Mix.Tasks.Ecto.Gen.Repo.run ["#{underscore assigns[:module]}.Repos.Main"]
+      Mix.Tasks.Ecto.Gen.Repo.run ["#{camelize assigns[:module]}.Repos.Main"]
     end
     create_directory "#{assigns[:priv_path]}/main"
     create_directory "#{assigns[:path]}/models"

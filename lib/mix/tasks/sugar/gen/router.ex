@@ -38,7 +38,7 @@ defmodule Mix.Tasks.Sugar.Gen.Router do
   embed_template :router, ~S"""
   defmodule Router do
     use Sugar.Router, plugs: [
-        { Plugs.HotCodeReload, [] },
+        { Sugar.Plugs.HotCodeReload, [] },
         { Plug.Static, at: "/static", from: :<%= @app %> },
 
         # Uncomment the following line for session store
@@ -47,7 +47,7 @@ defmodule Mix.Tasks.Sugar.Gen.Router do
         # Uncomment the following line for request logging,
         # and add 'applications: [:exlager],' to the application
         # Keyword list in your mix.exs
-        # { Plugs.Logger, [] }
+        # { Sugar.Plugs.Logger, [] }
     ]
 
     # Define your routes here
