@@ -9,14 +9,16 @@ defmodule Sugar.Controller do
   Sugar bundles these response helpers to assist in sending a
   response:
 
-  * `render/2` - `conn`, `template` - sends a normal response.
-  * `halt!/1` - `conn` - ends the response.
-  * `not_found/1` - `conn` - sends a 404 (Not found) response.
+  * `render/4` - `conn`, `template_key`, `assigns`, `opts` - sends a normal
+    response.
+  * `halt!/2` - `conn`, `opts` - ends the response.
+  * `not_found/1` - `conn`, `message` - sends a 404 (Not found) response.
   * `json/2` - `conn`, `data` - sends a normal response with
     `data` encoded as JSON.
   * `raw/1` - `conn` - sends response as-is. It is expected
     that status codes, headers, body, etc have been set by
     the controller action.
+  * `static/2` - `conn`, `file` - reads and renders a single static file.
 
   #### Example
 
@@ -53,6 +55,31 @@ defmodule Sugar.Controller do
   end
 
   @doc """
+  reads and renders a single static file.
+
+  ## Arguments
+
+  * `conn` - `Plug.Conn`
+  * `file` - `String`
+
+  ## Returns
+
+  `Plug.Conn`
+  """
+  def static(conn, file) do
+    filename = Path.join(["priv/static", file])
+    if File.exists? filename do
+      body = filename |> File.read!
+      conn
+        |> put_resp_content_type_if_not_sent("text/html")
+        |> send_resp_if_not_sent(200, body)
+    else
+      conn
+        |> not_found
+    end
+  end
+
+  @doc """
   Sends a normal response with `data` encoded as JSON.
 
   ## Arguments
@@ -62,7 +89,7 @@ defmodule Sugar.Controller do
 
   ## Returns
 
-  `Tuple` - `{:ok, sent_response}`
+  `Plug.Conn`
   """
   def json(conn, data) do
     conn
@@ -81,7 +108,7 @@ defmodule Sugar.Controller do
 
   ## Returns
 
-  `Tuple` - `{:ok, sent_response}`
+  `Plug.Conn`
   """
   def raw(conn) do
     conn |> send_resp
@@ -99,7 +126,7 @@ defmodule Sugar.Controller do
 
   ## Returns
 
-  `Tuple` - `{:ok, sent_response}`
+  `Plug.Conn`
   """
   def render(conn, template_key, assigns \\ [], opts \\ []) do
     opts = [status: 200] |> Keyword.merge opts
@@ -121,7 +148,7 @@ defmodule Sugar.Controller do
 
   ## Returns
 
-  `Tuple` - `{:ok, sent_response}`
+  `Plug.Conn`
   """
   def halt!(conn, opts \\ []) do
     opts = [status: 401, message: ""] |> Keyword.merge opts
@@ -138,7 +165,7 @@ defmodule Sugar.Controller do
 
   ## Returns
 
-  `Tuple` - `{:ok, sent_response}`
+  `Plug.Conn`
   """
   def not_found(conn, message \\ "Not Found") do
     conn
@@ -157,7 +184,7 @@ defmodule Sugar.Controller do
 
   ## Returns
 
-  `Tuple` - `{:ok, conn}`
+  `Plug.Conn`
   """
   def forward(conn, controller, action, args \\ []) do
     apply controller, action, [conn, args]
@@ -174,7 +201,7 @@ defmodule Sugar.Controller do
 
   ## Returns
 
-  `Tuple` - `{:ok, sent_response}`
+  `Plug.Conn`
   """
   def redirect(conn, location, opts \\ []) do
     opts = [status: 302] |> Keyword.merge opts

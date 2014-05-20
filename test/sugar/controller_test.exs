@@ -5,9 +5,29 @@ defmodule Sugar.ControllerTest do
   import Sugar.Controller
   import Plug.Conn
 
+  test "static/2 file exists" do
+    conn = conn(:get, "/")
+      |> Map.put(:state, :set)
+      |> static("index.html")
+
+    assert conn.state === :sent
+    assert get_resp_header(conn, "content-type") === ["text/html; charset=utf-8"]
+    assert conn.status === 200
+    refute conn.resp_body === ""
+  end
+
+  test "static/2 file no exists" do
+    conn = conn(:get, "/")
+      |> Map.put(:state, :set)
+      |> static("nofile.html")
+
+    assert conn.state === :sent
+    assert conn.status === 404
+    assert conn.resp_body === "Not Found"
+  end
+
   test "json/2" do
     conn = conn(:get, "/")
-      |> Map.put(:resp_body, "")
       |> Map.put(:state, :set)
       |> json([])
 
@@ -18,8 +38,8 @@ defmodule Sugar.ControllerTest do
 
   test "raw/1" do
     conn = conn(:get, "/")
-      |> Map.put(:resp_body, "")
       |> Map.put(:state, :set)
+      |> Map.put(:resp_body, "")
       |> raw
 
     assert conn.state === :sent
@@ -99,7 +119,6 @@ defmodule Sugar.ControllerTest do
 
   test "redirect/2 without opts" do
     conn = conn(:get, "/")
-      |> Map.put(:resp_body, "")
       |> Map.put(:state, :set)
       |> redirect("/login")
 
@@ -109,7 +128,6 @@ defmodule Sugar.ControllerTest do
 
   test "redirect/2 with opts" do
     conn = conn(:get, "/")
-      |> Map.put(:resp_body, "")
       |> Map.put(:state, :set)
       |> redirect("/login", [status: 301])
 
