@@ -91,10 +91,11 @@ defmodule Sugar.Controller do
 
   `Plug.Conn`
   """
-  def json(conn, data) do
+  def json(conn, data, opts \\ []) do
+    opts = [status: 200] |> Keyword.merge opts
     conn
       |> put_resp_content_type_if_not_sent("application/json")
-      |> send_resp_if_not_sent(200, JSEX.encode! data)
+      |> send_resp_if_not_sent(opts[:status], JSEX.encode! data)
   end
 
   @doc """

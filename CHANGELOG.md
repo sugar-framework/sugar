@@ -5,6 +5,7 @@
 - [Breaking] Change `Sugar.Controller.render/3` to [`Sugar.Controller.render/4`](http://sugar-framework.github.io/docs/api/sugar/Sugar.Controller.html#render/4)
 - [Enhancement] Add mix.lock from repository to improve dependency management in projects per @ericmj's recommendation
 - [Enhancement] Add [`Sugar.Controller.static/2`](http://sugar-framework.github.io/docs/api/sugar/Sugar.Controller.html#static/2)
+- [Enhancement] Add development exceptions screen for debugging
 
 ### [v0.3.0](https://github.com/sugar-framework/sugar/tree/v0.3.0) - 15 May 2014
 

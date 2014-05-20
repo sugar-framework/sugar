@@ -24,11 +24,9 @@ defmodule Sugar.ExceptionsTest do
       conn
     end
 
-    assert_raise ArgumentError, fn ->
-      conn(:get, "/") |> Sugar.Exceptions.wrap([], fun)
-    end
+    conn = conn(:get, "/") |> Sugar.Exceptions.wrap([], fun)
 
-    # assert conn.status == 500
-    # refute conn.resp_body === ""
+    assert conn.status == 500
+    refute conn.resp_body === ""
   end
 end
