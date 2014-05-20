@@ -3,8 +3,8 @@ defmodule Sugar.Templates.FinderTest do
 
   test "all/1" do
     templates = Sugar.Templates.Finder.all("test/fixtures/view_finder")
-    expected = %Templates.Template{
-                    engine: Templates.Engines.EEx,
+    expected = %Sugar.Templates.Template{
+                    engine: Sugar.Templates.Engines.EEx,
                     key: "index.html.eex",
                     source: ""
                   }
@@ -19,8 +19,8 @@ defmodule Sugar.Templates.FinderTest do
 
   test "one/2" do
     template = Sugar.Templates.Finder.one("test/fixtures/view_finder", "index.html.eex")
-    expected = %Templates.Template{
-                  engine: Templates.Engines.EEx,
+    expected = %Sugar.Templates.Template{
+                  engine: Sugar.Templates.Engines.EEx,
                   key: "index.html.eex",
                   source: ""
                 }

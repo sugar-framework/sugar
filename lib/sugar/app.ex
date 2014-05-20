@@ -40,7 +40,7 @@ defmodule Sugar.App do
   def start(_type, _args) do
     :ok = Application.ensure_started(:templates)
     Sugar.Templates.Finder.all("lib/views")
-      |> Templates.compile
+      |> Sugar.Templates.compile
     Sugar.Supervisor.start_link
   end
 

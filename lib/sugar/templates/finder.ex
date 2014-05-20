@@ -13,7 +13,7 @@ defmodule Sugar.Templates.Finder do
 
   ## Returns
 
-  List of `Templates.Template`
+  List of `Sugar.Templates.Template`
   """
   def all(root) do
     Path.wildcard("#{root}/**/*.*")
@@ -33,7 +33,7 @@ defmodule Sugar.Templates.Finder do
 
   ## Returns
 
-  List of `Templates.Template`
+  List of `Sugar.Templates.Template`
   """
   def one(root, key) do
     path = Path.join(root, key)
@@ -46,7 +46,7 @@ defmodule Sugar.Templates.Finder do
   end
 
   defp build(key, path) do
-    %Templates.Template{
+    %Sugar.Templates.Template{
       key: key,
       engine: path |> get_ext |> get_engine,
       source: File.read!(path),
@@ -56,9 +56,9 @@ defmodule Sugar.Templates.Finder do
 
   defp get_engine(ext) do
     case ext do
-      "dtl" -> Templates.Engines.ErlyDTL
-      "haml" -> Templates.Engines.Calliope
-      _ -> Templates.Engines.EEx
+      "dtl" -> Sugar.Templates.Engines.ErlyDTL
+      "haml" -> Sugar.Templates.Engines.Calliope
+      _ -> Sugar.Templates.Engines.EEx
     end
   end
 

@@ -3,15 +3,13 @@ defmodule Sugar.ExceptionsTest do
   use Plug.Test
 
   test "init/1" do
-    opts = []
-
-    assert Sugar.Exceptions.init(opts) === opts
+    assert Sugar.Plugs.Exceptions.init(opts) === opts
   end
 
   test "wrap/2 with no error" do
     fun = fn(conn) -> conn |> resp(200, "") end
     conn = conn(:get, "/")
-      |> Sugar.Exceptions.wrap([], fun)
+      |> Sugar.Plugs.Exceptions.wrap(opts, fun)
 
     assert conn.status === 200
     assert conn.resp_body === ""
@@ -24,9 +22,13 @@ defmodule Sugar.ExceptionsTest do
       conn
     end
 
-    conn = conn(:get, "/") |> Sugar.Exceptions.wrap([], fun)
+    conn = conn(:get, "/") |> Sugar.Plugs.Exceptions.wrap(opts, fun)
 
     assert conn.status == 500
     refute conn.resp_body === ""
+  end
+
+  defp opts do
+    [dev_template: "<html><head><title></title></head><body></body></html>"]
   end
 end

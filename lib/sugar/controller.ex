@@ -132,7 +132,7 @@ defmodule Sugar.Controller do
   def render(conn, template_key, assigns \\ [], opts \\ []) do
     opts = [status: 200] |> Keyword.merge opts
     html = Sugar.Templates.Finder.one("lib/views", template_key)
-       |> Templates.render(assigns)
+       |> Sugar.Templates.render(assigns)
 
     conn
       |> put_resp_content_type_if_not_sent(opts[:content_type] || "text/html")

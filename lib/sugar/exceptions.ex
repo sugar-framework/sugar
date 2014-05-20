@@ -49,85 +49,7 @@
 # +------------------------------------------------------------------------+
 
 defmodule Sugar.Exceptions do
-  @moduledoc """
-  Catches runtime exceptions for displaying an error screen instead of an empty
-  response in dev environments.
-  """
-  @behaviour Plug.Wrapper
-  import Plug.Conn
-
-  @doc """
-  Inits options on compile
-
-  ## Arguments
-
-  * `opts` - `Keyword`
-
-  ## Returns
-
-  `Keyword`
-  """
-  def init(opts), do: opts
-
-  @doc """
-  Wraps a connection for catching exceptions
-
-  ## Arguments
-
-  * `conn` - `Plug.Conn`
-  * `opts` - `Keyword`
-  * `fun` - `Function`
-
-  ## Returns
-
-  `Plug.Conn`
-  """
-  def wrap(conn, _opts, fun) do
-    try do
-      fun.(conn)
-    catch
-      kind, e ->
-        env = System.get_env
-        assigns = [
-          kind: atom_to_binary(e.__record__(:name) || kind)
-                  |> String.replace("Elixir.", ""),
-          value: e,
-          elixir_build_info: System.build_info,
-          env: Map.keys(env) |> Enum.map(fn(key) ->
-            [ key: key,
-              value: Map.get(env, key) ]
-          end),
-          stacktrace: System.stacktrace |> Enum.map(fn({mod, fun, arr, meta}) ->
-            [ module: atom_to_binary(mod) |> String.replace("Elixir.", ""),
-              function: atom_to_binary(fun),
-              arrity: arr,
-              file: meta[:file],
-              line: meta[:line],
-              source: get_file_contents(meta[:file]) ]
-          end),
-          conn: conn
-        ]
-        opts = [file: __ENV__.file, line: __ENV__.line, engine: EEx.SmartEngine]
-
-        %{ conn | state: :set}
-          |> put_resp_header("content-type", "text/html; charset=utf-8")
-          |> send_resp(500, dev_template |> EEx.eval_string([assigns: assigns], opts))
-    end
-  end
-
-  defp get_file_contents(file) do
-    if File.exists?(file) do
-      File.read!(file)
-    else
-      case Path.wildcard("deps/*/#{file}") do
-        [] -> "no source available for '#{file}'"
-        matches ->
-          matches |> hd |> File.read!
-      end
-    end
-  end
-
-  defp dev_template do
+  def dev_template do
     """
     <!doctype html>
     <html>
@@ -198,9 +120,10 @@ defmodule Sugar.Exceptions do
             </ul>
             <div id="error-tabs-1">
               <table cellspacing="0" align="center" width="100%">
+                <script>var i = 0;</script>
                 <%= for st <- @stacktrace do %>
                   <tr>
-                    <td align="right" valign="top" class="error-number">#0</td>
+                    <td align="right" valign="top" class="error-number">#<script>document.write(i);i++;</script></td>
                     <td align="left">
                       <span class="error-class"><%= st[:module] %></span>.<span class="error-function"><%= st[:function] %></span>/<span class="error-arrity"><%= st[:arrity] %></span>
                       <br/>

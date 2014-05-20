@@ -52,9 +52,9 @@ defmodule Mix.Tasks.Compile.Sugar do
 
       :application.ensure_started(:templates)
       templates
-        |> Templates.compile
+        |> Sugar.Templates.compile
 
-      compiled = Templates.get_all_templates
+      compiled = Sugar.Templates.get_all_templates
         |> Map.keys
 
       Mix.Utils.write_manifest(manifest, compiled)

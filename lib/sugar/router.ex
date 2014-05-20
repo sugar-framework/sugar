@@ -52,7 +52,7 @@ defmodule Sugar.Router do
       use Sugar.Router.Filters
       @before_compile unquote(__MODULE__)
 
-      plug Sugar.Exceptions
+      plug Sugar.Plugs.Exceptions, dev_template: Sugar.Exceptions.dev_template
       plug Plug.Parsers, parsers: [:urlencoded, :multipart]
 
       opts = unquote(opts)
