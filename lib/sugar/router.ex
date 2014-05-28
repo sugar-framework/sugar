@@ -53,7 +53,7 @@ defmodule Sugar.Router do
       @before_compile unquote(__MODULE__)
 
       plug Sugar.Plugs.Exceptions, dev_template: Sugar.Exceptions.dev_template
-      plug Plug.Parsers, parsers: [:urlencoded, :multipart]
+      plug Plug.Parsers, parsers: [:urlencoded, :multipart, Sugar.Plugs.Parsers.JSON]
 
       opts = unquote(opts)
       if opts[:plugs] do
