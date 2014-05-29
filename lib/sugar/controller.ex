@@ -55,6 +55,38 @@ defmodule Sugar.Controller do
   end
 
   @doc """
+  sets connection status
+
+  ## Arguments
+
+  * `conn` - `Plug.Conn`
+  * `status_code` - `Integer`
+
+  ## Returns
+
+  `Plug.Conn`
+  """
+  def status(conn, status_code) do
+    %Plug.Conn{conn | status: status_code, state: :set}
+  end
+
+  @doc """
+  sets response headers
+
+  ## Arguments
+
+  * `conn` - `Plug.Conn`
+  * `status_code` - `Integer`
+
+  ## Returns
+
+  `Plug.Conn`
+  """
+  def headers(conn, headers) do
+    %Plug.Conn{conn | resp_headers: headers, state: :set}
+  end
+
+  @doc """
   reads and renders a single static file.
 
   ## Arguments
@@ -91,11 +123,18 @@ defmodule Sugar.Controller do
 
   `Plug.Conn`
   """
-  def json(conn, data, opts \\ []) do
+  def json(conn, data, opts) do
     opts = [status: 200] |> Keyword.merge opts
     conn
       |> put_resp_content_type_if_not_sent("application/json")
       |> send_resp_if_not_sent(opts[:status], JSEX.encode! data)
+  end
+  def json(conn, data) do
+    status = conn.status || 200
+    if get_resp_header(conn, "content-type") == [] do
+      conn = put_resp_content_type_if_not_sent(conn, "application/json")
+    end
+    conn |> send_resp_if_not_sent(status, JSEX.encode! data)
   end
 
   @doc """

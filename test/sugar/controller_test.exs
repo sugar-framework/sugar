@@ -31,8 +31,32 @@ defmodule Sugar.ControllerTest do
       |> Map.put(:state, :set)
       |> json([])
 
+    assert conn.status === 200
     assert conn.state === :sent
     assert get_resp_header(conn, "content-type") === ["application/json; charset=utf-8"]
+    assert conn.resp_body === "[]"
+  end
+
+  test "status/2 and json/2" do
+    conn = conn(:get, "/")
+      |> Map.put(:state, :set)
+      |> status(201)
+      |> json([])
+
+    assert conn.status === 201
+    assert conn.state === :sent
+    assert get_resp_header(conn, "content-type") === ["application/json; charset=utf-8"]
+    assert conn.resp_body === "[]"
+  end
+
+  test "headers/2 and json/2" do
+    conn = conn(:get, "/")
+      |> Map.put(:state, :set)
+      |> headers([{"content-type", "application/vnd.company.myapp.customer-v1+json"}])
+      |> json([])
+
+    assert conn.state === :sent
+    assert get_resp_header(conn, "content-type") === ["application/vnd.company.myapp.customer-v1+json"]
     assert conn.resp_body === "[]"
   end
 
