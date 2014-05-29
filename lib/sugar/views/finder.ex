@@ -1,4 +1,4 @@
-defmodule Sugar.Templates.Finder do
+defmodule Sugar.Views.Finder do
   @moduledoc """
   Allows for finding of templates within an applications to pass off to
   Templates for compiling/rendering.

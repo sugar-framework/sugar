@@ -11,7 +11,8 @@ defmodule Mix.Tasks.Compile.Sugar do
 
   ## Command line options
 
-  * `--force` - forces compilation regardless of mod times;
+  * `--force` - forces compilation regardless of mod times
+  * `--path` - overrides the default location to search 
 
   """
 
@@ -33,10 +34,15 @@ defmodule Mix.Tasks.Compile.Sugar do
   defp manifest, do: Path.join(Mix.Project.compile_path, @manifest)
 
   defp do_compile(opts) do
+    app = Mix.project[:app]
     compile_path = Mix.Project.compile_path
     watch_exts = ["dtl","haml","eex"]
-    source_paths = ["lib/views"]
-    templates = Sugar.Templates.Finder.all("lib/views")
+    opts = [ app: app,
+             path: "lib/#{app}/views",
+             compile_path: compile_path ] |> Keyword.merge(opts)
+    source_paths = [opts[:path]]
+
+    templates = Sugar.Views.Finder.all(opts[:path])
 
     # Source files + Mix setup + Dynamo config + Templates
     to_watch = Mix.Utils.extract_files(source_paths, watch_exts)
@@ -52,7 +58,15 @@ defmodule Mix.Tasks.Compile.Sugar do
 
       :application.ensure_started(:templates)
       templates
-        |> Sugar.Templates.compile
+        |> Enum.map(fn(template) ->
+          {:ok,t} = template.engine.compile template
+          name = template.key |> String.replace("/", "_")
+          
+          if t.binary do
+            File.write! Path.join(compile_path, "#{name}.beam"), t.binary
+          end
+          Mix.shell.info "Generated #{name}"
+        end)
 
       compiled = Sugar.Templates.get_all_templates
         |> Map.keys

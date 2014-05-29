@@ -1,8 +1,8 @@
-defmodule Sugar.Templates.FinderTest do
+defmodule Sugar.Views.FinderTest do
   use ExUnit.Case
 
   test "all/1" do
-    templates = Sugar.Templates.Finder.all("test/fixtures/view_finder")
+    templates = Sugar.Views.Finder.all("test/fixtures/view_finder")
     expected = %Sugar.Templates.Template{
                     engine: Sugar.Templates.Engines.EEx,
                     key: "index.html.eex",
@@ -18,7 +18,7 @@ defmodule Sugar.Templates.FinderTest do
   end
 
   test "one/2" do
-    template = Sugar.Templates.Finder.one("test/fixtures/view_finder", "index.html.eex")
+    template = Sugar.Views.Finder.one("test/fixtures/view_finder", "index.html.eex")
     expected = %Sugar.Templates.Template{
                   engine: Sugar.Templates.Engines.EEx,
                   key: "index.html.eex",

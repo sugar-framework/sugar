@@ -131,7 +131,7 @@ defmodule Sugar.Controller do
   """
   def render(conn, template_key, assigns \\ [], opts \\ []) do
     opts = [status: 200] |> Keyword.merge opts
-    html = Sugar.Templates.Finder.one("lib/views", template_key)
+    html = Sugar.Templates.Finder.one("lib/#{Mix.project[:app]}/views", template_key)
        |> Sugar.Templates.render(assigns)
 
     conn

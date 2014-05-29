@@ -1,5 +1,5 @@
 defmodule Sugar.ControllerTest do
-  use ExUnit.Case, async: true
+  use ExUnit.Case, async: false 
   use Plug.Test
 
   import Sugar.Controller
