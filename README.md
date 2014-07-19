@@ -5,6 +5,12 @@
 
 Modular web framework for Elixir
 
+> #### Note - 2014-07-18
+> 
+> Sugar may transition to more of an educational project. Either way, it will remain updated to a certain degree, especially once Elixir v1 hits.
+> 
+> If you're looking for a project with a more steady backing of support, please use [Phoenix](https://github.com/phoenixframework/phoenix).
+
 ## Goals
 
 - Speed. Sugar shouldn't be slow and neither should your project.
