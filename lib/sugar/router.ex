@@ -52,8 +52,8 @@ defmodule Sugar.Router do
       use Sugar.Router.Filters
       @before_compile unquote(__MODULE__)
 
-      plug Sugar.Plugs.Exceptions, dev_template: Sugar.Exceptions.dev_template
-      plug Plug.Parsers, parsers: [:urlencoded, :multipart, Sugar.Plugs.Parsers.JSON]
+      #plug Sugar.Plugs.Exceptions, dev_template: Sugar.Exceptions.dev_template
+      plug Plug.Parsers, parsers: [Sugar.Plugs.Parsers.JSON, :urlencoded, :multipart]
 
       opts = unquote(opts)
       if opts[:plugs] do
