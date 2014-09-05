@@ -71,6 +71,15 @@ defmodule Sugar.RouterTest do
     assert true === true
   end
 
+  test "parses json encoded bodies" do
+    headers = [{"content-type", "application/json"}]
+    conn = conn(:post, "/post", "{\"foo\": \"baz\"}", headers: headers)
+      |> Sugar.RouterTest.Router.call([])
+    assert conn.state === :sent
+    assert conn.status === 200
+    assert conn.params["foo"] == "baz"
+  end
+
   defmodule Foo do
     use Sugar.Controller
 

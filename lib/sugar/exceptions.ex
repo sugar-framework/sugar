@@ -56,7 +56,7 @@ defmodule Sugar.Exceptions do
     <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
       <link rel="shortcut icon" href="http://sugar-framework.github.io/assets/img/sugar_logo.png"></link>
-      <title><%= @kind %>: <%= @value.message %></title>
+      <title><%= @kind %>: <%= if is_atom(@kind) do %><%= inspect(@value) %><% else %><%= @value.message %><% end %></title>
       <link href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" type="text/css" rel="stylesheet" />
       <style type="text/css">
         @import url(http://fonts.googleapis.com/css?family=Open+Sans);
@@ -106,7 +106,7 @@ defmodule Sugar.Exceptions do
       <div class="version">Sugar Framework <a target="_new" href="https://github.com/sugar-framework/sugar">0.4.0-dev</a></div>
       <div align="center">
         <div class="error-main">
-          <h1><%= @kind %>: <%= @value.message %></h1>
+          <h1><%= @kind %>: <%= if is_atom(@kind) do %><%= inspect(@value) %><% else %><%= @value.message %><% end %></h1>
           <% file = @stacktrace |> hd %>
           <span class="error-file"><%= file[:file] %> (<%= file[:line] %>)</span>
         </div>
