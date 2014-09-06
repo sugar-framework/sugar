@@ -24,8 +24,8 @@ defmodule Sugar.Mixfile do
       { :jsex, "~> 2.0.0" },
       { :ecto, "~> 0.2.3" },
       { :postgrex, "~> 0.5.5" },
-      { :plugs, "~> 0.0.2-dev", path: "../plugs" },
-      { :templates, path: "../templates" } ]
+      { :plugs, github: "sugar-framework/plugs" },
+      { :templates, github: "sugar-framework/templates" } ]
   end
 
   defp deps(:docs) do
