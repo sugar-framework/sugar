@@ -34,7 +34,7 @@ defmodule Mix.Tasks.Compile.Sugar do
   defp manifest, do: Path.join(Mix.Project.compile_path, @manifest)
 
   defp do_compile(opts) do
-    app = Mix.project[:app]
+    app = Mix.Project.config[:app]
     compile_path = Mix.Project.compile_path
     watch_exts = ["dtl","haml","eex"]
     opts = [ app: app,
@@ -71,7 +71,7 @@ defmodule Mix.Tasks.Compile.Sugar do
       compiled = Sugar.Templates.get_all_templates
         |> Map.keys
 
-      Mix.Utils.write_manifest(manifest, compiled)
+      # Mix.Utils.write_manifest(manifest, compiled)
     end
   end
 

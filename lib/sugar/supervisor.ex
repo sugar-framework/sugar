@@ -2,7 +2,7 @@ defmodule Sugar.Supervisor do
   @moduledoc """
   Sugar's base supervisor.
   """
-  use Supervisor.Behaviour
+  use Supervisor
 
   @doc """
   Starts the supervisor. It is automatically started

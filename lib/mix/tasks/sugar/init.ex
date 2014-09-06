@@ -13,23 +13,28 @@ defmodule Mix.Tasks.Sugar.Init do
   ## Command line options
 
   * `--path` - override the project path. Defaults to `lib/[app name]`
-  * `--priv_path` - override the priv path. Defaults to `priv`
+  * `--priv-path` - override the priv path. Defaults to `priv`
+  * `--no-repo` - skip creation of Ecto Repo
 
   """
   def run(args) do
-    opts = OptionParser.parse(args)
+    IO.inspect args
+    opts = OptionParser.parse(args, switches: [no_repo: :boolean, path: :string, priv_path: :string])
+    IO.inspect opts
     do_init elem(opts, 0)
   end
 
   defp do_init(opts) do
-    name = camelize atom_to_binary(Mix.project[:app])
+    name = camelize String.Chars.to_string(Mix.Project.config[:app])
 
     assigns = [
-      app: Mix.project[:app],
+      app: Mix.Project.config[:app],
       module: name,
       path: "lib/#{underscore name}",
       priv_path: "priv"
     ] |> Keyword.merge opts
+
+    IO.inspect assigns
 
     # Priviliged
     create_directory "#{assigns[:priv_path]}"

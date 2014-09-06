@@ -70,30 +70,36 @@ defmodule Sugar.ControllerTest do
   end
 
   test "render/4 without assigns and opts" do
+    build_template
     conn = conn(:get, "/")
       |> Map.put(:state, :set)
       |> render("index.html.eex")
 
     assert conn.state === :sent
     assert get_resp_header(conn, "content-type") === ["text/html; charset=utf-8"]
+    destroy_template
   end
 
   test "render/4 with assigns and without opts" do
+    build_template
     conn = conn(:get, "/")
       |> Map.put(:state, :set)
       |> render("index.html.eex", [])
 
     assert conn.state === :sent
     assert get_resp_header(conn, "content-type") === ["text/html; charset=utf-8"]
+    destroy_template
   end
 
-  test "render/4 with opts" do
+  test "render/4 with assigns and opts" do
+    build_template
     conn = conn(:get, "/")
       |> Map.put(:state, :set)
       |> render("index.html.eex", [], [content_type: "text/html"])
 
     assert conn.state === :sent
     assert get_resp_header(conn, "content-type") === ["text/html; charset=utf-8"]
+    destroy_template
   end
 
   test "halt!/2 without opts" do
@@ -173,6 +179,14 @@ defmodule Sugar.ControllerTest do
       |> redirect("/login")
 
     assert conn.state === :sent
+  end
+
+  defp build_template do
+    File.write!("lib/sugar/views/index.html.eex", "")
+  end
+
+  defp destroy_template do
+    File.rm!("lib/sugar/views/index.html.eex")
   end
 
   defmodule Controller do

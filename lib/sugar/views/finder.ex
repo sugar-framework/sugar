@@ -56,9 +56,9 @@ defmodule Sugar.Views.Finder do
 
   defp get_engine(ext) do
     case ext do
-      "dtl" -> Sugar.Templates.Engines.ErlyDTL
+      "dtl"  -> Sugar.Templates.Engines.ErlyDTL
       "haml" -> Sugar.Templates.Engines.Calliope
-      _ -> Sugar.Templates.Engines.EEx
+      _      -> Sugar.Templates.Engines.EEx
     end
   end
 

@@ -3,7 +3,7 @@ defmodule Sugar.Mixfile do
 
   def project do
     [ app: :sugar,
-      elixir: "~> 0.13.2",
+      elixir: "~> 1.0.0-rc1",
       version: "0.4.0-dev",
       name: "Sugar",
       deps: deps(Mix.env),
@@ -19,13 +19,13 @@ defmodule Sugar.Mixfile do
   end
 
   defp deps(:prod) do
-    [ { :cowboy, "~> 0.9", github: "extend/cowboy" },
-      { :plug, "~> 0.4.3" },
+    [ { :cowboy, "~> 1.0.0" },
+      { :plug, "~> 0.7.0" },
       { :jsex, "~> 2.0.0" },
-      { :ecto, "~> 0.1.0" },
-      { :postgrex, "~> 0.5.0" },
+      { :ecto, "~> 0.2.3" },
+      { :postgrex, "~> 0.5.5" },
       { :plugs, "~> 0.0.2-dev", path: "../plugs" },
-      { :templates, github: "sugar-framework/templates" } ]
+      { :templates, path: "../templates" } ]
   end
 
   defp deps(:docs) do
@@ -36,7 +36,7 @@ defmodule Sugar.Mixfile do
   defp deps(_) do
     deps(:prod) ++
       [ { :hackney, github: "benoitc/hackney" },
-        { :excoveralls, "0.2.0" } ]
+        { :excoveralls, github: "parroty/excoveralls" } ]
   end
 
   defp description do

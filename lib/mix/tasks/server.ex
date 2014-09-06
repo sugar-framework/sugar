@@ -39,4 +39,11 @@ defmodule Mix.Tasks.Server do
       options
     end
   end
+
+  def binary_to_integer(port) do
+    case Integer.parse port do
+      :error -> nil
+      {i, _} -> i
+    end
+  end
 end

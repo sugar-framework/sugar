@@ -27,7 +27,7 @@ defmodule Mix.Tasks.Sugar.Scaffold do
 
   defp do_scaffold(name, opts) do
     assigns = [
-      app: Mix.project[:app],
+      app: Mix.Project.config[:app],
       module: name,
       path: "lib/#{underscore name}",
       priv_path: "priv"

@@ -24,10 +24,10 @@ defmodule Mix.Tasks.Sugar.Gen.Config do
   end
 
   defp do_create_file(opts) do
-    module = camelize atom_to_binary(Mix.project[:app])
+    module = camelize String.Chars.to_string(Mix.Project.config[:app])
 
     assigns = [
-      app: Mix.project[:app],
+      app: Mix.Project.config[:app],
       module: module,
       path: "lib/#{underscore module}"
     ] |> Keyword.merge opts

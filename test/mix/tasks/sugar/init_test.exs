@@ -5,8 +5,8 @@ defmodule Mix.Tasks.Sugar.InitTest do
     args = [
       "my_test_app",
       "--path=test/fixtures/my_test_app",
-      "--priv_path=test/fixtures/my_test_app/priv",
-      "--no_repo"
+      "--priv-path=test/fixtures/my_test_app/priv",
+      "--no-repo"
     ]
     Mix.Tasks.Sugar.Init.run args
 

@@ -29,10 +29,10 @@ defmodule Mix.Tasks.Sugar.Gen.Model do
   end
 
   defp do_create_files(name, opts) do
-    module = camelize atom_to_binary(Mix.project[:app])
+    module = camelize String.Chars.to_string(Mix.Project.config[:app])
 
     assigns = [
-      app: Mix.project[:app],
+      app: Mix.Project.config[:app],
       module: module,
       name: camelize(name),
       table_name: name,

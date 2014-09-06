@@ -30,11 +30,11 @@ defmodule Mix.Tasks.Sugar.Gen.View do
   end
 
   defp do_create_file(name, opts) do
-    module = camelize atom_to_binary(Mix.project[:app])
+    module = camelize String.Chars.to_string(Mix.Project.config[:app])
     name = camelize name
 
     assigns = [
-      app: Mix.project[:app],
+      app: Mix.Project.config[:app],
       module: module,
       name: name,
       path: "lib/#{underscore module}"

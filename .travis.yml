@@ -1,10 +1,11 @@
 language: erlang
 otp_release:
   - 17.0
+  - 17.1
 before_install:
   - git clone https://github.com/elixir-lang/elixir
   - cd elixir
-  - git checkout tags/v0.13.2
+  - git checkout tags/v1.0.0.-rc1
   - make
   - cd ..
 before_script:
@@ -14,4 +15,4 @@ before_script:
 script:
   - mix test
 after_success:
-  - mix coveralls.travis
+  - MIX_ENV=test mix coveralls.travis
