@@ -3,7 +3,7 @@ defmodule Sugar.Mixfile do
 
   def project do
     [ app: :sugar,
-      elixir: "~> 1.0.0-rc1",
+      elixir: "~> 1.0",
       version: "0.4.0-dev",
       name: "Sugar",
       deps: deps(Mix.env),
@@ -22,8 +22,8 @@ defmodule Sugar.Mixfile do
     [ { :cowboy, "~> 1.0.0" },
       { :plug, "~> 0.7.0" },
       { :jsex, "~> 2.0.0" },
-      { :ecto, "~> 0.2.3" },
-      { :postgrex, "~> 0.5.5" },
+      { :ecto, "~> 0.2.5" },
+      { :postgrex, "~> 0.6.0" },
       { :plugs, github: "sugar-framework/plugs" },
       { :templates, github: "sugar-framework/templates" } ]
   end
