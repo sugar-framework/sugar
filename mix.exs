@@ -36,7 +36,7 @@ defmodule Sugar.Mixfile do
   defp deps(_) do
     deps(:prod) ++
       [ { :hackney, github: "benoitc/hackney" },
-        { :excoveralls, github: "parroty/excoveralls" } ]
+        { :excoveralls, "~> 0.3" } ]
   end
 
   defp description do
