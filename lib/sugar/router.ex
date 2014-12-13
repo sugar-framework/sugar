@@ -280,6 +280,10 @@ defmodule Sugar.Router do
       binding = binding()
       conn = var!(conn)
 
+      conn = update_in conn.private,
+               &(&1 |> Map.put(:controller, unquote(controller))
+                    |> Map.put(:action, unquote(action)))
+
       # pass off to controller action
       call_controller_action conn, unquote(controller), unquote(action), binding
     end
