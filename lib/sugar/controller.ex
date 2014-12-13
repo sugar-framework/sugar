@@ -168,8 +168,10 @@ defmodule Sugar.Controller do
 
   `Plug.Conn`
   """
-  def render(conn, template_key, assigns \\ [], opts \\ []) do
+  def render(conn, template, assigns \\ [], opts \\ []) do
     opts = [status: 200] |> Keyword.merge opts
+	template_key = build_template_key(conn, template) 
+
     html = Sugar.Views.Finder.one("lib/#{Mix.Project.config[:app]}/views", template_key)
        |> Sugar.Templates.render(assigns)
 
@@ -248,6 +250,17 @@ defmodule Sugar.Controller do
     conn
       |> put_resp_header_if_not_sent("Location", location)
       |> send_resp_if_not_sent(opts[:status], "")
+  end
+
+  defp build_template_key(conn, template) do
+    template = template || conn.private.action
+
+    controller = "#{conn.private.controller}" 
+                  |> String.split(".") 
+                  |> List.last
+                  |> String.downcase
+
+     "#{controller}/#{template}"
   end
 
   defp put_resp_header_if_not_sent(%Plug.Conn{state: :sent} = conn, _, _) do
