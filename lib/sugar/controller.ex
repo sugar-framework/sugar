@@ -255,7 +255,7 @@ defmodule Sugar.Controller do
   defp build_template_key(conn, template) do
     template = template || conn.private.action
 
-    controller = "#{conn.private.controller}" 
+    controller = Map.get(conn.private, :controller, "")
                   |> String.split(".") 
                   |> List.last
                   |> String.downcase
