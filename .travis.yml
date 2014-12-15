@@ -2,6 +2,13 @@ language: erlang
 otp_release:
   - 17.0
   - 17.1
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/67f8d9bf9221d07f40cf
+    on_success: always  # options: [always|never|change] default: always
+    on_failure: always  # options: [always|never|change] default: always
+    on_start: false     # default: false
 before_install:
   - wget http://s3.hex.pm/builds/elixir/v1.0.0.zip
   - unzip -d elixir v1.0.0.zip
