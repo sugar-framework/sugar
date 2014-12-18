@@ -168,9 +168,25 @@ defmodule Sugar.Controller do
 
   `Plug.Conn`
   """
-  def render(conn, template, assigns \\ [], opts \\ []) do
+  def render(conn) do
+    template = build_template_key(conn)
+    render_view(conn, template, [], [])
+  end
+
+  def render(conn, template, assigns \\ [], opts \\ [])
+
+  def render(conn, template, assigns, opts) when is_atom(template) do
+    template = build_template_key(conn,template)
+    render_view(conn, template, assigns, opts)
+  end
+
+  def render(conn, template, assigns, opts) when is_binary(template) do
+    template = build_template_key(conn,template)
+    render_view(conn, template, assigns, opts)
+  end
+
+  defp render_view(conn, template_key, assigns, opts) do
     opts = [status: 200] |> Keyword.merge opts
-	template_key = build_template_key(conn, template) 
 
     html = Sugar.Views.Finder.one("lib/#{Mix.Project.config[:app]}/views", template_key)
        |> Sugar.Templates.render(assigns)
@@ -252,10 +268,10 @@ defmodule Sugar.Controller do
       |> send_resp_if_not_sent(opts[:status], "")
   end
 
-  defp build_template_key(conn, template) do
+  defp build_template_key(conn, template \\ nil) do
     template = template || conn.private.action
 
-    controller = Map.get(conn.private, :controller, "")
+    controller = "#{Map.get(conn.private, :controller, "")}"
                   |> String.split(".") 
                   |> List.last
                   |> String.downcase
