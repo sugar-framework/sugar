@@ -102,6 +102,18 @@ defmodule Sugar.ControllerTest do
     destroy_template
   end
 
+  test "render/4 with a symbol" do
+    File.mkdir("lib/sugar/views/tests/")
+    File.touch("lib/sugar/views/tests/index.html.eex")
+    conn = conn(:get, "/")
+          |> Map.put(:state, :set)
+          |> render("tests/index.html.eex", [], [content_type: "text/html"])
+
+    assert conn.state === :sent
+    assert get_resp_header(conn, "content-type") === ["text/html; charset=utf-8"]
+    File.rm!("lib/sugar/views/tests/index.html.eex")
+  end
+
   test "halt!/2 without opts" do
     conn = conn(:get, "/")
       |> Map.put(:state, :set)

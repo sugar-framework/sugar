@@ -17,10 +17,7 @@ defmodule Sugar.Views.Finder do
   """
   def all(root) do
     Path.wildcard("#{root}/**/*.*")
-      |> Enum.map(fn (path) ->
-        Path.relative_to(path, root)
-          |> build(path)
-      end)
+      |> Enum.map(fn (path) -> build(path) end)
   end
 
   @doc """
@@ -37,17 +34,21 @@ defmodule Sugar.Views.Finder do
   """
   def one(root, key) do
     path = Path.join(root, key)
+    if Path.extname(path) == "", do: path = path <> ".*"
+    path = path |> Path.wildcard 
+                |> List.first 
+                || ""
 
-    if path do
-      build(key, path)
+    if File.exists?(path) do
+      build(path)
     else
       { :error, :notfound }
     end
   end
 
-  defp build(key, path) do
+  defp build(path) do
     %Sugar.Templates.Template{
-      key: key,
+      key: Path.basename(path),
       engine: path |> get_ext |> get_engine,
       source: File.read!(path),
       updated_at: File.stat!(path).mtime

@@ -168,8 +168,26 @@ defmodule Sugar.Controller do
 
   `Plug.Conn`
   """
-  def render(conn, template_key, assigns \\ [], opts \\ []) do
+  def render(conn) do
+    template = build_template_key(conn)
+    render_view(conn, template, [], [])
+  end
+
+  def render(conn, template, assigns \\ [], opts \\ [])
+
+  def render(conn, template, assigns, opts) when is_atom(template) do
+    template = build_template_key(conn,template)
+    render_view(conn, template, assigns, opts)
+  end
+
+  def render(conn, template, assigns, opts) when is_binary(template) do
+    template = build_template_key(conn,template)
+    render_view(conn, template, assigns, opts)
+  end
+
+  defp render_view(conn, template_key, assigns, opts) do
     opts = [status: 200] |> Keyword.merge opts
+
     html = Sugar.Views.Finder.one("lib/#{Mix.Project.config[:app]}/views", template_key)
        |> Sugar.Templates.render(assigns)
 
@@ -248,6 +266,17 @@ defmodule Sugar.Controller do
     conn
       |> put_resp_header_if_not_sent("Location", location)
       |> send_resp_if_not_sent(opts[:status], "")
+  end
+
+  defp build_template_key(conn, template \\ nil) do
+    template = template || conn.private.action
+
+    controller = "#{Map.get(conn.private, :controller, "")}"
+                  |> String.split(".") 
+                  |> List.last
+                  |> String.downcase
+
+     "#{controller}/#{template}"
   end
 
   defp put_resp_header_if_not_sent(%Plug.Conn{state: :sent} = conn, _, _) do
