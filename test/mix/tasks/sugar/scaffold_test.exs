@@ -1,9 +1,12 @@
 defmodule Mix.Tasks.Sugar.ScaffoldTest do
   use ExUnit.Case
+  import ExUnit.CaptureIO
 
   test "run/1 with proper name" do
     args = ["main", "--path=test/fixtures", "--module=Mix.Tasks.Sugar.ScaffoldTest"]
-    Mix.Tasks.Sugar.Scaffold.run(args)
+    capture_io(fn ->
+      Mix.Tasks.Sugar.Scaffold.run(args)
+    end)
 
     assert File.exists?("test/fixtures/controllers/main.ex") === true
     assert File.exists?("test/fixtures/views/main/index.html.eex") === true

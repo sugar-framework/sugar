@@ -24,11 +24,12 @@ defmodule Mix.Tasks.Sugar.Init do
 
   defp do_init(opts) do
     name = camelize String.Chars.to_string(Mix.Project.config[:app])
+    path = "lib/#{underscore name}"
 
     assigns = [
       app: Mix.Project.config[:app],
       module: name,
-      path: "lib/#{underscore name}",
+      path: path,
       priv_path: "priv"
     ] |> Keyword.merge opts
 
@@ -37,7 +38,6 @@ defmodule Mix.Tasks.Sugar.Init do
     create_directory "#{assigns[:priv_path]}/static"
 
     # Support files
-    Mix.Tasks.Sugar.Gen.Config.run_detached assigns
     Mix.Tasks.Sugar.Gen.Router.run_detached assigns
 
     # Controllers

@@ -31,12 +31,13 @@ defmodule Mix.Tasks.Sugar.Gen.Controller do
   defp do_create_file(name, opts) do
     module = camelize String.Chars.to_string(Mix.Project.config[:app])
     name = camelize name
+    path = "lib/#{underscore name}"
 
     assigns = [
       app: Mix.Project.config[:app],
       module: module,
       name: name,
-      path: "lib/#{underscore module}"
+      path: path
     ] |> Keyword.merge opts
     assigns = assigns |> Keyword.merge([name: camelize(assigns[:name])])
 

@@ -1,5 +1,6 @@
 defmodule Mix.Tasks.Sugar.Gen.ViewTest do
   use ExUnit.Case, async: true
+  import ExUnit.CaptureIO
 
   test "run_detached/1" do
     assigns = [
@@ -7,7 +8,9 @@ defmodule Mix.Tasks.Sugar.Gen.ViewTest do
       module: "TestApp",
       path: "test/fixtures"
     ]
-    Mix.Tasks.Sugar.Gen.View.run_detached(assigns ++ [name: "main"])
+    capture_io(fn ->
+      Mix.Tasks.Sugar.Gen.View.run_detached(assigns ++ [name: "main"])
+    end)
 
     assert File.exists?("test/fixtures/views/main.html.eex") === true
     File.rm_rf! "test/fixtures/views"
@@ -15,7 +18,9 @@ defmodule Mix.Tasks.Sugar.Gen.ViewTest do
 
   test "run/1 with proper name and default type" do
     args = ["main", "--path=test/fixtures"]
-    Mix.Tasks.Sugar.Gen.View.run(args)
+    capture_io(fn ->
+      Mix.Tasks.Sugar.Gen.View.run(args)
+    end)
 
     assert File.exists?("test/fixtures/views/main.html.eex") === true
     File.rm_rf! "test/fixtures/views"
@@ -23,7 +28,9 @@ defmodule Mix.Tasks.Sugar.Gen.ViewTest do
 
   test "run/1 with proper name and eex type" do
     args = ["main", "--path=test/fixtures"]
-    Mix.Tasks.Sugar.Gen.View.run(args)
+    capture_io(fn ->
+      Mix.Tasks.Sugar.Gen.View.run(args)
+    end)
 
     assert File.exists?("test/fixtures/views/main.html.eex") === true
     File.rm_rf! "test/fixtures/views"
@@ -31,7 +38,9 @@ defmodule Mix.Tasks.Sugar.Gen.ViewTest do
 
   test "run/1 with proper name and dtl type" do
     args = ["main", "--path=test/fixtures", "--type=dtl"]
-    Mix.Tasks.Sugar.Gen.View.run(args)
+    capture_io(fn ->
+      Mix.Tasks.Sugar.Gen.View.run(args)
+    end)
 
     assert File.exists?("test/fixtures/views/main.html.dtl") === true
     File.rm_rf! "test/fixtures/views"
@@ -39,7 +48,9 @@ defmodule Mix.Tasks.Sugar.Gen.ViewTest do
 
   test "run/1 with proper name and haml type" do
     args = ["main", "--path=test/fixtures", "--type=haml"]
-    Mix.Tasks.Sugar.Gen.View.run(args)
+    capture_io(fn ->
+      Mix.Tasks.Sugar.Gen.View.run(args)
+    end)
 
     assert File.exists?("test/fixtures/views/main.html.haml") === true
     File.rm_rf! "test/fixtures/views"

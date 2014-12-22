@@ -1,5 +1,6 @@
 defmodule Mix.Tasks.Sugar.Gen.ModelTest do
   use ExUnit.Case, async: true
+  import ExUnit.CaptureIO
 
   test "run_detached/1" do
     assigns = [
@@ -7,7 +8,9 @@ defmodule Mix.Tasks.Sugar.Gen.ModelTest do
       module: "Mix.Tasks.Sugar.Gen.ModelTest",
       path: "test/fixtures"
     ]
-    Mix.Tasks.Sugar.Gen.Model.run_detached(assigns ++ [name: "main"])
+    capture_io(fn ->
+      Mix.Tasks.Sugar.Gen.Model.run_detached(assigns ++ [name: "main"])
+    end)
 
     assert File.exists?("test/fixtures/models/main.ex") === true
     assert File.exists?("test/fixtures/queries/main.ex") === true
@@ -16,7 +19,9 @@ defmodule Mix.Tasks.Sugar.Gen.ModelTest do
 
   test "run/1 with proper name" do
     args = ["main", "--path=test/fixtures", "--module=Mix.Tasks.Sugar.Gen.ModelTest"]
-    Mix.Tasks.Sugar.Gen.Model.run(args)
+    capture_io(fn ->
+      Mix.Tasks.Sugar.Gen.Model.run(args)
+    end)
 
     assert File.exists?("test/fixtures/models/main.ex") === true
     assert File.exists?("test/fixtures/queries/main.ex") === true

@@ -26,10 +26,11 @@ defmodule Mix.Tasks.Sugar.Scaffold do
   end
 
   defp do_scaffold(name, opts) do
+    path = "lib/#{underscore name}"
     assigns = [
       app: Mix.Project.config[:app],
       module: name,
-      path: "lib/#{underscore name}",
+      path: path,
       priv_path: "priv"
     ] |> Keyword.merge opts
 

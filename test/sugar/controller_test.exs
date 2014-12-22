@@ -37,6 +37,17 @@ defmodule Sugar.ControllerTest do
     assert conn.resp_body === "[]"
   end
 
+  test "json/3" do
+    conn = conn(:get, "/")
+      |> Map.put(:state, :set)
+      |> json([], [])
+
+    assert conn.status === 200
+    assert conn.state === :sent
+    assert get_resp_header(conn, "content-type") === ["application/json; charset=utf-8"]
+    assert conn.resp_body === "[]"
+  end
+
   test "status/2 and json/2" do
     conn = conn(:get, "/")
       |> Map.put(:state, :set)
@@ -69,10 +80,19 @@ defmodule Sugar.ControllerTest do
     assert conn.state === :sent
   end
 
-  test "render/1" do
+  test "render/4 without template, assigns, or opts" do
     conn = conn(:get, "/")
       |> Map.put(:state, :set)
       |> render
+
+    assert conn.state === :sent
+    assert get_resp_header(conn, "content-type") === ["text/html; charset=utf-8"]
+  end
+
+  test "render/4 without template but with assigns" do
+    conn = conn(:get, "/")
+      |> Map.put(:state, :set)
+      |> render([])
 
     assert conn.state === :sent
     assert get_resp_header(conn, "content-type") === ["text/html; charset=utf-8"]

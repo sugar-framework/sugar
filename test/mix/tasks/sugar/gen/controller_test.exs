@@ -1,5 +1,6 @@
 defmodule Mix.Tasks.Sugar.Gen.ControllerTest do
   use ExUnit.Case, async: true
+  import ExUnit.CaptureIO
 
   test "run_detached/1" do
     assigns = [
@@ -7,7 +8,9 @@ defmodule Mix.Tasks.Sugar.Gen.ControllerTest do
       module: "TestApp",
       path: "test/fixtures"
     ]
-    Mix.Tasks.Sugar.Gen.Controller.run_detached(assigns ++ [name: "main"])
+    capture_io(fn ->
+      Mix.Tasks.Sugar.Gen.Controller.run_detached(assigns ++ [name: "main"])
+    end)
 
     assert File.exists?("test/fixtures/controllers/main.ex") === true
     File.rm_rf! "test/fixtures/controllers"
@@ -15,7 +18,9 @@ defmodule Mix.Tasks.Sugar.Gen.ControllerTest do
 
   test "run/1 with proper name" do
     args = ["main", "--path=test/fixtures"]
-    Mix.Tasks.Sugar.Gen.Controller.run(args)
+    capture_io(fn ->
+      Mix.Tasks.Sugar.Gen.Controller.run(args)
+    end)
 
     assert File.exists?("test/fixtures/controllers/main.ex") === true
     File.rm_rf! "test/fixtures/controllers"

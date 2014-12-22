@@ -1,5 +1,6 @@
 defmodule Mix.Tasks.Sugar.Gen.RouterTest do
   use ExUnit.Case, async: true
+  import ExUnit.CaptureIO
 
   test "run_detached/1" do
     assigns = [
@@ -7,7 +8,9 @@ defmodule Mix.Tasks.Sugar.Gen.RouterTest do
       module: "TestApp",
       path: "test/fixtures"
     ]
-    Mix.Tasks.Sugar.Gen.Router.run_detached(assigns)
+    capture_io(fn ->
+      Mix.Tasks.Sugar.Gen.Router.run_detached(assigns)
+    end)
     expected_path = "test/fixtures/router.ex"
 
     assert File.exists?(expected_path) === true
@@ -16,7 +19,9 @@ defmodule Mix.Tasks.Sugar.Gen.RouterTest do
 
   test "run/1" do
     args = ["--path=test/fixtures"]
-    Mix.Tasks.Sugar.Gen.Router.run(args)
+    capture_io(fn ->
+      Mix.Tasks.Sugar.Gen.Router.run(args)
+    end)
     expected_path = "test/fixtures/router.ex"
 
     assert File.exists?(expected_path) === true

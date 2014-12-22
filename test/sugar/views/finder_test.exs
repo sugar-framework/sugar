@@ -1,12 +1,12 @@
 defmodule Sugar.Views.FinderTest do
-  use ExUnit.Case
+  use ExUnit.Case, async: false
 
   test "all/1" do
     templates = Sugar.Views.Finder.all("test/fixtures/view_finder")
     expected = %Sugar.Templates.Template{
                     engine: Sugar.Templates.Engines.EEx,
                     key: "index.html.eex",
-                    source: ""
+                    source: "<%= @title %>"
                   }
 
     assert Enum.count(templates) === 1
@@ -22,7 +22,7 @@ defmodule Sugar.Views.FinderTest do
     expected = %Sugar.Templates.Template{
                   engine: Sugar.Templates.Engines.EEx,
                   key: "index.html.eex",
-                  source: ""
+                  source: "<%= @title %>"
                 }
 
     assert template.key === expected.key
@@ -35,7 +35,7 @@ defmodule Sugar.Views.FinderTest do
     expected = %Sugar.Templates.Template{
                   engine: Sugar.Templates.Engines.EEx,
                   key: "index.html.eex",
-                  source: ""
+                  source: "<%= @title %>"
                 }
 
     assert template.key === expected.key

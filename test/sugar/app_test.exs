@@ -1,16 +1,21 @@
 defmodule Sugar.AppTest do
   use ExUnit.Case, async: true
+  import ExUnit.CaptureIO
   import Sugar.App
 
   test "run/1" do
-    {status, _pid} = run([])
-    assert status === :ok
+    capture_io(fn ->
+      {status, _pid} = run([])
+      assert status === :ok
+    end)
   end
 
   test "start/0" do
-    assert start === :ok
-    # starting twice should still return :ok
-    assert start === :ok
+    capture_io(fn ->
+      assert start === :ok
+      # starting twice should still return :ok
+      assert start === :ok
+    end)
   end
 
   test "start/2" do

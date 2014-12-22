@@ -25,11 +25,12 @@ defmodule Mix.Tasks.Sugar.Gen.Router do
 
   defp do_create_file(opts) do
     module = camelize String.Chars.to_string(Mix.Project.config[:app])
+    path = "lib/#{underscore module}"
 
     assigns = [
       app: Mix.Project.config[:app],
       module: module,
-      path: "lib/#{underscore module}"
+      path: path
     ] |> Keyword.merge opts
 
     create_file "#{assigns[:path]}/router.ex", router_template(assigns)

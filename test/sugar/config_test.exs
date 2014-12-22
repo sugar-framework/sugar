@@ -8,6 +8,7 @@ defmodule Sugar.ConfigTest do
 
   test "get/2" do
     assert get(Router, :https_only) === nil
+    assert get(:sugar, :views_dir)
   end
 
   test "get/3" do

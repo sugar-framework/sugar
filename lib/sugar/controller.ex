@@ -155,23 +155,11 @@ defmodule Sugar.Controller do
   end
 
   @doc """
-  Sends a normal response. Automatically renders a template based on
-  the current controller and action names.
+  Sends a normal response. 
 
-  ## Arguments
-  * `conn` - `Plug.Conn`
-
-  ## Returns
-
-  `Plug.Conn`
-  """
-  def render(conn) do
-    template = build_template_key(conn)
-    render_view(conn, template, [], [])
-  end
-
-  @doc """
-  Sends a normal response.
+  Automatically renders a template based on the
+  current controller and action names when no
+  template is passed.
 
   ## Arguments
 
@@ -184,10 +172,14 @@ defmodule Sugar.Controller do
 
   `Plug.Conn`
   """
-  def render(conn, template, assigns \\ [], opts \\ [])
+  def render(conn, template \\ nil, assigns \\ [], opts \\ [])
   def render(conn, template, assigns, opts) when is_atom(template)
                                               or is_binary(template) do
     template = build_template_key(conn, template)
+    render_view(conn, template, assigns, opts)
+  end
+  def render(conn, assigns, opts, _) when is_list(assigns) do
+    template = build_template_key(conn)
     render_view(conn, template, assigns, opts)
   end
 

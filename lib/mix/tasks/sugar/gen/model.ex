@@ -30,13 +30,14 @@ defmodule Mix.Tasks.Sugar.Gen.Model do
 
   defp do_create_files(name, opts) do
     module = camelize String.Chars.to_string(Mix.Project.config[:app])
+    path = "lib/#{underscore name}"
 
     assigns = [
       app: Mix.Project.config[:app],
       module: module,
       name: camelize(name),
       table_name: name,
-      path: "lib/#{underscore module}"
+      path: path
     ] |> Keyword.merge opts
 
     Mix.Tasks.Ecto.Gen.Migration.run ["#{assigns[:module]}.Repos.Main", "create_#{name}"]
