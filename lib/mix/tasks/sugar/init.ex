@@ -18,9 +18,7 @@ defmodule Mix.Tasks.Sugar.Init do
 
   """
   def run(args) do
-    IO.inspect args
     opts = OptionParser.parse(args, switches: [no_repo: :boolean, path: :string, priv_path: :string])
-    IO.inspect opts
     do_init elem(opts, 0)
   end
 
@@ -33,8 +31,6 @@ defmodule Mix.Tasks.Sugar.Init do
       path: "lib/#{underscore name}",
       priv_path: "priv"
     ] |> Keyword.merge opts
-
-    IO.inspect assigns
 
     # Priviliged
     create_directory "#{assigns[:priv_path]}"

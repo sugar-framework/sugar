@@ -20,7 +20,7 @@ defmodule Sugar.Mixfile do
 
   defp deps(:prod) do
     [ { :cowboy, "~> 1.0.0" },
-      { :plug, "~> 0.7.0" },
+      { :plug, "~> 0.7.0", override: true },
       { :jsex, "~> 2.0.0" },
       { :ecto, "~> 0.2.5" },
       { :postgrex, "~> 0.6.0" },

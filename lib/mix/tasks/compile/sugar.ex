@@ -68,7 +68,8 @@ defmodule Mix.Tasks.Compile.Sugar do
           Mix.shell.info "Generated #{name}"
         end)
 
-      compiled = Sugar.Templates.get_all_templates
+      # compiled =
+      Sugar.Templates.get_all_templates
         |> Map.keys
 
       # Mix.Utils.write_manifest(manifest, compiled)

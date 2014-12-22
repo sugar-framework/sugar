@@ -155,6 +155,22 @@ defmodule Sugar.Controller do
   end
 
   @doc """
+  Sends a normal response. Automatically renders a template based on
+  the current controller and action names.
+
+  ## Arguments
+  * `conn` - `Plug.Conn`
+
+  ## Returns
+
+  `Plug.Conn`
+  """
+  def render(conn) do
+    template = build_template_key(conn)
+    render_view(conn, template, [], [])
+  end
+
+  @doc """
   Sends a normal response.
 
   ## Arguments
@@ -168,28 +184,19 @@ defmodule Sugar.Controller do
 
   `Plug.Conn`
   """
-  def render(conn) do
-    template = build_template_key(conn)
-    render_view(conn, template, [], [])
-  end
-
   def render(conn, template, assigns \\ [], opts \\ [])
-
-  def render(conn, template, assigns, opts) when is_atom(template) do
-    template = build_template_key(conn,template)
-    render_view(conn, template, assigns, opts)
-  end
-
-  def render(conn, template, assigns, opts) when is_binary(template) do
-    template = build_template_key(conn,template)
+  def render(conn, template, assigns, opts) when is_atom(template)
+                                              or is_binary(template) do
+    template = build_template_key(conn, template)
     render_view(conn, template, assigns, opts)
   end
 
   defp render_view(conn, template_key, assigns, opts) do
     opts = [status: 200] |> Keyword.merge opts
 
-    html = Sugar.Views.Finder.one("lib/#{Mix.Project.config[:app]}/views", template_key)
-       |> Sugar.Templates.render(assigns)
+    html = Sugar.Config.get(:sugar, :views_dir, "lib/#{Mix.Project.config[:app]}/views")
+      |> Sugar.Views.Finder.one(template_key)
+      |> Sugar.Templates.render(assigns)
 
     conn
       |> put_resp_content_type_if_not_sent(opts[:content_type] || "text/html")
@@ -269,10 +276,11 @@ defmodule Sugar.Controller do
   end
 
   defp build_template_key(conn, template \\ nil) do
-    template = template || conn.private.action
+    default = Map.get(conn.private, :action) || :index
+    template = template || default
 
     controller = "#{Map.get(conn.private, :controller, "")}"
-                  |> String.split(".") 
+                  |> String.split(".")
                   |> List.last
                   |> String.downcase
 

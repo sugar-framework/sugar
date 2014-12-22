@@ -31,13 +31,10 @@ defmodule Mix.Tasks.Server do
   end
 
   defp add_config(options) do
-    config = Sugar.App.config
+    router = Sugar.Config.get(:placid, :router, Router)
+    config = Sugar.Config.get(router) || []
 
-    if Keyword.has_key? config, :server do
-      Keyword.merge config[:server], options
-    else
-      options
-    end
+    Keyword.merge config, options
   end
 
   def binary_to_integer(port) do

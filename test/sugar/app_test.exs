@@ -26,10 +26,6 @@ defmodule Sugar.AppTest do
     assert get_port([port: 8888]) === 8888
     assert get_port([port: -8888]) === 8888
   end
-
-  test "config/0" do
-    assert config === []
-  end
 end
 
 defmodule Router do

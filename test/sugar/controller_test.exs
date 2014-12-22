@@ -69,49 +69,49 @@ defmodule Sugar.ControllerTest do
     assert conn.state === :sent
   end
 
-  test "render/4 without assigns and opts" do
-    build_template
+  test "render/1" do
     conn = conn(:get, "/")
       |> Map.put(:state, :set)
-      |> render("index.html.eex")
+      |> render
 
     assert conn.state === :sent
     assert get_resp_header(conn, "content-type") === ["text/html; charset=utf-8"]
-    destroy_template
+  end
+
+  test "render/4 without assigns and opts" do
+    conn = conn(:get, "/")
+      |> Map.put(:state, :set)
+      |> render("foo/index.html.eex")
+
+    assert conn.state === :sent
+    assert get_resp_header(conn, "content-type") === ["text/html; charset=utf-8"]
   end
 
   test "render/4 with assigns and without opts" do
-    build_template
     conn = conn(:get, "/")
       |> Map.put(:state, :set)
-      |> render("index.html.eex", [])
+      |> render("foo/index.html.eex", [])
 
     assert conn.state === :sent
     assert get_resp_header(conn, "content-type") === ["text/html; charset=utf-8"]
-    destroy_template
   end
 
   test "render/4 with assigns and opts" do
-    build_template
     conn = conn(:get, "/")
       |> Map.put(:state, :set)
-      |> render("index.html.eex", [], [content_type: "text/html"])
+      |> render("foo/index.html.eex", [], [content_type: "text/html"])
 
     assert conn.state === :sent
     assert get_resp_header(conn, "content-type") === ["text/html; charset=utf-8"]
-    destroy_template
   end
 
   test "render/4 with a symbol" do
-    File.mkdir("lib/sugar/views/tests/")
-    File.touch("lib/sugar/views/tests/index.html.eex")
     conn = conn(:get, "/")
           |> Map.put(:state, :set)
-          |> render("tests/index.html.eex", [], [content_type: "text/html"])
+          |> render("foo/index.html.eex", [], [content_type: "text/html"])
 
     assert conn.state === :sent
     assert get_resp_header(conn, "content-type") === ["text/html; charset=utf-8"]
-    File.rm!("lib/sugar/views/tests/index.html.eex")
   end
 
   test "halt!/2 without opts" do
@@ -191,14 +191,6 @@ defmodule Sugar.ControllerTest do
       |> redirect("/login")
 
     assert conn.state === :sent
-  end
-
-  defp build_template do
-    File.write!("lib/sugar/views/index.html.eex", "")
-  end
-
-  defp destroy_template do
-    File.rm!("lib/sugar/views/index.html.eex")
   end
 
   defmodule Controller do

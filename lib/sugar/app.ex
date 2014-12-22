@@ -12,13 +12,7 @@ defmodule Sugar.App do
   """
   def run(opts) do
     IO.puts "Starting Sugar on port #{get_port(opts)}..."
-
-    if Keyword.has_key? Sugar.App.config, :router do
-      router = Sugar.App.config[:router]
-    else
-      router = Router
-    end
-
+    router = Sugar.Config.get(:sugar, :router, Router)
     Plug.Adapters.Cowboy.http router, [], opts
   end
 
@@ -39,7 +33,8 @@ defmodule Sugar.App do
   """
   def start(_type, _args) do
     :ok = Application.ensure_started(:templates)
-    Sugar.Views.Finder.all("lib/views")
+    Sugar.Config.get(:sugar, :views_dir, "lib/#{Mix.Project.config[:app]}/views")
+      |> Sugar.Views.Finder.all
       |> Sugar.Templates.compile
     Sugar.Supervisor.start_link
   end
@@ -71,24 +66,5 @@ defmodule Sugar.App do
       _ ->
         abs(opts[:port])
     end
-  end
-
-  @doc """
-  Loads userland configuration if available.
-
-  ## Returns
-
-  `Keyword`
-  """
-  def config do
-    config = Keyword.new
-    if loaded? Config do
-      config = apply(Config, :config, [])
-    end
-    config
-  end
-
-  defp loaded?(module) do
-    is_tuple :code.is_loaded(module)
   end
 end
