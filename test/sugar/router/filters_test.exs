@@ -2,31 +2,31 @@ defmodule Sugar.Router.FiltersTest do
   use ExUnit.Case, async: true
   use Plug.Test
 
-  test "before_filter/1 all" do
-    conn = conn(:get, "/")
-      |> Sugar.Router.FiltersTest.Router.call([])
+  # test "before_filter/1 all" do
+  #   conn = conn(:get, "/")
+  #     |> Sugar.Router.FiltersTest.Router.call([])
 
-    assert get_resp_header(conn, "content-type") === ["application/json; charset=utf-8"]
-  end
+  #   assert get_resp_header(conn, "content-type") === ["application/json; charset=utf-8"]
+  # end
 
-  test "after_filter/1 all" do
-    conn = conn(:get, "/")
-      |> Sugar.Router.FiltersTest.Router.call([])
+  # test "after_filter/1 all" do
+  #   conn = conn(:get, "/")
+  #     |> Sugar.Router.FiltersTest.Router.call([])
 
-    refute conn.assigns[:id] === 1
-  end
+  #   refute conn.assigns[:id] === 1
+  # end
 
-  defmodule Router do
-    use Sugar.Router
-    alias Sugar.Router.FiltersTest.Controller
-    alias Sugar.Router.FiltersTest.Filters
+  # defmodule Router do
+  #   use Sugar.Router
+  #   alias Sugar.Router.FiltersTest.Controller
+  #   alias Sugar.Router.FiltersTest.Filters
     
-    before_filter Filters, :set_json
-    after_filter Filters, :clear_assigns
+  #   before_filter Filters, :set_json
+  #   after_filter Filters, :clear_assigns
 
-    get "/", Controller, :index
-    get "/show", Controller, :show
-  end
+  #   get "/", Controller, :index
+  #   get "/show", Controller, :show
+  # end
 
   defmodule Controller do
     use Sugar.Controller
