@@ -5,14 +5,14 @@ defmodule Sugar.Router do
 
   Routes are defined with the form:
 
-      method route [guard], handler, action
+      method route [guard], controller, action
 
   `method` is `get`, `post`, `put`, `patch`, or `delete`, each 
   responsible for a single HTTP method. `method` can also be `any`, which will 
   match on all HTTP methods. `options` is yet another option for `method`, but
   when using `options`, only a route path and the methods that route path
-  supports are needed. `handler` is any valid Elixir module name, and 
-  `action` is any valid public function defined in the `handler` module.
+  supports are needed. `controller` is any valid Elixir module name, and
+  `action` is any valid public function defined in the `controller` module.
 
   `get/3`, `post/3`, `put/3`, `patch/3`, `delete/3`, `options/2`, and `any/3` 
   are already built-in as described. `resource/2` exists but will need 
@@ -156,12 +156,12 @@ defmodule Sugar.Router do
     ## Arguments
 
     * `route` - `String|List`
-    * `handler` - `Atom`
+    * `controller` - `Atom`
     * `action` - `Atom`
     """
     @spec unquote(verb)(binary | list, atom, atom) :: ast
-    defmacro unquote(verb)(route, handler, action) do
-      build_match unquote(verb), route, handler, action, __CALLER__
+    defmacro unquote(verb)(route, controller, action) do
+      build_match unquote(verb), route, controller, action, __CALLER__
     end
   end
 
@@ -185,16 +185,16 @@ defmodule Sugar.Router do
 
   * `method` - `Atom`
   * `route` - `String|List`
-  * `handler` - `Atom`
+  * `controller` - `Atom`
   * `action` - `Atom`
   """
   @spec raw(atom, binary | list, atom, atom) :: ast
-  defmacro raw(method, route, handler, action) do
-    build_match method, route, handler, action, __CALLER__
+  defmacro raw(method, route, controller, action) do
+    build_match method, route, controller, action, __CALLER__
   end
 
   @doc """
-  Creates RESTful resource endpoints for a route/handler
+  Creates RESTful resource endpoints for a route/controller
   combination.
 
   ## Example
@@ -214,7 +214,7 @@ defmodule Sugar.Router do
       options, "/users/:_id", "HEAD,GET,PUT,PATCH,DELETE"
   """
   @spec resource(atom, atom, Keyword.t) :: [ast]
-  defmacro resource(resource, handler, opts \\ []) do
+  defmacro resource(resource, controller, opts \\ []) do
     arg     = Keyword.get opts, :arg, :id
     allowed = Keyword.get opts, :only, [ :index, :create, :show,
                                          :update, :patch, :delete ]
@@ -231,12 +231,12 @@ defmodule Sugar.Router do
         { :delete,  "#{prepend_path}#{resource}/:#{arg}",  :delete } ]
 
     options_routes =
-      [ { "/#{ignore_args prepend_path}#{resource}",          [ index: :get, create: :post ] },
-        { "/#{ignore_args prepend_path}#{resource}/:_#{arg}", [ show: :get, update: :put,
-                                                                patch: :patch, delete: :delete ] } ]
+      [ { "/" <> ignore_args(prepend_path) <> "#{resource}",          [ index: :get, create: :post ] },
+        { "/" <> ignore_args(prepend_path) <> "#{resource}/:_#{arg}", [ show: :get, update: :put,
+                                                                        patch: :patch, delete: :delete ] } ]
 
     for { method, path, action } <- routes |> filter(allowed) do
-      build_match method, path, handler, action, __CALLER__
+      build_match method, path, controller, action, __CALLER__
     end ++ for { path, methods } <- options_routes do
       allows = methods
                 |> filter(allowed)
@@ -271,10 +271,10 @@ defmodule Sugar.Router do
 
     do_build_match :options, route, body, caller
   end
-  defp build_match(method, route, handler, action, caller) do
-    body = build_body handler, action
-    # body_json = build_body handler, action, :json
-    # body_xml = build_body handler, action, :xml
+  defp build_match(method, route, controller, action, caller) do
+    body = build_body controller, action
+    # body_json = build_body controller, action, :json
+    # body_xml = build_body controller, action, :xml
 
     [ #do_build_match(method, route <> ".json", body_json, caller),
       #do_build_match(method, route <> ".xml", body_xml, caller),
@@ -294,8 +294,8 @@ defmodule Sugar.Router do
     end
   end
 
-  defp build_body(handler, action), do: build_body(handler, action, :skip)
-  defp build_body(handler, action, add_header) do
+  defp build_body(controller, action), do: build_body(controller, action, :skip)
+  defp build_body(controller, action, add_header) do
     header = case add_header do
         :json -> [{"accept", "application/json"}]
         :xml  -> [{"accept", "application/xml"}]
@@ -304,8 +304,11 @@ defmodule Sugar.Router do
 
     quote do
       opts = [ action: unquote(action), args: binding() ]
-      unquote(handler).call %{ conn | req_headers: unquote(header) ++ 
-          conn.req_headers }, unquote(handler).init(opts)
+      %{ conn | req_headers: unquote(header) ++ conn.req_headers,
+                private: conn.private
+                           |> Map.put(:controller, unquote(controller))
+                           |> Map.put(:action, unquote(action)) }
+        |> unquote(controller).call(unquote(controller).init(opts))
     end
   end
 

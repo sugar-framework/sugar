@@ -1,3 +1,5 @@
 use Mix.Config
 
-config :sugar, views_dir: "test/fixtures/templates"
+config :sugar,
+  config_test: [true],
+  views_dir: "test/fixtures/templates"

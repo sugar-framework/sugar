@@ -11,6 +11,7 @@ defmodule Sugar.Router.UtilTest do
   end
 
   test "build_spec/2 proper" do
+    assert build_spec("bin/sh", nil)  === {[], ["bin", "sh"]}
     assert build_spec("bin/:sh", nil) === {[:sh], ["bin", {:sh, [], nil}]}
     assert build_spec("bin/*sh", nil) === {[:sh], [{:|, [], ["bin", {:sh, [], nil}]}]}
     assert build_spec("*sh", nil)     === {[:sh], {:sh, [], nil}}

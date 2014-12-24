@@ -153,6 +153,14 @@ defmodule Sugar.RouterTest do
     assert conn.params["foo"] == "baz"
   end
 
+  test "adds matched controller and action to conn" do
+    conn = conn(:get, "/get")
+      |> Sugar.RouterTest.Router.call([])
+
+    assert conn.private[:controller] === Sugar.RouterTest.Foo
+    assert conn.private[:action] === :get
+  end
+
   defmodule Foo do
     use Sugar.Controller
 
