@@ -1,302 +1,160 @@
 defmodule Sugar.Controller do
-  import Plug.Conn
   @moduledoc """
-  All controller actions should have an arrity of 2, with the
-  first argument being a `Plug.Conn` representing the current
-  connection and the second argument being a `Keyword` list
-  of any parameters captured in the route path.
+  Controllers facilitate some separation of concerns for your application's logic.
 
-  Sugar bundles these response helpers to assist in sending a
-  response:
+  All handler actions should have an arrity of 2, with the first argument being 
+  a `Plug.Conn` representing the current connection and the second argument 
+  being a `Keyword` list of any parameters captured in the route path.
 
-  * `render/4` - `conn`, `template_key`, `assigns`, `opts` - sends a normal
-    response.
-  * `halt!/2` - `conn`, `opts` - ends the response.
-  * `not_found/1` - `conn`, `message` - sends a 404 (Not found) response.
-  * `json/2` - `conn`, `data` - sends a normal response with
-    `data` encoded as JSON.
-  * `raw/1` - `conn` - sends response as-is. It is expected
-    that status codes, headers, body, etc have been set by
-    the controller action.
-  * `static/2` - `conn`, `file` - reads and renders a single static file.
+  `Sugar.Controller` imports `Plug.Conn`, the `plug/1` and `plug/2` macros from
+  `Plug.Builder`, `Sugar.Controller`, and `Sugar.Controller.Helpers` for 
+  convenience when creating handlers for your applications
 
-  #### Example
+  ## Example
 
-      defmodule Hello do
+      defmodule Controllers.Pages do
         use Sugar.Controller
 
+        @doc false
         def index(conn, []) do
-          render conn, "showing index controller"
+          # Somehow get our content
+          pages = Queries.Page.all
+          render conn, pages
         end
 
+        @doc false
         def show(conn, args) do
-          render conn, "showing page \#{args[:id]}"
+          result = case Integer.parse args["page_id"] do
+              :error -> 
+                %Error{ id: "no_page_id",
+                        message: "A valid page_id is required." }
+              {i, _} ->
+                Queries.Page.get i
+            end
+
+          render conn, result
         end
 
-        def create(conn, []) do
-          render conn, "page created"
+        @doc false
+        def create(conn, args) do
+          render conn, Queries.Page.create args, status: :created
         end
 
-        def get_json(conn, []) do
-          json conn, [message: "foobar"]
+        @doc false
+        def update(conn, args) do
+          result = case Integer.parse args["page_id"] do
+              :error -> 
+                %Error{ id: "no_page_id",
+                        message: "A valid page_id is requried." }
+              {i, _} ->
+                Queries.Page.update i, args
+            end
+
+          render conn, result
         end
       end
   """
 
-  @doc """
-  Macro used to add necessary items to a controller.
-  """
+  @doc false
   defmacro __using__(_) do
     quote do
-      import unquote(__MODULE__)
-      import unquote(Plug.Conn)
-      use unquote(Sugar.Controller.Hooks)
+      import Plug.Conn
+      import Plug.Builder, only: [plug: 1, plug: 2]
+      import Sugar.Controller
+      import Sugar.Controller.Helpers
+      @before_compile Sugar.Controller
+      @behaviour Plug
+      Module.register_attribute(__MODULE__, :plugs, accumulate: true)
     end
   end
 
-  @doc """
-  sets connection status
+  @doc false
+  defmacro __before_compile__(env) do
+    plugs = Module.get_attribute(env.module, :plugs)
+            |> Enum.map(fn { plug, opts, guard } ->
+              { plug, Keyword.put_new(opts, :run, :before), guard }
+            end)
 
-  ## Arguments
+    plug_stacks = build_plug_stacks plugs
 
-  * `conn` - `Plug.Conn`
-  * `status_code` - `Integer`
+    quote do
+      def init(opts) do
+        opts
+      end
 
-  ## Returns
+      def call(conn, opts) do
+        conn = do_call conn, :before, opts[:action]
+        conn = apply __MODULE__, opts[:action], [ conn, opts[:args] ]
+        do_call conn, :after, opts[:action]
+      end
 
-  `Plug.Conn`
-  """
-  def status(conn, status_code) do
-    %Plug.Conn{conn | status: status_code, state: :set}
-  end
+      defoverridable [init: 1, call: 2]
 
-  @doc """
-  sets response headers
-
-  ## Arguments
-
-  * `conn` - `Plug.Conn`
-  * `status_code` - `Integer`
-
-  ## Returns
-
-  `Plug.Conn`
-  """
-  def headers(conn, headers) do
-    %Plug.Conn{conn | resp_headers: headers, state: :set}
-  end
-
-  @doc """
-  reads and renders a single static file.
-
-  ## Arguments
-
-  * `conn` - `Plug.Conn`
-  * `file` - `String`
-
-  ## Returns
-
-  `Plug.Conn`
-  """
-  def static(conn, file) do
-    filename = Path.join(["priv/static", file])
-    if File.exists? filename do
-      body = filename |> File.read!
-      conn
-        |> put_resp_content_type_if_not_sent("text/html")
-        |> send_resp_if_not_sent(200, body)
-    else
-      conn
-        |> not_found
+      unquote(plug_stacks)
     end
   end
 
-  @doc """
-  Sends a normal response with `data` encoded as JSON.
+  defp build_plug_stacks(plugs) do
+    only_actions = get_only_actions plugs
 
-  ## Arguments
-
-  * `conn` - `Plug.Conn`
-  * `data` - `Keyword|List`
-
-  ## Returns
-
-  `Plug.Conn`
-  """
-  def json(conn, data, opts) do
-    opts = [status: 200] |> Keyword.merge opts
-    conn
-      |> put_resp_content_type_if_not_sent("application/json")
-      |> send_resp_if_not_sent(opts[:status], JSEX.encode! data)
-  end
-  def json(conn, data) do
-    status = conn.status || 200
-    if get_resp_header(conn, "content-type") == [] do
-      conn = put_resp_content_type_if_not_sent(conn, "application/json")
+    Enum.map only_actions ++ [nil], fn action ->
+      build_plug_stacks_for action, plugs
     end
-    conn |> send_resp_if_not_sent(status, JSEX.encode! data)
   end
 
-  @doc """
-  Sends response as-is. It is expected that status codes,
-  headers, body, etc have been set by the controller
-  action.
+  defp build_plug_stacks_for(action, plugs) do
+    before_body = build_calls_for(:before, action, plugs)
+    after_body = build_calls_for(:after, action, plugs)
 
-  ## Arguments
-
-  * `conn` - `Plug.Conn`
-
-  ## Returns
-
-  `Plug.Conn`
-  """
-  def raw(conn) do
-    conn |> send_resp
+    quote do
+      unquote(before_body)
+      unquote(after_body)
+    end
   end
 
-  @doc """
-  Sends a normal response. 
+  defp build_calls_for(before_or_after, nil, plugs) do
+    { conn, body } = plugs
+                  |> Enum.filter(fn { _, opts, _ } ->
+                    opts[:only] === nil
+                  end)
+                  |> Enum.filter(fn { _, opts, _ } ->
+                    opts[:run] === before_or_after
+                  end)
+                  |> Plug.Builder.compile
 
-  Automatically renders a template based on the
-  current controller and action names when no
-  template is passed.
-
-  ## Arguments
-
-  * `conn` - `Plug.Conn`
-  * `template_key` - `String`
-  * `assigns` - `Keyword`
-  * `opts` - `Keyword`
-
-  ## Returns
-
-  `Plug.Conn`
-  """
-  def render(conn, template \\ nil, assigns \\ [], opts \\ [])
-  def render(conn, template, assigns, opts) when is_atom(template)
-                                              or is_binary(template) do
-    template = build_template_key(conn, template)
-    render_view(conn, template, assigns, opts)
+    quote do
+      defp do_call(unquote(conn), unquote(before_or_after), _) do
+        unquote(body)
+      end
+    end
   end
-  def render(conn, assigns, opts, _) when is_list(assigns) do
-    template = build_template_key(conn)
-    render_view(conn, template, assigns, opts)
-  end
+  defp build_calls_for(before_or_after, action, plugs) do
+    { conn, body } = plugs
+                  |> Enum.filter(fn { _, opts, _ } ->
+                    opts[:only] === nil || 
+                    action === opts[:only] ||
+                    action in opts[:only]
+                  end)
+                  |> Enum.filter(fn { _, opts, _ } ->
+                    opts[:run] === before_or_after
+                  end)
+                  |> Plug.Builder.compile
 
-  defp render_view(conn, template_key, assigns, opts) do
-    opts = [status: 200] |> Keyword.merge opts
-
-    html = Sugar.Config.get(:sugar, :views_dir, "lib/#{Mix.Project.config[:app]}/views")
-      |> Sugar.Views.Finder.one(template_key)
-      |> Sugar.Templates.render(assigns)
-
-    conn
-      |> put_resp_content_type_if_not_sent(opts[:content_type] || "text/html")
-      |> send_resp_if_not_sent(opts[:status], html)
+    quote do
+      defp do_call(unquote(conn), unquote(before_or_after), unquote(action)) do
+        unquote(body)
+      end
+    end
   end
 
-  @doc """
-  Ends the response.
-
-  ## Arguments
-
-  * `conn` - `Plug.Conn`
-  * `opts` - `Keyword`
-
-  ## Returns
-
-  `Plug.Conn`
-  """
-  def halt!(conn, opts \\ []) do
-    opts = [status: 401, message: ""] |> Keyword.merge opts
-    conn
-      |> send_resp_if_not_sent(opts[:status], opts[:message])
-  end
-
-  @doc """
-  Sends a 404 (Not found) response.
-
-  ## Arguments
-
-  * `conn` - `Plug.Conn`
-
-  ## Returns
-
-  `Plug.Conn`
-  """
-  def not_found(conn, message \\ "Not Found") do
-    conn
-      |> send_resp_if_not_sent(404, message)
-  end
-
-  @doc """
-  Forwards the response to another controller action.
-
-  ## Arguments
-
-  * `conn` - `Plug.Conn`
-  * `controller` - `Atom`
-  * `action` - `Atom`
-  * `args` - `Keyword`
-
-  ## Returns
-
-  `Plug.Conn`
-  """
-  def forward(conn, controller, action, args \\ []) do
-    apply controller, action, [conn, args]
-  end
-
-  @doc """
-  Redirects the response.
-
-  ## Arguments
-
-  * `conn` - `Plug.Conn`
-  * `location` - `String`
-  * `opts` - `Keyword`
-
-  ## Returns
-
-  `Plug.Conn`
-  """
-  def redirect(conn, location, opts \\ []) do
-    opts = [status: 302] |> Keyword.merge opts
-    conn
-      |> put_resp_header_if_not_sent("Location", location)
-      |> send_resp_if_not_sent(opts[:status], "")
-  end
-
-  defp build_template_key(conn, template \\ nil) do
-    default = Map.get(conn.private, :action) || :index
-    template = template || default
-
-    controller = "#{Map.get(conn.private, :controller, "")}"
-                  |> String.split(".")
-                  |> List.last
-                  |> String.downcase
-
-     "#{controller}/#{template}"
-  end
-
-  defp put_resp_header_if_not_sent(%Plug.Conn{state: :sent} = conn, _, _) do
-    conn
-  end
-  defp put_resp_header_if_not_sent(conn, key, value) do
-    conn |> put_resp_header(key, value)
-  end
-
-  defp put_resp_content_type_if_not_sent(%Plug.Conn{state: :sent} = conn, _) do
-    conn
-  end
-  defp put_resp_content_type_if_not_sent(conn, resp_content_type) do
-    conn |> put_resp_content_type(resp_content_type)
-  end
-
-  defp send_resp_if_not_sent(%Plug.Conn{state: :sent} = conn, _, _) do
-    conn
-  end
-  defp send_resp_if_not_sent(conn, status, body) do
-    conn |> send_resp(status, body)
+  defp get_only_actions(plugs) do
+    plugs
+      |> Enum.filter(fn { _, opts, _ } ->
+        opts[:only] != nil
+      end)
+      |> Enum.flat_map(fn { _, opts, _ } ->
+        opts[:only]
+      end)
+      |> Enum.uniq
   end
 end

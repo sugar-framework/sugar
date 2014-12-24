@@ -16,7 +16,8 @@ defmodule Sugar.Views.Finder do
   List of `Sugar.Templates.Template`
   """
   def all(root) do
-    Path.wildcard("#{root}/**/*.*")
+    root <> "/**/*.*"
+      |> Path.wildcard
       |> Enum.map(fn (path) -> build(path) end)
   end
 
