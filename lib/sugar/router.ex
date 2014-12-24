@@ -79,6 +79,7 @@ defmodule Sugar.Router do
                                     :urlencoded, 
                                     :multipart ],
                          json_decoder: JSEX
+      plug :copy_req_content_type
     end
   end
 
@@ -87,11 +88,10 @@ defmodule Sugar.Router do
     # Plugs we want predefined but aren't necessary to be before
     # user-defined plugs
     defaults = [ { Plug.Head, [], true },
-                 { Plug.MethodOverride, [], true },  
-                 { :copy_req_content_type, [], true }, 
+                 { Plug.MethodOverride, [], true },
                  { :match, [], true },
                  { :dispatch, [], true } ]
-    { conn, body } = Enum.reverse(defaults) ++ 
+    { conn, body } = Enum.reverse(defaults) ++
                      Module.get_attribute(env.module, :plugs)
                      |> Plug.Builder.compile
 
@@ -107,7 +107,7 @@ defmodule Sugar.Router do
       defoverridable [init: 1, call: 2]
 
       def copy_req_content_type(conn, _opts) do
-        default = Application.get_env(:sugar, :default_content_type, "application/json; charset=utf-8")
+        default = Application.get_env(:sugar, :default_content_type, "text/html; charset=utf-8")
         content_type = case Plug.Conn.get_req_header conn, "content-type" do
             [content_type] -> content_type
             _ -> default
