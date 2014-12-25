@@ -21,8 +21,8 @@ defmodule Sugar.Mixfile do
   defp deps(:prod) do
     [ { :cowboy, "~> 1.0.0" },
       { :plug, "~> 0.9.0" },
-      { :jsex, "~> 2.0.0" },
-      { :ecto, "~> 0.2.5" },
+      { :poison, "~> 1.3.0" },
+      { :ecto, "~> 0.2.8" },
       { :postgrex, "~> 0.6.0" },
       { :plugs, github: "sugar-framework/plugs" },
       { :templates, github: "sugar-framework/templates" } ]
@@ -30,7 +30,8 @@ defmodule Sugar.Mixfile do
 
   defp deps(:docs) do
     deps(:prod) ++
-      [ { :ex_doc, github: "elixir-lang/ex_doc" } ]
+      [ { :ex_doc, "~> 0.6.2" },
+        { :earmark, "~> 0.1.12"} ]
   end
 
   defp deps(_) do

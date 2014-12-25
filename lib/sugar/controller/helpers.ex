@@ -117,14 +117,14 @@ defmodule Sugar.Controller.Helpers do
     opts = [status: 200] |> Keyword.merge opts
     conn
       |> put_resp_content_type_if_not_sent("application/json")
-      |> send_resp_if_not_sent(opts[:status], JSEX.encode! data)
+      |> send_resp_if_not_sent(opts[:status], Poison.encode! data)
   end
   def json(conn, data) do
     status = conn.status || 200
     if get_resp_header(conn, "content-type") == [] do
       conn = put_resp_content_type_if_not_sent(conn, "application/json")
     end
-    conn |> send_resp_if_not_sent(status, JSEX.encode! data)
+    conn |> send_resp_if_not_sent(status, Poison.encode! data)
   end
 
   @doc """

@@ -78,7 +78,7 @@ defmodule Sugar.Router do
                                     Sugar.Request.Parsers.XML,
                                     :urlencoded, 
                                     :multipart ],
-                         json_decoder: JSEX
+                         json_decoder: Poison
       plug :copy_req_content_type
     end
   end
