@@ -91,6 +91,7 @@ defmodule Sugar.Router do
                  { Plug.MethodOverride, [], true },
                  { :match, [], true },
                  { :dispatch, [], true } ]
+    
     { conn, body } = Enum.reverse(defaults) ++
                      Module.get_attribute(env.module, :plugs)
                      |> Plug.Builder.compile

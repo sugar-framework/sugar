@@ -38,18 +38,17 @@ defmodule Mix.Tasks.Sugar.Gen.Router do
 
   embed_template :router, ~S"""
   defmodule Router do
-    use Sugar.Router, plugs: [
-        { Sugar.Plugs.HotCodeReload, [] },
-        { Plug.Static, at: "/static", from: :<%= @app %> },
+    use Sugar.Router
+    plug Sugar.Plugs.HotCodeReload
 
-        # Uncomment the following line for session store
-        # { Plug.Session, store: :ets, key: "sid", secure: true, table: :session },
+    if Sugar.Config.get(:sugar, :show_debugger, false) do
+      plug Plug.Debugger, otp_app: :<%= @app %>
+    end
 
-        # Uncomment the following line for request logging,
-        # and add 'applications: [:exlager],' to the application
-        # Keyword list in your mix.exs
-        # { Sugar.Plugs.Logger, [] }
-    ]
+    plug Plug.Static, at: "/static", from: :<%= @app %>
+
+    # Uncomment the following line for session store
+    # plug Plug.Session, store: :ets, key: "sid", secure: true, table: :session
 
     # Define your routes here
     get "/", <%= @module %>.Controllers.Main, :index
