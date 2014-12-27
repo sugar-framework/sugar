@@ -6,38 +6,33 @@ defmodule Sugar.Mixfile do
       elixir: "~> 1.0",
       version: "0.4.0-dev",
       name: "Sugar",
-      deps: deps(Mix.env),
+      source_url: "https://github.com/sugar-framework/sugar",
+      homepage_url: "https://sugar-framework.github.io",
+      deps: deps,
       package: package,
       description: description,
-      docs: [readme: true, main: "README"],
+      docs: [readme: "README.md", main: "README"],
       test_coverage: [tool: ExCoveralls] ]
   end
 
   def application do
-    [ applications: [:cowboy, :plug, :templates],
+    [ applications: [ :cowboy, :plug, :templates, :poison, :ecto,
+                      :postgrex, :plugs ],
       mod: { Sugar.App, [] } ]
   end
 
-  defp deps(:prod) do
+  defp deps do
     [ { :cowboy, "~> 1.0.0" },
       { :plug, "~> 0.9.0" },
       { :poison, "~> 1.3.0" },
       { :ecto, "~> 0.2.8" },
       { :postgrex, "~> 0.6.0" },
       { :plugs, github: "sugar-framework/plugs" },
-      { :templates, github: "sugar-framework/templates" } ]
-  end
-
-  defp deps(:docs) do
-    deps(:prod) ++
-      [ { :ex_doc, "~> 0.6.2" },
-        { :earmark, "~> 0.1.12"} ]
-  end
-
-  defp deps(_) do
-    deps(:prod) ++
-      [ { :hackney, github: "benoitc/hackney" },
-        { :excoveralls, "~> 0.3" } ]
+      { :templates, github: "sugar-framework/templates" },
+      { :earmark, "~> 0.1.12", only: :docs },
+      { :ex_doc, "~> 0.6.2", only: :docs },
+      { :excoveralls, "~> 0.3", only: :test },
+      { :dialyze, "~> 0.1.3", only: :test } ]
   end
 
   defp description do

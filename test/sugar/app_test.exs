@@ -3,13 +3,6 @@ defmodule Sugar.AppTest do
   import ExUnit.CaptureIO
   import Sugar.App
 
-  test "run/1" do
-    capture_io(fn ->
-      {status, _pid} = run([])
-      assert status === :ok
-    end)
-  end
-
   test "start/0" do
     capture_io(fn ->
       assert start === :ok

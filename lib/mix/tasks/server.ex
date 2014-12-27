@@ -22,7 +22,9 @@ defmodule Mix.Tasks.Server do
       opts = Keyword.update!(opts, :port, &binary_to_integer(&1))
     end
 
-    Sugar.App.run add_config(opts)
+    opts = add_config(opts)
+    router = Sugar.Config.get(:placid, :router, Router)
+    router.run
 
     # TODO: is there a better way than `Code.ensure_loaded?(Mix.Tasks.ServerTest)`?
     unless (Code.ensure_loaded?(IEx) && IEx.started?) || Code.ensure_loaded?(Mix.Tasks.ServerTest) do

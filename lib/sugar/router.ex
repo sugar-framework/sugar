@@ -57,7 +57,7 @@ defmodule Sugar.Router do
 
   import Sugar.Router.Util
 
-  @typep ast :: tuple
+  @typep ast :: any
   @http_methods [ :get, :post, :put, :patch, :delete, :any ]
 
   ## Macros
@@ -298,8 +298,8 @@ defmodule Sugar.Router do
   defp build_body(controller, action), do: build_body(controller, action, :skip)
   defp build_body(controller, action, add_header) do
     header = case add_header do
-        :json -> [{"accept", "application/json"}]
-        :xml  -> [{"accept", "application/xml"}]
+        # :json -> [{"accept", "application/json"}]
+        # :xml  -> [{"accept", "application/xml"}]
         _     -> []
       end
 

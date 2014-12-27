@@ -8,15 +8,20 @@ defmodule Sugar.Config do
              port: 4443 ]
   ]
 
+  @spec get(atom) :: any
   def get(module) when module != :sugar do
     get(:sugar, module)
   end
+
+  @spec get(atom, atom) :: any
   def get(:sugar, key) do
     _get(key)
   end
   def get(module, key) do
     _get(module)[key]
   end
+
+  @spec get(atom, atom, any) :: any
   def get(:sugar, key, default) do
     get(:sugar, key) || default
   end

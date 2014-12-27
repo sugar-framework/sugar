@@ -54,10 +54,10 @@ defmodule Mix.Tasks.Compile.Sugar do
     if opts[:force] || Mix.Utils.stale?(to_watch, [manifest]) do
       # to_compile = Mix.Utils.extract_files(source_paths, watch_exts)
       File.mkdir_p!(compile_path)
-      Code.prepend_path compile_path
+      true = Code.prepend_path compile_path
 
-      :application.ensure_started(:templates)
-      templates
+      :ok = :application.ensure_started(:templates)
+      _ = templates
         |> Enum.map(fn(template) ->
           {:ok,t} = template.engine.compile template
           name = template.key |> String.replace("/", "_")

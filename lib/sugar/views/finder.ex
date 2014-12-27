@@ -15,6 +15,7 @@ defmodule Sugar.Views.Finder do
 
   List of `Sugar.Templates.Template`
   """
+  @spec all(binary) :: [Sugar.Templates.Template.t]
   def all(root) do
     root <> "/**/*.*"
       |> Path.wildcard
@@ -31,8 +32,9 @@ defmodule Sugar.Views.Finder do
 
   ## Returns
 
-  List of `Sugar.Templates.Template`
+  `Sugar.Templates.Template`
   """
+  @spec one(binary, binary) :: Sugar.Templates.Template.t | {:error,:notfound}
   def one(root, key) do
     path = Path.join(root, key)
     if Path.extname(path) == "", do: path = path <> ".*"
@@ -52,7 +54,7 @@ defmodule Sugar.Views.Finder do
       key: Path.basename(path),
       engine: path |> get_ext |> get_engine,
       source: File.read!(path),
-      updated_at: File.stat!(path).mtime
+      updated_at: File.stat!(path) |> Map.get(:mtime)
     }
   end
 

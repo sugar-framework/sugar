@@ -2,17 +2,21 @@ defmodule Sugar.Router.Util do
   @moduledoc false
 
   defmodule InvalidSpecError do
+    @moduledoc false
     defexception message: "invalid route specification"
   end
 
+  @spec normalize_method(atom) :: binary
   def normalize_method(method) do
     method |> to_string |> String.upcase
   end
 
+  @spec split(binary) :: [binary]
   def split(bin) do
     for segment <- String.split(bin, "/"), segment != "", do: segment
   end
 
+  @spec build_spec(binary | any, nil) :: any
   def build_spec(spec, context \\ nil)
   def build_spec(spec, context) when is_binary(spec) do
     build_spec split(spec), context, [], []

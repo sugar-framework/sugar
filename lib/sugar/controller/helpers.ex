@@ -41,6 +41,9 @@ defmodule Sugar.Controller.Helpers do
         end
       end
   """
+
+  @type status_code :: 100..999
+  @type headers :: [{binary, binary}]
   
   import Plug.Conn
 
@@ -56,6 +59,7 @@ defmodule Sugar.Controller.Helpers do
 
   `Plug.Conn`
   """
+  @spec status(Plug.Conn.t, status_code) :: Plug.Conn.t
   def status(conn, status_code) do
     %Plug.Conn{conn | status: status_code, state: :set}
   end
@@ -66,12 +70,13 @@ defmodule Sugar.Controller.Helpers do
   ## Arguments
 
   * `conn` - `Plug.Conn`
-  * `status_code` - `Integer`
+  * `status_code` - `List`
 
   ## Returns
 
   `Plug.Conn`
   """
+  @spec headers(Plug.Conn.t, headers) :: Plug.Conn.t
   def headers(conn, headers) do
     %Plug.Conn{conn | resp_headers: headers, state: :set}
   end
@@ -88,6 +93,7 @@ defmodule Sugar.Controller.Helpers do
 
   `Plug.Conn`
   """
+  @spec static(Plug.Conn.t, binary) :: Plug.Conn.t
   def static(conn, file) do
     filename = Path.join(["priv/static", file])
     if File.exists? filename do
@@ -113,12 +119,14 @@ defmodule Sugar.Controller.Helpers do
 
   `Plug.Conn`
   """
+  @spec json(Plug.Conn.t, Keyword.t | list, Keyword.t) :: Plug.Conn.t
   def json(conn, data, opts) do
     opts = [status: 200] |> Keyword.merge opts
     conn
       |> put_resp_content_type_if_not_sent("application/json")
       |> send_resp_if_not_sent(opts[:status], Poison.encode! data)
   end
+  @spec json(Plug.Conn.t, Keyword.t | list) :: Plug.Conn.t
   def json(conn, data) do
     status = conn.status || 200
     if get_resp_header(conn, "content-type") == [] do
@@ -140,6 +148,7 @@ defmodule Sugar.Controller.Helpers do
 
   `Plug.Conn`
   """
+  @spec raw(Plug.Conn.t) :: Plug.Conn.t
   def raw(conn) do
     conn |> send_resp
   end
@@ -162,6 +171,7 @@ defmodule Sugar.Controller.Helpers do
 
   `Plug.Conn`
   """
+  @spec render(Plug.Conn.t, binary | Keyword.t | nil, Keyword.t, Keyword.t) :: Plug.Conn.t
   def render(conn, template \\ nil, assigns \\ [], opts \\ [])
   def render(conn, template, assigns, opts) when is_atom(template)
                                               or is_binary(template) do
@@ -197,6 +207,7 @@ defmodule Sugar.Controller.Helpers do
 
   `Plug.Conn`
   """
+  @spec halt!(Plug.Conn.t, Keyword.t) :: Plug.Conn.t
   def halt!(conn, opts \\ []) do
     opts = [status: 401, message: ""] |> Keyword.merge opts
     conn
@@ -214,6 +225,7 @@ defmodule Sugar.Controller.Helpers do
 
   `Plug.Conn`
   """
+  @spec not_found(Plug.Conn.t, binary) :: Plug.Conn.t
   def not_found(conn, message \\ "Not Found") do
     conn
       |> send_resp_if_not_sent(404, message)
@@ -233,6 +245,7 @@ defmodule Sugar.Controller.Helpers do
 
   `Plug.Conn`
   """
+  @spec forward(Plug.Conn.t, atom, atom, Keyword.t) :: Plug.Conn.t
   def forward(conn, controller, action, args \\ []) do
     apply controller, action, [conn, args]
   end
@@ -250,6 +263,7 @@ defmodule Sugar.Controller.Helpers do
 
   `Plug.Conn`
   """
+  @spec redirect(Plug.Conn.t, binary, Keyword.t) :: Plug.Conn.t
   def redirect(conn, location, opts \\ []) do
     opts = [status: 302] |> Keyword.merge opts
     conn

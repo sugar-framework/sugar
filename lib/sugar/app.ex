@@ -4,21 +4,9 @@ defmodule Sugar.App do
   ## API
 
   @doc """
-  Used in starting the server with `mix server`.
-
-  ## Arguments
-
-  * `opts` - `Keyword` - options to pass to Plug/Cowboy
-  """
-  def run(opts) do
-    IO.puts "Starting Sugar on port #{get_port(opts)}..."
-    router = Sugar.Config.get(:sugar, :router, Router)
-    Plug.Adapters.Cowboy.http router, [], opts
-  end
-
-  @doc """
   Starts the application, checking if it's already been started.
   """
+  @spec start() :: :ok
   def start do
     case :application.start(:sugar) do
       :ok -> :ok
@@ -31,9 +19,10 @@ defmodule Sugar.App do
   @doc """
   Callback for `start/2`. Starts the supervisor.
   """
+  @spec start(atom, Keyword.t) :: {:ok, pid}
   def start(_type, _args) do
     :ok = Application.ensure_started(:templates)
-    Sugar.Config.get(:sugar, :views_dir, "lib/#{Mix.Project.config[:app]}/views")
+    _ = Sugar.Config.get(:sugar, :views_dir, "lib/#{Mix.Project.config[:app]}/views")
       |> Sugar.Views.Finder.all
       |> Sugar.Templates.compile
     Sugar.Supervisor.start_link
@@ -42,6 +31,7 @@ defmodule Sugar.App do
   @doc """
   Callback for `stop/1`.
   """
+  @spec stop(any) :: :ok
   def stop(_state) do
     :ok
   end
@@ -60,6 +50,7 @@ defmodule Sugar.App do
 
   `Integer`
   """
+  @spec get_port(Keyword.t) :: pos_integer
   def get_port(opts) do
     case opts[:port] do
       nil -> 4000
