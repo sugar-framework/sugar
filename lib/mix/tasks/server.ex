@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Server do
   use Mix.Task
 
-  @shortdoc "Runs Sugar and children"
+  #@shortdoc "Runs Sugar and children"
   @recursive true
 
   @moduledoc """
