@@ -36,16 +36,6 @@ defmodule Mix.Tasks.Sugar.Gen.ViewTest do
     File.rm_rf! "test/fixtures/views"
   end
 
-  test "run/1 with proper name and dtl type" do
-    args = ["main", "--path=test/fixtures", "--type=dtl"]
-    capture_io(fn ->
-      Mix.Tasks.Sugar.Gen.View.run(args)
-    end)
-
-    assert File.exists?("test/fixtures/views/main.html.dtl") === true
-    File.rm_rf! "test/fixtures/views"
-  end
-
   test "run/1 with proper name and haml type" do
     args = ["main", "--path=test/fixtures", "--type=haml"]
     capture_io(fn ->

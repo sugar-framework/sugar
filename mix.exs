@@ -4,7 +4,7 @@ defmodule Sugar.Mixfile do
   def project do
     [ app: :sugar,
       elixir: "~> 1.0",
-      version: "0.4.0",
+      version: "0.4.1",
       name: "Sugar",
       source_url: "https://github.com/sugar-framework/sugar",
       homepage_url: "https://sugar-framework.github.io",
@@ -27,8 +27,8 @@ defmodule Sugar.Mixfile do
       { :poison, "~> 1.3.0" },
       { :ecto, "~> 0.2.8" },
       { :postgrex, "~> 0.6.0" },
-      { :plugs, github: "sugar-framework/plugs" },
-      { :templates, github: "sugar-framework/templates" },
+      { :plugs, "~> 0.0.2" },
+      { :templates, "~> 0.0.2" },
       { :earmark, "~> 0.1.12", only: :docs },
       { :ex_doc, "~> 0.6.2", only: :docs },
       { :excoveralls, "~> 0.3", only: :test },
@@ -45,6 +45,6 @@ defmodule Sugar.Mixfile do
     %{contributors: ["Shane Logsdon"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/sugar-framework/sugar",
-               "Docs" => "http://sugar-framework.github.io/docs/"}}
+               "Docs" => "https://sugar-framework.github.io/docs/"}}
   end
 end

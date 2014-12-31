@@ -11,7 +11,7 @@ defmodule Mix.Tasks.Sugar.Gen.View do
 
   ## Command line options
 
-  * `--type=(dtl|eex|haml)` - set type of view to generate. Defaults to `eex`
+  * `--type=(eex|haml)` - set type of view to generate. Defaults to `eex`
   * `--path` - override the project path. Defaults to `lib/[app name]`
 
   """
@@ -42,7 +42,6 @@ defmodule Mix.Tasks.Sugar.Gen.View do
     ] |> Keyword.merge opts
 
     case opts[:type] do
-      "dtl" -> create_file "#{assigns[:path]}/views/#{underscore name}.html.dtl", dtl_template(assigns)
       "haml" -> create_file "#{assigns[:path]}/views/#{underscore name}.html.haml", haml_template(assigns)
       _ -> create_file "#{assigns[:path]}/views/#{underscore name}.html.eex", eex_template(assigns)
     end
@@ -53,18 +52,6 @@ defmodule Mix.Tasks.Sugar.Gen.View do
   <html lang="en-US">
   <head>
     <title><%= @name %> - <%= @module %></title>
-  </head>
-  <body>
-    Hello World
-  </body>
-  </html>
-  """
-
-  embed_template :dtl, ~S"""
-  <!doctype html>
-  <html lang="en-US">
-  <head>
-    <title>{{ name }} - {{ module }}</title>
   </head>
   <body>
     Hello World
