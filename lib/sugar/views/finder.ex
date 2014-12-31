@@ -43,15 +43,19 @@ defmodule Sugar.Views.Finder do
                 || ""
 
     if File.exists?(path) do
-      build(path)
+      build(path, key)
     else
       { :error, :notfound }
     end
   end
 
   defp build(path) do
+    key = Path.basename(path)
+    build(path, key)
+  end
+  defp build(path, key) do
     %Sugar.Templates.Template{
-      key: Path.basename(path),
+      key: key,
       engine: path |> get_ext |> get_engine,
       source: File.read!(path),
       updated_at: File.stat!(path) |> Map.get(:mtime)
@@ -60,7 +64,6 @@ defmodule Sugar.Views.Finder do
 
   defp get_engine(ext) do
     case ext do
-      "dtl"  -> Sugar.Templates.Engines.ErlyDTL
       "haml" -> Sugar.Templates.Engines.Calliope
       _      -> Sugar.Templates.Engines.EEx
     end

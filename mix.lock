@@ -18,4 +18,4 @@
   "postgrex": {:hex, :postgrex, "0.6.0"},
   "ranch": {:hex, :ranch, "1.0.0"},
   "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.0"},
-  "templates": {:hex, :templates, "0.0.3"}}
+  "templates": {:hex, :templates, "0.0.4"}}

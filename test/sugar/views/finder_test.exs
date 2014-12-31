@@ -34,7 +34,7 @@ defmodule Sugar.Views.FinderTest do
     template = Sugar.Views.Finder.one("test/fixtures/view_finder", "index")
     expected = %Sugar.Templates.Template{
                   engine: Sugar.Templates.Engines.EEx,
-                  key: "index.html.eex",
+                  key: "index",
                   source: "<%= @title %>"
                 }
 
