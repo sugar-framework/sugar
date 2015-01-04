@@ -7,18 +7,18 @@ defmodule Sugar.Router do
 
       method route [guard], controller, action
 
-  `method` is `get`, `post`, `put`, `patch`, or `delete`, each 
-  responsible for a single HTTP method. `method` can also be `any`, which will 
+  `method` is `get`, `post`, `put`, `patch`, or `delete`, each
+  responsible for a single HTTP method. `method` can also be `any`, which will
   match on all HTTP methods. `options` is yet another option for `method`, but
   when using `options`, only a route path and the methods that route path
   supports are needed. `controller` is any valid Elixir module name, and
   `action` is any valid public function defined in the `controller` module.
 
-  `get/3`, `post/3`, `put/3`, `patch/3`, `delete/3`, `options/2`, and `any/3` 
-  are already built-in as described. `resource/2` exists but will need 
+  `get/3`, `post/3`, `put/3`, `patch/3`, `delete/3`, `options/2`, and `any/3`
+  are already built-in as described. `resource/2` exists but will need
   modifications to create everything as noted.
 
-  `raw/4` allows for using custom HTTP methods, allowing your application to be 
+  `raw/4` allows for using custom HTTP methods, allowing your application to be
   HTTP spec compliant.
 
   ## Example
@@ -34,7 +34,7 @@ defmodule Sugar.Router do
         put  "/pages/:page_id" when id == 1,
                                       C.Pages, :update_only_one
         get  "/pages/:page_id",       C.Pages, :show
-        
+
         # Auto-create a full set of routes for resources
         #
         resource :users,              C.User, arg: :user_id
@@ -74,9 +74,9 @@ defmodule Sugar.Router do
       Module.register_attribute(__MODULE__, :version, accumulate: false)
 
       # Plugs we want early in the stack
-      plug Plug.Parsers, parsers: [ :json, 
+      plug Plug.Parsers, parsers: [ :json,
                                     Sugar.Request.Parsers.XML,
-                                    :urlencoded, 
+                                    :urlencoded,
                                     :multipart ],
                          json_decoder: Poison
       plug :copy_req_content_type
@@ -91,7 +91,7 @@ defmodule Sugar.Router do
                  { Plug.MethodOverride, [], true },
                  { :match, [], true },
                  { :dispatch, [], true } ]
-    
+
     { conn, body } = Enum.reverse(defaults) ++
                      Module.get_attribute(env.module, :plugs)
                      |> Plug.Builder.compile
@@ -118,12 +118,17 @@ defmodule Sugar.Router do
 
       def run(opts \\ nil) do
         adapter = Sugar.Config.get(:sugar, :plug_adapter, Plug.Adapters.Cowboy)
-        opts = opts || Sugar.Config.get(__MODULE__)          
+        opts = opts || Sugar.Config.get(__MODULE__)
 
-        adapter.https __MODULE__, [], opts[:https]
-        if opts[:https_only] do
-          # Sends `403 Forbidden` to all HTTP requests
-          adapter.http Sugar.Request.HttpsOnly, [], opts[:http]
+        if opts[:https] do
+          adapter.https __MODULE__, [], opts[:https]
+
+          if opts[:https_only] do
+            # Sends `403 Forbidden` to all HTTP requests
+            adapter.http Sugar.Request.HttpsOnly, [], opts[:http]
+          else
+            adapter.http __MODULE__, [], opts[:http]
+          end
         else
           adapter.http __MODULE__, [], opts[:http]
         end
@@ -141,8 +146,8 @@ defmodule Sugar.Router do
       # Our default match so `Plug` doesn't fall on
       # its face when accessing an undefined route.
       def do_match(_,_) do
-        fn conn -> 
-          not_found conn 
+        fn conn ->
+          not_found conn
         end
       end
 
@@ -219,11 +224,11 @@ defmodule Sugar.Router do
     arg     = Keyword.get opts, :arg, :id
     allowed = Keyword.get opts, :only, [ :index, :create, :show,
                                          :update, :patch, :delete ]
-                                         
+
     prepend_path = Keyword.get opts, :prepend_path, nil
     if prepend_path, do: prepend_path = "/" <> prepend_path <> "/"
 
-    routes  = 
+    routes  =
       [ { :get,     "#{prepend_path}#{resource}",          :index },
         { :post,    "#{prepend_path}#{resource}",          :create },
         { :get,     "#{prepend_path}#{resource}/:#{arg}",  :show },
@@ -251,9 +256,9 @@ defmodule Sugar.Router do
 
   defp ignore_args(nil), do: ""
   defp ignore_args(str) do
-    str 
-      |> String.to_char_list 
-      |> do_ignore_args 
+    str
+      |> String.to_char_list
+      |> do_ignore_args
       |> to_string
   end
 
@@ -264,9 +269,9 @@ defmodule Sugar.Router do
   # Builds a `do_match/2` function body for a given route.
   defp build_match(:options, route, allows, caller) do
     body = quote do
-        conn 
-          |> Plug.Conn.resp(200, "") 
-          |> Plug.Conn.put_resp_header("Allow", unquote(allows)) 
+        conn
+          |> Plug.Conn.resp(200, "")
+          |> Plug.Conn.put_resp_header("Allow", unquote(allows))
           |> Plug.Conn.send_resp
       end
 
