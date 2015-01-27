@@ -33,7 +33,7 @@ defmodule Mix.Tasks.Server do
   end
 
   defp add_config(options) do
-    router = Sugar.Config.get(:placid, :router, Router)
+    router = Sugar.Config.get(:sugar, :router, Router)
     config = Sugar.Config.get(router) || []
 
     Keyword.merge config, options
