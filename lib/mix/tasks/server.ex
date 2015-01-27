@@ -23,7 +23,7 @@ defmodule Mix.Tasks.Server do
     end
 
     opts = add_config(opts)
-    router = Sugar.Config.get(:placid, :router, Router)
+    router = Sugar.Config.get(:sugar, :router, Router)
     router.run
 
     # TODO: is there a better way than `Code.ensure_loaded?(Mix.Tasks.ServerTest)`?
