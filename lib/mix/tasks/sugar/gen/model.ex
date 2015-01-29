@@ -40,7 +40,7 @@ defmodule Mix.Tasks.Sugar.Gen.Model do
       path: path
     ] |> Keyword.merge opts
 
-    Mix.Tasks.Ecto.Gen.Migration.run ["#{assigns[:module]}.Repos.Main", "create_#{name}"]
+    Mix.Tasks.Ecto.Gen.Migration.run ["-r", "#{assigns[:module]}.Repos.Main", "create_#{name}"]
     create_file "#{assigns[:path]}/models/#{underscore name}.ex", model_template(assigns)
     create_file "#{assigns[:path]}/queries/#{underscore name}.ex", query_template(assigns)
   end
