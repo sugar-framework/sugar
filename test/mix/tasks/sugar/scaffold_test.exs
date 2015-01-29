@@ -35,17 +35,6 @@ defmodule Mix.Tasks.Sugar.ScaffoldTest do
   end
 
   defmodule Repos.Main do
-    use Ecto.Repo, adapter: Ecto.Adapters.Postgres, env: Mix.env
-
-    @doc "Adapter configuration"
-    def conf(_env), do: parse_url url
-
-    def url do
-      "ecto://"
-    end
-
-    def priv do
-      "test/fixtures/repo"
-    end
+    use Ecto.Repo, adapter: Ecto.Adapters.Postgres, env: Mix.env, otp_app: :test_app
   end
 end
