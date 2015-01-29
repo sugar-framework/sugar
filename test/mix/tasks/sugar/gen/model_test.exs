@@ -2,6 +2,8 @@ defmodule Mix.Tasks.Sugar.Gen.ModelTest do
   use ExUnit.Case, async: true
   import ExUnit.CaptureIO
 
+  Application.put_env(:sugar, Mix.Tasks.Sugar.Gen.ModelTest.Repos.Main, [])
+
   test "run_detached/1" do
     assigns = [
       app: :test_app,
@@ -49,17 +51,6 @@ defmodule Mix.Tasks.Sugar.Gen.ModelTest do
   end
 
   defmodule Repos.Main do
-    use Ecto.Repo, adapter: Ecto.Adapters.Postgres, env: Mix.env
-
-    @doc "Adapter configuration"
-    def conf(_env), do: parse_url url
-
-    def url do
-      "ecto://"
-    end
-
-    def priv do
-      "test/fixtures/repo"
-    end
+    use Ecto.Repo, adapter: Ecto.Adapters.Postgres, env: Mix.env, otp_app: :sugar
   end
 end

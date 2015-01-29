@@ -2,6 +2,8 @@ defmodule Mix.Tasks.Sugar.ScaffoldTest do
   use ExUnit.Case
   import ExUnit.CaptureIO
 
+  Application.put_env(:sugar, Mix.Tasks.Sugar.ScaffoldTest.Repos.Main, [])
+
   test "run/1 with proper name" do
     args = ["main", "--path=test/fixtures", "--module=Mix.Tasks.Sugar.ScaffoldTest"]
     capture_io(fn ->
@@ -35,17 +37,6 @@ defmodule Mix.Tasks.Sugar.ScaffoldTest do
   end
 
   defmodule Repos.Main do
-    use Ecto.Repo, adapter: Ecto.Adapters.Postgres, env: Mix.env
-
-    @doc "Adapter configuration"
-    def conf(_env), do: parse_url url
-
-    def url do
-      "ecto://"
-    end
-
-    def priv do
-      "test/fixtures/repo"
-    end
+    use Ecto.Repo, adapter: Ecto.Adapters.Postgres, env: Mix.env, otp_app: :sugar
   end
 end
