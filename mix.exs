@@ -4,7 +4,7 @@ defmodule Sugar.Mixfile do
   def project do
     [ app: :sugar,
       elixir: "~> 1.0",
-      version: "0.4.2",
+      version: "0.4.3",
       name: "Sugar",
       source_url: "https://github.com/sugar-framework/sugar",
       homepage_url: "https://sugar-framework.github.io",
@@ -42,7 +42,7 @@ defmodule Sugar.Mixfile do
   end
 
   defp package do
-    %{contributors: ["Shane Logsdon"],
+    %{contributors: ["Shane Logsdon", "Ryan S. Northrup"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/sugar-framework/sugar",
                "Docs" => "https://sugar-framework.github.io/docs/"}}
