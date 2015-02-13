@@ -133,7 +133,7 @@ defmodule Sugar.RouterTest do
 
     assert conn.state === :sent
     assert conn.status === 200
-    assert get_resp_header(conn, "content-type") === ["application/json; charset=utf-8"]
+    assert get_resp_header(conn, "content-type") === ["text/html; charset=utf-8"]
   end
 
   test "resource/2 index with prepended path" do
