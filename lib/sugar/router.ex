@@ -8,7 +8,8 @@ defmodule Sugar.Router do
                    Sugar.Request.Parsers.XML,
                    :urlencoded,
                    :multipart ]
-    end
+			@before_compile Sugar.Router
+		end
   end
 
   @doc false
