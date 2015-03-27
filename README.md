@@ -50,13 +50,27 @@ Tells Sugar how the specified router should be configured.  The following option
 - `http`: takes a key/value list with options to configure the specified `:plug_adapter`.  Of particular usefulness:
     - `ip`: IP address the server should bind to.  Should be a tuple in the format `{x,y,z,w}`.  Defaults to accepting connections on any IP address.
     - `port`: port the server should listen on.  Defaults to 4000.
-	- `acceptors`: the number of acceptors for the listener.  Defaults to 100.
-	- `max_connections`: the maximum number of connections supported.  Defaults to `:infinity`.
-	- `compress`: whether or not the bodies of responses should be compressed.  Defaults to `false`.
+    - `acceptors`: the number of acceptors for the listener.  Defaults to 100.
+    - `max_connections`: the maximum number of connections supported.  Defaults to `:infinity`.
+    - `compress`: whether or not the bodies of responses should be compressed.  Defaults to `false`.
 - `https`: takes a key/value list with the same options as `http`, or can be set to `false` if you don't want to enable HTTPS.  The following additional options(along with others from Erlang's "ssl" module) are supported:
     - `password`: a plaintext, secret password for the private SSL key (if it's password-protected)
-	- `keyfile`: path to the PEM-format private key file to use
-	- `certfile`: path to the PEM-format certificate to use
+    - `keyfile`: path to the PEM-format private key file to use
+    - `certfile`: path to the PEM-format certificate to use
+    - `otp_app` - If present, `certfile` and `keyfile` can be relative paths with respect to `otp_app`'s `priv` directory.
+
+> Note: Create a self-signed certificate for easy HTTPS testing.
+>
+> ```
+> # Generate a keyfile
+> $ openssl genrsa -out key.pem 2048
+>
+> # Create a CSR
+> $ openssl req -new -key key.pem -out request.pem
+>
+> # Generate a certfile that expires in $NUM_DAYS
+> $ openssl x509 -req -days $NUM_DAYS -in request.pem -signkey key.pem -out cert.pem
+> ```
 
 #### Example
 
