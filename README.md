@@ -33,40 +33,48 @@ mix server # or `iex -S mix server` if you want access to iex
 
 ### Configurations
 
-Currently, Sugars expects a `Config` module to be defined in your project that has a `config/0` function defined for configuring your application. A simple `Keyword` list is returned with the configuration values.
+Sugar needs to be configured in your application's `config/config.exs` in order to work.  The following options are supported:
 
-Eventually, this will be replaced with a more elegant solution.
+#### `config :sugar, router: MyWebsite.Router`
 
-Valid options:
+Tells Sugar which module to use as a router.  This module should implement `Sugar.Router`, and should have at least one route defined.  This is required.
 
-- `log` - `true|false` - turns logging on or off
-- `server` - contains options to be sent to the underlying web server (currently, only [Cowboy](https://github.com/extend/cowboy))
-    - `ip` - the ip to bind the server to.
-              Must be a tuple in the format `{ x, y, z, w }`.
-    - `port` - the port to run the server.
-                Defaults to 4000 (http) and 4040 (https).
-    - `acceptors` - the number of acceptors for the listener.
-                     Defaults to 100.
-    - `max_connections` - max number of connections supported.
-                           Defaults to :infinity.
-    - `dispatch` - manually configure Cowboy's dispatch.
-    - `ref` - the reference name to be used.
-               Defaults to `plug.HTTP` (http) and `plug.HTTPS` (https).
-               This is the value that needs to be given on shutdown.
+#### `config :sugar, plug_adapter: Plug.Adapters.Cowboy`
+
+Tells Sugar which web server to use to handle HTTP(S) requests.  Cowboy is currently the only supported option, and Sugar will default to using `Plug.Adapters.Cowboy` if this is omitted.
+
+#### `config :sugar, MyWebsite.Router, ...`
+
+Tells Sugar how the specified router should be configured.  The following options are supported:
+
+- `http`: takes a key/value list with options to configure the specified `:plug_adapter`.  Of particular usefulness:
+    - `ip`: IP address the server should bind to.  Should be a tuple in the format `{x,y,z,w}`.  Defaults to accepting connections on any IP address.
+    - `port`: port the server should listen on.  Defaults to 4000.
+	- `acceptors`: the number of acceptors for the listener.  Defaults to 100.
+	- `max_connections`: the maximum number of connections supported.  Defaults to `:infinity`.
+	- `compress`: whether or not the bodies of responses should be compressed.  Defaults to `false`.
+- `https`: takes a key/value list with the same options as `http`, or can be set to `false` if you don't want to enable HTTPS.  The following additional options(along with others from Erlang's "ssl" module) are supported:
+    - `password`: a plaintext, secret password for the private SSL key (if it's password-protected)
+	- `keyfile`: path to the PEM-format private key file to use
+	- `certfile`: path to the PEM-format certificate to use
 
 #### Example
 
 ```elixir
-defmodule Config do
-  def config do
-    [
-      log: true,
-      server: [
-        port: 4000
-      ]
-    ]
-  end
-end
+use Mix.exs
+
+config :sugar, router: MyWebsite.Router
+
+config :sugar, MyWebsite.Router,
+  http: [
+    port: 80
+  ],
+  https: [
+    port: 443,
+    password: "OMG_SUPER_SECRET",
+	keyfile: "/path/to/key.pem",
+	certfile: "/path/to/cert.pem"
+  ]
 ```
 
 ### Routers
