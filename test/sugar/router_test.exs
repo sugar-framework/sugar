@@ -3,6 +3,20 @@ defmodule Sugar.RouterTest do
   use Plug.Test
   use Sugar.Router
 
+  test "cast_http_port/1" do
+    assert Sugar.Router.cast_http_port(4444) === 4444
+    assert Sugar.Router.cast_http_port("4444") === 4444
+    assert Sugar.Router.cast_http_port('4444') === 4444
+    assert Sugar.Router.cast_http_port(nil) === 4000
+  end
+
+  test "cast_https_port/1" do
+    assert Sugar.Router.cast_https_port(4444) === 4444
+    assert Sugar.Router.cast_https_port("4444") === 4444
+    assert Sugar.Router.cast_https_port('4444') === 4444
+    assert Sugar.Router.cast_https_port(nil) === 8443
+  end
+
   test "get/3" do
     conn = conn(:get, "/get")
       |> Sugar.RouterTest.Router.call([])
@@ -297,7 +311,7 @@ defmodule Sugar.RouterTest do
     raw :trace, "/trace",   Foo, :trace
 
     resource :users,    Bar
-    resource :comments, Baz, prepend_path: "/users/:user_id", 
+    resource :comments, Baz, prepend_path: "/users/:user_id",
                              only: [:index]
 
     def set_utf8_json(%Plug.Conn{state: state} = conn, _) when state in [:unset, :set] do

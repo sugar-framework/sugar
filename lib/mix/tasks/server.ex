@@ -24,7 +24,7 @@ defmodule Mix.Tasks.Server do
 
     opts = add_config(opts)
     router = Sugar.Config.get(:sugar, :router, Router)
-    router.run
+    router.run opts
 
     # TODO: is there a better way than `Code.ensure_loaded?(Mix.Tasks.ServerTest)`?
     unless (Code.ensure_loaded?(IEx) && IEx.started?) || Code.ensure_loaded?(Mix.Tasks.ServerTest) do
@@ -36,7 +36,9 @@ defmodule Mix.Tasks.Server do
     router = Sugar.Config.get(:sugar, :router, Router)
     config = Sugar.Config.get(router) || []
 
-    Keyword.merge config, options
+    config = Keyword.put_new config, :http, []
+    http = Keyword.merge config[:http], options
+    Keyword.put config, :http, http
   end
 
   def binary_to_integer(port) do

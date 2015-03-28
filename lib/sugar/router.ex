@@ -8,8 +8,8 @@ defmodule Sugar.Router do
                    Sugar.Request.Parsers.XML,
                    :urlencoded,
                    :multipart ]
-			@before_compile Sugar.Router
-		end
+      @before_compile Sugar.Router
+    end
   end
 
   @doc false
@@ -17,21 +17,50 @@ defmodule Sugar.Router do
     quote do
       def run(opts \\ nil) do
         adapter = Sugar.Config.get(:sugar, :plug_adapter, Plug.Adapters.Cowboy)
-        opts = opts || Sugar.Config.get(__MODULE__)
+        opts = (opts || Sugar.Config.get(__MODULE__))
+          |> Keyword.put_new(:http, [])
+          |> Keyword.put_new(:https, [])
 
-        if opts[:https] do
+        if is_list(opts[:http]) and opts[:http][:port] do
+          opts = opts
+            |> Keyword.put(:http, opts[:http]
+              |> Keyword.update(:port, 4000, &Sugar.Router.cast_http_port/1))
+        end
+
+        if is_list(opts[:https]) and opts[:https][:port] do
+          opts = opts
+            |> Keyword.put(:https, opts[:https]
+              |> Keyword.update(:port, 8443, &Sugar.Router.cast_https_port/1))
+        end
+
+        if is_list(opts[:https]) and opts[:https] != [] do
           adapter.https __MODULE__, [], opts[:https]
+        end
 
-          if opts[:https_only] do
-            # Sends `403 Forbidden` to all HTTP requests
-            adapter.http Sugar.Request.HttpsOnly, [], opts[:http]
-          else
-            adapter.http __MODULE__, [], opts[:http]
-          end
+        if opts[:https_only] == true do
+          # Sends `403 Forbidden` to all HTTP requests
+          adapter.http Sugar.Request.HttpsOnly, [], opts[:http]
         else
           adapter.http __MODULE__, [], opts[:http]
         end
       end
+    end
+  end
+
+  def cast_http_port(port) do
+    cast_port(port, 4000)
+  end
+
+  def cast_https_port(port) do
+    cast_port(port, 8443)
+  end
+
+  def cast_port(port, default)
+  def cast_port(i, _) when i |> is_integer, do: i
+  def cast_port(s, d) do
+    case s |> to_string |> Integer.parse do
+      {i, _} -> i
+      _      -> d
     end
   end
 end
