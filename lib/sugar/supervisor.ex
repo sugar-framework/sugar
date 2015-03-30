@@ -18,7 +18,7 @@ defmodule Sugar.Supervisor do
   """
   def init(opts) do
     children = []
-    opts = Keyword.put opts, :strategy, :one_for_one
+    opts = Keyword.put(opts, :strategy, :one_for_one)
 
     supervise(children, opts)
   end
