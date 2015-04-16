@@ -34,14 +34,14 @@ defmodule Sugar.Router do
         end
 
         if is_list(opts[:https]) and opts[:https] != [] do
-          adapter.https __MODULE__, [], opts[:https]
+          adapter.https(__MODULE__, [], opts[:https])
         end
 
         if opts[:https_only] == true do
           # Sends `403 Forbidden` to all HTTP requests
-          adapter.http Sugar.Request.HttpsOnly, [], opts[:http]
+          adapter.http(Sugar.Request.HttpsOnly, [], opts[:http])
         else
-          adapter.http __MODULE__, [], opts[:http]
+          adapter.http(__MODULE__, [], opts[:http])
         end
       end
     end

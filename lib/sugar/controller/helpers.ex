@@ -25,19 +25,19 @@ defmodule Sugar.Controller.Helpers do
         use Sugar.Controller
 
         def index(conn, []) do
-          render conn, "showing index controller"
+          render(conn, "showing index controller")
         end
 
         def show(conn, args) do
-          render conn, "showing page \#{args[:id]}"
+          render(conn, "showing page \#{args[:id]}")
         end
 
         def create(conn, []) do
-          render conn, "page created"
+          render(conn, "page created")
         end
 
         def get_json(conn, []) do
-          json conn, [message: "foobar"]
+          json(conn, [message: "foobar"])
         end
       end
   """
@@ -96,7 +96,7 @@ defmodule Sugar.Controller.Helpers do
   @spec static(Plug.Conn.t, binary) :: Plug.Conn.t
   def static(conn, file) do
     filename = Path.join(["priv/static", file])
-    if File.exists? filename do
+    if File.exists?(filename) do
       body = filename |> File.read!
       conn
         |> put_resp_content_type_if_not_sent("text/html")
@@ -194,7 +194,7 @@ defmodule Sugar.Controller.Helpers do
   """
   @spec halt!(Plug.Conn.t, Keyword.t) :: Plug.Conn.t
   def halt!(conn, opts \\ []) do
-    opts = [status: 401, message: ""] |> Keyword.merge opts
+    opts = [status: 401, message: ""] |> Keyword.merge(opts)
     conn
       |> send_resp_if_not_sent(opts[:status], opts[:message])
   end
@@ -232,7 +232,7 @@ defmodule Sugar.Controller.Helpers do
   """
   @spec forward(Plug.Conn.t, atom, atom, Keyword.t) :: Plug.Conn.t
   def forward(conn, controller, action, args \\ []) do
-    apply controller, action, [conn, args]
+    apply(controller, action, [conn, args])
   end
 
   @doc """
@@ -250,7 +250,7 @@ defmodule Sugar.Controller.Helpers do
   """
   @spec redirect(Plug.Conn.t, binary, Keyword.t) :: Plug.Conn.t
   def redirect(conn, location, opts \\ []) do
-    opts = [status: 302] |> Keyword.merge opts
+    opts = [status: 302] |> Keyword.merge(opts)
     conn
       |> put_resp_header_if_not_sent("Location", location)
       |> send_resp_if_not_sent(opts[:status], "")

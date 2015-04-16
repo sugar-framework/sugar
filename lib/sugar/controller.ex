@@ -83,9 +83,9 @@ defmodule Sugar.Controller do
       end
 
       def call(conn, opts) do
-        conn = do_call conn, :before, opts[:action]
-        conn = apply __MODULE__, opts[:action], [ conn, opts[:args] ]
-        do_call conn, :after, opts[:action]
+        conn = do_call(conn, :before, opts[:action])
+        conn = apply(__MODULE__, opts[:action], [ conn, opts[:args] ])
+        do_call(conn, :after, opts[:action])
       end
 
       defoverridable [init: 1, call: 2]
@@ -98,7 +98,7 @@ defmodule Sugar.Controller do
     only_actions = get_only_actions plugs
 
     Enum.map only_actions ++ [nil], fn action ->
-      build_plug_stacks_for action, plugs
+      build_plug_stacks_for(action, plugs)
     end
   end
 

@@ -37,7 +37,7 @@ defmodule Mix.Tasks.Sugar.Gen.Router do
   end
 
   embed_template :router, ~S"""
-  defmodule Router do
+  defmodule <%= @module %>.Router do
     use Sugar.Router
     plug Sugar.Plugs.HotCodeReload
 
