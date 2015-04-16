@@ -42,7 +42,7 @@ defmodule Mix.Tasks.Sugar.Gen.Router do
     plug Sugar.Plugs.HotCodeReload
 
     if Sugar.Config.get(:sugar, :show_debugger, false) do
-      plug Plug.Debugger, otp_app: :<%= @app %>
+      use Plug.Debugger, otp_app: :<%= @app %>
     end
 
     plug Plug.Static, at: "/static", from: :<%= @app %>

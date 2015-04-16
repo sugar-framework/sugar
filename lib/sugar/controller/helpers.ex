@@ -44,7 +44,7 @@ defmodule Sugar.Controller.Helpers do
 
   @type status_code :: 100..999
   @type headers :: [{binary, binary}]
-  
+
   import Plug.Conn
 
   @doc """
@@ -120,19 +120,16 @@ defmodule Sugar.Controller.Helpers do
   `Plug.Conn`
   """
   @spec json(Plug.Conn.t, Keyword.t | list, Keyword.t) :: Plug.Conn.t
-  def json(conn, data, opts) do
-    opts = [status: 200] |> Keyword.merge opts
-    conn
-      |> put_resp_content_type_if_not_sent("application/json")
-      |> send_resp_if_not_sent(opts[:status], Poison.encode! data)
-  end
-  @spec json(Plug.Conn.t, Keyword.t | list) :: Plug.Conn.t
-  def json(conn, data) do
-    status = conn.status || 200
-    if get_resp_header(conn, "content-type") == [] do
+  def json(conn, data, opts \\ []) do
+    opts = [status: conn.status || 200] |> Keyword.merge opts
+    header = get_resp_header(conn, "content-type")
+
+    if header == [] or not (header |> hd =~ "json") do
       conn = put_resp_content_type_if_not_sent(conn, "application/json")
     end
-    conn |> send_resp_if_not_sent(status, Poison.encode! data)
+
+    conn
+      |> send_resp_if_not_sent(opts[:status], Poison.encode! data)
   end
 
   @doc """
@@ -154,7 +151,7 @@ defmodule Sugar.Controller.Helpers do
   end
 
   @doc """
-  Sends a normal response. 
+  Sends a normal response.
 
   Automatically renders a template based on the
   current controller and action names when no
@@ -181,18 +178,6 @@ defmodule Sugar.Controller.Helpers do
   def render(conn, assigns, opts, _) when is_list(assigns) do
     template = build_template_key(conn)
     render_view(conn, template, assigns, opts)
-  end
-
-  defp render_view(conn, template_key, assigns, opts) do
-    opts = [status: 200] |> Keyword.merge opts
-
-    html = Sugar.Config.get(:sugar, :views_dir, "lib/#{Mix.Project.config[:app]}/views")
-      |> Sugar.Views.Finder.one(template_key)
-      |> Sugar.Templates.render(assigns)
-
-    conn
-      |> put_resp_content_type_if_not_sent(opts[:content_type] || "text/html")
-      |> send_resp_if_not_sent(opts[:status], html)
   end
 
   @doc """
@@ -281,6 +266,22 @@ defmodule Sugar.Controller.Helpers do
                   |> String.downcase
 
      "#{controller}/#{template}"
+  end
+
+  defp render_view(conn, template_key, assigns, opts) do
+    opts = [status: 200] |> Keyword.merge opts
+    header = get_resp_header(conn, "content-type")
+
+    if header == [] or not (header |> hd =~ "json") do
+      conn = put_resp_content_type_if_not_sent(conn, opts[:content_type] || "text/html")
+    end
+
+    html = Sugar.Config.get(:sugar, :views_dir, "lib/#{Mix.Project.config[:app]}/views")
+      |> Sugar.Views.Finder.one(template_key)
+      |> Sugar.Templates.render(assigns)
+
+    conn
+      |> send_resp_if_not_sent(opts[:status], html)
   end
 
   defp put_resp_header_if_not_sent(%Plug.Conn{state: :sent} = conn, _, _) do
