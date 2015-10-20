@@ -99,8 +99,8 @@ defmodule Sugar.Controller.Helpers do
     if File.exists?(filename) do
       body = filename |> File.read!
       conn
-        |> put_resp_content_type_if_not_sent("text/html")
-        |> send_resp_if_not_sent(200, body)
+        |> maybe_put_resp_content_type("text/html")
+        |> maybe_send_resp(200, body)
     else
       conn
         |> not_found
@@ -125,11 +125,11 @@ defmodule Sugar.Controller.Helpers do
     header = get_resp_header(conn, "content-type")
 
     if header == [] or not (header |> hd =~ "json") do
-      conn = put_resp_content_type_if_not_sent(conn, "application/json")
+      conn = maybe_put_resp_content_type(conn, "application/json")
     end
 
     conn
-      |> send_resp_if_not_sent(opts[:status], Poison.encode! data)
+      |> maybe_send_resp(opts[:status], Poison.encode! data)
   end
 
   @doc """
@@ -196,7 +196,7 @@ defmodule Sugar.Controller.Helpers do
   def halt!(conn, opts \\ []) do
     opts = [status: 401, message: ""] |> Keyword.merge(opts)
     conn
-      |> send_resp_if_not_sent(opts[:status], opts[:message])
+      |> maybe_send_resp(opts[:status], opts[:message])
   end
 
   @doc """
@@ -213,7 +213,7 @@ defmodule Sugar.Controller.Helpers do
   @spec not_found(Plug.Conn.t, binary) :: Plug.Conn.t
   def not_found(conn, message \\ "Not Found") do
     conn
-      |> send_resp_if_not_sent(404, message)
+      |> maybe_send_resp(404, message)
   end
 
   @doc """
@@ -252,8 +252,8 @@ defmodule Sugar.Controller.Helpers do
   def redirect(conn, location, opts \\ []) do
     opts = [status: 302] |> Keyword.merge(opts)
     conn
-      |> put_resp_header_if_not_sent("Location", location)
-      |> send_resp_if_not_sent(opts[:status], "")
+      |> maybe_put_resp_header("location", location)
+      |> maybe_send_resp(opts[:status], "")
   end
 
   defp build_template_key(conn, template \\ nil) do
@@ -273,7 +273,7 @@ defmodule Sugar.Controller.Helpers do
     header = get_resp_header(conn, "content-type")
 
     if header == [] or not (header |> hd =~ "json") do
-      conn = put_resp_content_type_if_not_sent(conn, opts[:content_type] || "text/html")
+      conn = maybe_put_resp_content_type(conn, opts[:content_type] || "text/html")
     end
 
     html = Sugar.Config.get(:sugar, :views_dir, "lib/#{Mix.Project.config[:app]}/views")
@@ -281,27 +281,27 @@ defmodule Sugar.Controller.Helpers do
       |> Sugar.Templates.render(assigns)
 
     conn
-      |> send_resp_if_not_sent(opts[:status], html)
+      |> maybe_send_resp(opts[:status], html)
   end
 
-  defp put_resp_header_if_not_sent(%Plug.Conn{state: :sent} = conn, _, _) do
+  defp maybe_put_resp_header(%Plug.Conn{state: :sent} = conn, _, _) do
     conn
   end
-  defp put_resp_header_if_not_sent(conn, key, value) do
+  defp maybe_put_resp_header(conn, key, value) do
     conn |> put_resp_header(key, value)
   end
 
-  defp put_resp_content_type_if_not_sent(%Plug.Conn{state: :sent} = conn, _) do
+  defp maybe_put_resp_content_type(%Plug.Conn{state: :sent} = conn, _) do
     conn
   end
-  defp put_resp_content_type_if_not_sent(conn, resp_content_type) do
+  defp maybe_put_resp_content_type(conn, resp_content_type) do
     conn |> put_resp_content_type(resp_content_type)
   end
 
-  defp send_resp_if_not_sent(%Plug.Conn{state: :sent} = conn, _, _) do
+  defp maybe_send_resp(%Plug.Conn{state: :sent} = conn, _, _) do
     conn
   end
-  defp send_resp_if_not_sent(conn, status, body) do
+  defp maybe_send_resp(conn, status, body) do
     conn |> send_resp(status, body)
   end
 end

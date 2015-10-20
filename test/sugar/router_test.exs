@@ -159,8 +159,9 @@ defmodule Sugar.RouterTest do
   end
 
   test "parses json encoded bodies" do
-    headers = [{"content-type", "application/json"}]
-    conn = conn(:post, "/post", "{\"foo\": \"baz\"}", headers: headers)
+    headers = [{}]
+    conn = conn(:post, "/post", "{\"foo\": \"baz\"}")
+      |> Plug.Conn.put_req_header("content-type", "application/json")
       |> Sugar.RouterTest.Router.call([])
     assert conn.state === :sent
     assert conn.status === 200

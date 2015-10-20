@@ -5,3 +5,4 @@ log/
 erl_crash.dump
 *.ez
 priv/main/
+doc/
