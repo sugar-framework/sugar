@@ -25,7 +25,7 @@ defmodule Sugar.Mixfile do
     [ { :cowboy, "~> 1.0.2" },
       { :plug, "~> 0.14.0" },
       { :http_router, "~> 0.0.7" },
-      { :poison, "~> 1.4.0" },
+      { :poison, "~> 1.4" },
       { :ecto, "~> 0.15.0" },
       { :postgrex, "~> 0.9.1" },
       { :plugs, "~> 0.0.4" },
