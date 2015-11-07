@@ -22,18 +22,18 @@ defmodule Sugar.Mixfile do
   end
 
   defp deps do
-    [ { :cowboy, "~> 1.0.2" },
-      { :plug, "~> 0.14.0" },
-      { :http_router, "~> 0.0.7" },
+    [ { :cowboy, "~> 1.0" },
+      { :plug, "~> 0.14" },
+      { :http_router, "~> 0.0" },
       { :poison, "~> 1.4" },
-      { :ecto, "~> 0.15.0" },
-      { :postgrex, "~> 0.9.1" },
-      { :plugs, "~> 0.0.4" },
-      { :templates, "~> 0.0.5" },
-      { :earmark, "~> 0.1.17", only: :docs },
-      { :ex_doc, "~> 0.8.0", only: :docs },
-      { :excoveralls, "~> 0.3.11", only: :test },
-      { :dialyze, "~> 0.2.0", only: :test } ]
+      { :ecto, "~> 0.15" },
+      { :postgrex, "~> 0.9" },
+      { :plugs, "~> 0.0" },
+      { :templates, "~> 0.0" },
+      { :earmark, "~> 0.1", only: :docs },
+      { :ex_doc, "~> 0.8", only: :docs },
+      { :excoveralls, "~> 0.3", only: :test },
+      { :dialyze, "~> 0.2", only: :test } ]
   end
 
   defp description do
