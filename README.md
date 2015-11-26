@@ -10,7 +10,7 @@ Modular web framework for Elixir
 ## Goals
 
 - Speed. Sugar shouldn't be slow and neither should your project.
-- Ease. Sugar should be simple because simple is easy to learn and use.
+- Ease. Sugar should be simple because simple is easy to learn, use and maintain.
 - Effective. Sugar should aid development. You have better things to which to devote your time.
 
 ## Reason for Existence
