@@ -27,6 +27,7 @@ defmodule Sugar.Mixfile do
       { :http_router, "~> 0.0" },
       { :poison, "~> 1.4" },
       { :ecto, "~> 1.0" },
+      { :postgrex, "~> 0.11" },
       { :plugs, "~> 0.0" },
       { :templates, "~> 0.0" },
       { :earmark, "~> 0.1", only: :docs },
