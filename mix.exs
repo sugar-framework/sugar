@@ -43,7 +43,7 @@ defmodule Sugar.Mixfile do
   end
 
   defp package do
-    %{contributors: ["Shane Logsdon", "Ryan S. Northrup"],
+    %{maintainers: ["Shane Logsdon", "Ryan S. Northrup"],
       files: ["lib",  "mix.exs", "README.md", "LICENSE"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/sugar-framework/sugar",
