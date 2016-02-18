@@ -4,7 +4,7 @@ defmodule Sugar.Mixfile do
   def project do
     [ app: :sugar,
       elixir: "~> 1.0",
-      version: "0.4.9",
+      version: "0.4.10",
       name: "Sugar",
       source_url: "https://github.com/sugar-framework/sugar",
       homepage_url: "https://sugar-framework.github.io",
@@ -23,12 +23,12 @@ defmodule Sugar.Mixfile do
 
   defp deps do
     [ { :cowboy, "~> 1.0" },
-      { :plug, "~> 0.14" },
+      { :plug, "~> 1.0" },
       { :http_router, "~> 0.0" },
-      { :poison, "~> 1.4" },
-      { :ecto, "~> 0.15" },
-      { :postgrex, "~> 0.9" },
-      { :plugs, "~> 0.0" },
+      { :poison, "~> 1.5" },
+      { :ecto, "~> 1.0" },
+      { :postgrex, "~> 0.10" },
+      { :plugs, "~> 0.1" },
       { :templates, "~> 0.0" },
       { :earmark, "~> 0.1", only: :docs },
       { :ex_doc, "~> 0.8", only: :docs },
