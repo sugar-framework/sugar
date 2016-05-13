@@ -38,8 +38,11 @@ defmodule Sugar.Router do
         end
 
         if opts[:https_only] == true do
-          # Sends `403 Forbidden` to all HTTP requests
-          adapter.http(Sugar.Request.HttpsOnly, [], opts[:http])
+          # Sends `403 Forbidden` to all HTTP requests by default; can
+          # be configured to use a different handler or plug by
+          # setting the :https_only_handler option
+          Keyword.get(opts, :https_only_handler, Sugar.Request.HttpsOnly)
+            |> adapter.http([port: opts[:https][:port]], opts[:http])
         else
           adapter.http(__MODULE__, [], opts[:http])
         end
