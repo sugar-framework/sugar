@@ -42,7 +42,7 @@ defmodule Sugar.Router do
           # be configured to use a different handler or plug by
           # setting the :https_only_handler option
           Keyword.get(opts, :https_only_handler, Sugar.Request.HttpsOnly)
-            |> adapter.http([], opts[:http])
+            |> adapter.http([port: opts[:https][:port]], opts[:http])
         else
           adapter.http(__MODULE__, [], opts[:http])
         end
