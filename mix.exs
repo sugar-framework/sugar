@@ -24,9 +24,9 @@ defmodule Sugar.Mixfile do
   defp deps do
     [ { :cowboy, "~> 1.0" },
       { :plug, "~> 1.0" },
-      { :http_router, "~> 0.0" },
-      { :poison, "~> 1.5" },
-      { :ecto, "~> 1.0" },
+      { :http_router, "~> 0.10" },
+      { :poison, "~> 3.0" },
+      { :ecto, "~> 2.0" },
       { :postgrex, "~> 0.10" },
       { :plugs, "~> 0.1" },
       { :templates, "~> 0.0" },
