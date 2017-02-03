@@ -12,12 +12,8 @@ defmodule Mix.Tasks.Sugar.ScaffoldTest do
 
     assert File.exists?("test/fixtures/controllers/main.ex") === true
     assert File.exists?("test/fixtures/views/main/index.html.eex") === true
-    assert File.exists?("test/fixtures/models/main.ex") === true
-    assert File.exists?("test/fixtures/queries/main.ex") === true
 
     File.rm_rf! "test/fixtures/controllers"
-    File.rm_rf! "test/fixtures/models"
-    File.rm_rf! "test/fixtures/queries"
     File.rm_rf! "test/fixtures/repo"
     File.rm_rf! "test/fixtures/views"
   end
@@ -34,9 +30,5 @@ defmodule Mix.Tasks.Sugar.ScaffoldTest do
     assert_raise Mix.Error, fn ->
       Mix.Tasks.Sugar.Scaffold.run(args)
     end
-  end
-
-  defmodule Repos.Main do
-    use Ecto.Repo, adapter: Ecto.Adapters.Postgres, env: Mix.env, otp_app: :sugar
   end
 end
