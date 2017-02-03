@@ -16,8 +16,7 @@ defmodule Sugar.Mixfile do
   end
 
   def application do
-    [ applications: [ :cowboy, :plug, :templates, :poison, :ecto,
-                      :postgrex, :plugs ],
+    [ applications: [ :cowboy, :plug, :templates, :poison, :plugs ],
       mod: { Sugar.App, [] } ]
   end
 
@@ -26,8 +25,6 @@ defmodule Sugar.Mixfile do
       { :plug, "~> 1.0" },
       { :http_router, "~> 0.10" },
       { :poison, "~> 3.0" },
-      { :ecto, "~> 2.0" },
-      { :postgrex, "~> 0.10" },
       { :plugs, "~> 0.1" },
       { :templates, "~> 0.0" },
       { :earmark, "~> 0.1", only: :docs },
