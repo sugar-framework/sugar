@@ -44,14 +44,6 @@ defmodule Mix.Tasks.Sugar.Init do
     create_directory "#{assigns[:path]}/controllers"
     Mix.Tasks.Sugar.Gen.Controller.run_detached(assigns ++ [name: "main"])
 
-    # Models
-    unless assigns[:no_repo] do
-      Mix.Tasks.Ecto.Gen.Repo.run ["-r", "#{camelize assigns[:module]}.Repos.Main"]
-    end
-    create_directory "#{assigns[:priv_path]}/main"
-    create_directory "#{assigns[:path]}/models"
-    create_directory "#{assigns[:path]}/queries"
-
     # Views
     create_directory "#{assigns[:path]}/views"
     Mix.Tasks.Sugar.Gen.View.run_detached(assigns ++ [name: "main/index"])
