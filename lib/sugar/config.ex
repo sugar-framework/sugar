@@ -31,7 +31,7 @@ defmodule Sugar.Config do
 
   defp _get(key) do
     env = Application.get_env(:sugar, key)
-    if is_list(env) do
+    if Keyword.keyword?(env) do
       @default_options |> Keyword.merge(env)
     else
       env

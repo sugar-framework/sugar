@@ -35,7 +35,6 @@ defmodule Mix.Tasks.Sugar.Scaffold do
     ] |> Keyword.merge opts
 
     Mix.Tasks.Sugar.Gen.Controller.run_detached([name: name] ++ assigns)
-    Mix.Tasks.Sugar.Gen.Model.run_detached([name: name] ++ assigns)
     Mix.Tasks.Sugar.Gen.View.run_detached([name: name <> "/index"] ++ assigns)
   end
 

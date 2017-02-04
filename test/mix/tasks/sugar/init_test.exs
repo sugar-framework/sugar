@@ -24,11 +24,6 @@ defmodule Mix.Tasks.Sugar.InitTest do
     assert File.exists?("test/fixtures/my_test_app/controllers") === true
     assert File.exists?("test/fixtures/my_test_app/controllers/main.ex") === true
 
-    # Models
-    assert File.exists?("test/fixtures/my_test_app/priv/main") === true
-    assert File.exists?("test/fixtures/my_test_app/models") === true
-    assert File.exists?("test/fixtures/my_test_app/queries") === true
-
     # Views
     assert File.exists?("test/fixtures/my_test_app/views") === true
     assert File.exists?("test/fixtures/my_test_app/views/main/index.html.eex") === true
@@ -56,11 +51,6 @@ defmodule Mix.Tasks.Sugar.InitTest do
     # Controllers
     assert File.exists?("test/fixtures/my_test_app/controllers") === true
     assert File.exists?("test/fixtures/my_test_app/controllers/main.ex") === true
-
-    # Models
-    assert File.exists?("test/fixtures/my_test_app/priv/main") === true
-    assert File.exists?("test/fixtures/my_test_app/models") === true
-    assert File.exists?("test/fixtures/my_test_app/queries") === true
 
     # Views
     assert File.exists?("test/fixtures/my_test_app/views") === true
