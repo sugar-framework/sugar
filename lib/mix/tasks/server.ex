@@ -18,8 +18,10 @@ defmodule Mix.Tasks.Server do
     Mix.Task.run "app.start", args
     Mix.Task.run "compile.sugar", args
 
-    if Keyword.has_key? opts, :port do
-      opts = Keyword.update!(opts, :port, &binary_to_integer(&1))
+    opts = if Keyword.has_key? opts, :port do
+      Keyword.update!(opts, :port, &binary_to_integer(&1))
+    else
+      opts
     end
 
     opts = add_config opts

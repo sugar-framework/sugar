@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Sugar.Gen.Router do
   use Mix.Task
   import Mix.Generator
-  import Mix.Utils, only: [camelize: 1, underscore: 1]
+  import Macro, only: [camelize: 1, underscore: 1]
 
   @shortdoc "Creates Sugar router files"
   @recursive true
