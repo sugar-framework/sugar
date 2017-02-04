@@ -22,7 +22,7 @@ defmodule Mix.Tasks.Server do
       opts = Keyword.update!(opts, :port, &binary_to_integer(&1))
     end
 
-    opts = add_config(opts)
+    opts = add_config opts
     router = Sugar.Config.get(:sugar, :router, Router)
     router.run opts
 

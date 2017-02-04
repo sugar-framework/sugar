@@ -32,7 +32,7 @@ defmodule Mix.Tasks.Sugar.Scaffold do
       module: name,
       path: path,
       priv_path: "priv"
-    ] |> Keyword.merge opts
+    ] |> Keyword.merge(opts)
 
     Mix.Tasks.Sugar.Gen.Controller.run_detached([name: name] ++ assigns)
     Mix.Tasks.Sugar.Gen.View.run_detached([name: name <> "/index"] ++ assigns)

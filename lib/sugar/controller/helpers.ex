@@ -121,7 +121,7 @@ defmodule Sugar.Controller.Helpers do
   """
   @spec json(Plug.Conn.t, Keyword.t | list, Keyword.t) :: Plug.Conn.t
   def json(conn, data, opts \\ []) do
-    opts = [status: conn.status || 200] |> Keyword.merge opts
+    opts = [status: conn.status || 200] |> Keyword.merge(opts)
     header = get_resp_header(conn, "content-type")
 
     if header == [] or not (header |> hd =~ "json") do
@@ -269,7 +269,7 @@ defmodule Sugar.Controller.Helpers do
   end
 
   defp render_view(conn, template_key, assigns, opts) do
-    opts = [status: 200] |> Keyword.merge opts
+    opts = [status: 200] |> Keyword.merge(opts)
     header = get_resp_header(conn, "content-type")
 
     if header == [] or not (header |> hd =~ "json") do

@@ -39,7 +39,7 @@ defmodule Mix.Tasks.Sugar.Gen.View do
       module: module,
       name: name,
       path: path
-    ] |> Keyword.merge opts
+    ] |> Keyword.merge(opts)
 
     case opts[:type] do
       "haml" -> create_file "#{assigns[:path]}/views/#{underscore name}.html.haml", haml_template(assigns)

@@ -31,7 +31,7 @@ defmodule Mix.Tasks.Sugar.Gen.Router do
       app: Mix.Project.config[:app],
       module: module,
       path: path
-    ] |> Keyword.merge opts
+    ] |> Keyword.merge(opts)
 
     create_file "#{assigns[:path]}/router.ex", router_template(assigns)
   end

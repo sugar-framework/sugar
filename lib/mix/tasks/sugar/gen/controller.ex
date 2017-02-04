@@ -38,7 +38,7 @@ defmodule Mix.Tasks.Sugar.Gen.Controller do
       module: module,
       name: name,
       path: path
-    ] |> Keyword.merge opts
+    ] |> Keyword.merge(opts)
     assigns = assigns |> Keyword.merge([name: camelize(assigns[:name])])
 
     create_file "#{assigns[:path]}/controllers/#{underscore name}.ex", controller_template(assigns)
