@@ -1,6 +1,6 @@
 defmodule Mix.Tasks.Sugar.Scaffold do
   use Mix.Task
-  import Mix.Utils, only: [camelize: 1, underscore: 1]
+  import Macro, only: [camelize: 1, underscore: 1]
 
   @shortdoc "Creates Sugar controller, model, and view files for a resource"
   @recursive true
@@ -32,7 +32,7 @@ defmodule Mix.Tasks.Sugar.Scaffold do
       module: name,
       path: path,
       priv_path: "priv"
-    ] |> Keyword.merge opts
+    ] |> Keyword.merge(opts)
 
     Mix.Tasks.Sugar.Gen.Controller.run_detached([name: name] ++ assigns)
     Mix.Tasks.Sugar.Gen.View.run_detached([name: name <> "/index"] ++ assigns)

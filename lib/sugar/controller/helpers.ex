@@ -121,11 +121,13 @@ defmodule Sugar.Controller.Helpers do
   """
   @spec json(Plug.Conn.t, Keyword.t | list, Keyword.t) :: Plug.Conn.t
   def json(conn, data, opts \\ []) do
-    opts = [status: conn.status || 200] |> Keyword.merge opts
+    opts = [status: conn.status || 200] |> Keyword.merge(opts)
     header = get_resp_header(conn, "content-type")
 
-    if header == [] or not (header |> hd =~ "json") do
-      conn = maybe_put_resp_content_type(conn, "application/json")
+    conn = if header == [] or not (header |> hd =~ "json") do
+      maybe_put_resp_content_type(conn, "application/json")
+    else
+      conn
     end
 
     conn
@@ -269,11 +271,13 @@ defmodule Sugar.Controller.Helpers do
   end
 
   defp render_view(conn, template_key, assigns, opts) do
-    opts = [status: 200] |> Keyword.merge opts
+    opts = [status: 200] |> Keyword.merge(opts)
     header = get_resp_header(conn, "content-type")
 
-    if header == [] or not (header |> hd =~ "json") do
-      conn = maybe_put_resp_content_type(conn, opts[:content_type] || "text/html")
+    conn = if header == [] or not (header |> hd =~ "json") do
+      maybe_put_resp_content_type(conn, opts[:content_type] || "text/html")
+    else
+      conn
     end
 
     html = Sugar.Config.get(:sugar, :views_dir, "lib/#{Mix.Project.config[:app]}/views")

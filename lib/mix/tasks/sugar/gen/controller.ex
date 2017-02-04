@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Sugar.Gen.Controller do
   use Mix.Task
   import Mix.Generator
-  import Mix.Utils, only: [camelize: 1, underscore: 1]
+  import Macro, only: [camelize: 1, underscore: 1]
 
   @shortdoc "Creates Sugar controller files"
   @recursive true
@@ -38,7 +38,7 @@ defmodule Mix.Tasks.Sugar.Gen.Controller do
       module: module,
       name: name,
       path: path
-    ] |> Keyword.merge opts
+    ] |> Keyword.merge(opts)
     assigns = assigns |> Keyword.merge([name: camelize(assigns[:name])])
 
     create_file "#{assigns[:path]}/controllers/#{underscore name}.ex", controller_template(assigns)

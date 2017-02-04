@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Sugar.Gen.View do
   use Mix.Task
   import Mix.Generator
-  import Mix.Utils, only: [camelize: 1, underscore: 1]
+  import Macro, only: [camelize: 1, underscore: 1]
 
   @shortdoc "Creates Sugar view files"
   @recursive true
@@ -39,7 +39,7 @@ defmodule Mix.Tasks.Sugar.Gen.View do
       module: module,
       name: name,
       path: path
-    ] |> Keyword.merge opts
+    ] |> Keyword.merge(opts)
 
     case opts[:type] do
       "haml" -> create_file "#{assigns[:path]}/views/#{underscore name}.html.haml", haml_template(assigns)

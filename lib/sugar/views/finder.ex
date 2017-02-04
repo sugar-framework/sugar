@@ -37,7 +37,7 @@ defmodule Sugar.Views.Finder do
   @spec one(binary, binary) :: Sugar.Templates.Template.t | {:error,:notfound}
   def one(root, key) do
     path = Path.join(root, key)
-    if Path.extname(path) == "", do: path = path <> ".*"
+    path = if Path.extname(path) == "", do: path <> ".*", else: path
     path = path |> Path.wildcard 
                 |> List.first 
                 || ""

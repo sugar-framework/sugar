@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Sugar.Gen.Router do
   use Mix.Task
   import Mix.Generator
-  import Mix.Utils, only: [camelize: 1, underscore: 1]
+  import Macro, only: [camelize: 1, underscore: 1]
 
   @shortdoc "Creates Sugar router files"
   @recursive true
@@ -31,7 +31,7 @@ defmodule Mix.Tasks.Sugar.Gen.Router do
       app: Mix.Project.config[:app],
       module: module,
       path: path
-    ] |> Keyword.merge opts
+    ] |> Keyword.merge(opts)
 
     create_file "#{assigns[:path]}/router.ex", router_template(assigns)
   end
