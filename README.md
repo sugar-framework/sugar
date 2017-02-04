@@ -3,6 +3,7 @@
 [![Build Status](https://img.shields.io/travis/sugar-framework/sugar.svg?style=flat)](https://travis-ci.org/sugar-framework/sugar)
 [![Coverage Status](https://img.shields.io/coveralls/sugar-framework/sugar.svg?style=flat)](https://coveralls.io/r/sugar-framework/sugar)
 [![Hex.pm Version](http://img.shields.io/hexpm/v/sugar.svg?style=flat)](https://hex.pm/packages/sugar)
+[![Deps Status](https://beta.hexfaktor.org/badge/all/github/sugar-framework/sugar.svg)](https://beta.hexfaktor.org/github/sugar-framework/sugar)
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/sugar-framework/sugar?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 Modular web framework for Elixir
