@@ -8,6 +8,24 @@
 
 Modular web framework for Elixir
 
+## 0.4.x -> 0.5.x Upgrade Warning
+
+Please note that `ecto` and `postgrex` have been removed from Sugar's dependencies as of version 0.5.0.  If your application uses Ecto, you'll need to add it to your application's `mix.exs`, like so:
+
+```elixir
+def project do
+  [ app: :my_app,
+  # ...
+    deps: deps() ]
+end
+
+def deps do
+  [ {:sugar, "~> 0.5.0"},
+    {:ecto, "~> 2.1"},
+    {:postgrex, "~> 0.13.0"} ]
+end
+```
+
 ## Goals
 
 - Speed. Sugar shouldn't be slow and neither should your project.
@@ -76,7 +94,7 @@ Tells Sugar how the specified router should be configured.  The following option
 #### Example
 
 ```elixir
-use Mix.exs
+use Mix.Config
 
 config :sugar, router: MyWebsite.Router
 
@@ -105,7 +123,7 @@ Routes are defined with the form:
 #### Example
 
 ```elixir
-defmodule Router do
+defmodule MyWebsite.Router do
   use Sugar.Router
 
   get "/", Hello, :index
@@ -127,7 +145,7 @@ Sugar bundles these response helpers to assist in sending a response:
 #### Example
 
 ```elixir
-defmodule Hello do
+defmodule MyWebsite.Controllers.Hello do
   use Sugar.Controller
 
   def index(conn, []) do
