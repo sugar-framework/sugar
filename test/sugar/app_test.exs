@@ -5,9 +5,9 @@ defmodule Sugar.AppTest do
 
   test "start/0" do
     capture_io(fn ->
-      assert start === :ok
+      assert start() === :ok
       # starting twice should still return :ok
-      assert start === :ok
+      assert start() === :ok
     end)
   end
 

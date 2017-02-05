@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.Sugar.Init do
   use Mix.Task
   import Mix.Generator
-  import Mix.Utils, only: [camelize: 1, underscore: 1]
+  import Macro, only: [camelize: 1, underscore: 1]
 
   @shortdoc "Creates Sugar support files"
   @recursive true
@@ -31,7 +31,7 @@ defmodule Mix.Tasks.Sugar.Init do
       module: name,
       path: path,
       priv_path: "priv"
-    ] |> Keyword.merge opts
+    ] |> Keyword.merge(opts)
 
     # Priviliged
     create_directory "#{assigns[:priv_path]}"

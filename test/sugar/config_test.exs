@@ -3,18 +3,18 @@ defmodule Sugar.ConfigTest do
   import Sugar.Config
 
   test "get/1" do
-    if Version.match?(System.version, "< 1.2.0") do
-      expected_list = [{:truth, true},
-                       {:http,  [port: 4000]},
-                       {:https, [certfile: "",
-                                 keyfile: "",
-                                 port: 4443]}]
+    expected_list = if Version.match?(System.version, "< 1.2.0") do
+      [{:truth, true},
+       {:http,  [port: 4000]},
+       {:https, [certfile: "",
+                 keyfile: "",
+                 port: 4443]}]
     else
-      expected_list = [{:http,  [port: 4000]},
-                       {:https, [certfile: "",
-                                 keyfile: "",
-                                 port: 4443]},
-                       {:truth, true}]
+        [{:http,  [port: 4000]},
+         {:https, [certfile: "",
+                   keyfile: "",
+                   port: 4443]},
+         {:truth, true}]
     end
     assert get(:router) === nil
     assert get(:config_test) === expected_list
