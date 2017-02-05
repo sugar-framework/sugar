@@ -18,12 +18,9 @@ defmodule Mix.Tasks.Server do
     Mix.Task.run "app.start", args
     Mix.Task.run "compile.sugar", args
 
-    if Keyword.has_key? opts, :port do
-      opts = Keyword.update!(opts, :port, &binary_to_integer(&1))
-      Mix.shell.info "== Sugar running in http://127.0.0.1:#{opts[:port]} =="
-    else
-      Mix.shell.info "== Sugar running in http://127.0.0.1:4000 =="
-    end
+    opts = opts |> Keyword.update(:port, 4000, &binary_to_integer(&1))
+    
+    Mix.shell.info "== Sugar running in http://127.0.0.1:#{opts[:port]} =="
 
     opts = add_config opts
     router = Sugar.Config.get(:sugar, :router, Router)
