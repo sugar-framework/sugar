@@ -21,17 +21,23 @@ defmodule Sugar.Router do
           |> Keyword.put_new(:http, [])
           |> Keyword.put_new(:https, [])
 
-        if is_list(opts[:http]) and opts[:http][:port] do
-          opts = opts
-            |> Keyword.put(:http, opts[:http]
-              |> Keyword.update(:port, 4000, &Sugar.Router.cast_http_port/1))
-        end
+        opts =
+          if is_list(opts[:http]) and opts[:http][:port] do
+            opts
+              |> Keyword.put(:http, opts[:http]
+                |> Keyword.update(:port, 4000, &Sugar.Router.cast_http_port/1))
+          else
+            opts
+          end
 
-        if is_list(opts[:https]) and opts[:https][:port] do
-          opts = opts
-            |> Keyword.put(:https, opts[:https]
-              |> Keyword.update(:port, 8443, &Sugar.Router.cast_https_port/1))
-        end
+        opts =
+          if is_list(opts[:https]) and opts[:https][:port] do
+            opts
+              |> Keyword.put(:https, opts[:https]
+                |> Keyword.update(:port, 8443, &Sugar.Router.cast_https_port/1))
+          else
+            opts
+          end
 
         if is_list(opts[:https]) and opts[:https] != [] do
           adapter.https(__MODULE__, [], opts[:https])
