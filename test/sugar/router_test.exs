@@ -159,7 +159,6 @@ defmodule Sugar.RouterTest do
   end
 
   test "parses json encoded bodies" do
-    headers = [{}]
     conn = conn(:post, "/post", "{\"foo\": \"baz\"}")
       |> Plug.Conn.put_req_header("content-type", "application/json")
       |> Sugar.RouterTest.Router.call([])
